@@ -1,4 +1,4 @@
-# conference-presentations
+# Conference presentations
 My presentations for conferences and meetups
 
 ## Evrone 02.11.22

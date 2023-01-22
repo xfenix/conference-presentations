@@ -5,7 +5,6 @@ My presentations for conferences and meetups
 * Video: https://www.youtube.com/watch?v=RAItctARwPs
 * Presentation: [evrone-about-python.pdf](./evrone-02.11.22/evrone-about-python.pdf)
 
-
 ## Crossconf 09.11.22
 * Video: https://www.youtube.com/watch?v=rlgPOJdWgJY
 * Presentation: [howwebuildchatplatform.pptx](./crossconf-09.09.22/howwebuildchatplatform.pptx)

@@ -5,12 +5,12 @@ Also some of presentations i upload to speakerdeck https://speakerdeck.com/xfeni
 
 ## Moscow Python Conf++ 2023 19.05.23
 * Video: https://www.youtube.com/watch?v=HLas3IcCTwY
-* Presentation: [tech-interview-without-braces.pdf](./moscowpythonconf-19.05.23/tech-interview-without-braces.pdf)
+* Presentation: https://speakerdeck.com/xfenix/tiekhnichieskoie-intierviu-biez-balansirovki-skobok or [tech-interview-without-braces.pdf](./moscowpythonconf-19.05.23/tech-interview-without-braces.pdf)
 * Conference page: https://conf.python.ru/moscow/2023/abstracts/10437
 
 ## Ekby 04.02.23
 * Video: https://www.youtube.com/watch?v=dvfnYkEHmdA
-* Presentation: [cpu-bound-methods.pptx](./ekbpy-04.02.23/cpu-bound-methods.pptx)
+* Presentation: [cpu-bound-methods.pdf](./ekbpy-04.02.23/cpu-bound-methods.pdf)
 * Repo with examples: https://github.com/xfenix/ekbpy2023
 
 ## Evrone 02.11.22
@@ -19,7 +19,7 @@ Also some of presentations i upload to speakerdeck https://speakerdeck.com/xfeni
 
 ## Crossconf 09.11.22
 * Video: https://www.youtube.com/watch?v=rlgPOJdWgJY
-* Presentation: [howwebuildchatplatform.pptx](./crossconf-09.09.22/howwebuildchatplatform.pptx)
+* Presentation: [howwebuildchatplatform.pdf](./crossconf-09.09.22/howwebuildchatplatform.pdf)
 
 ## Pycon 30.07.22
 * Video: https://www.youtube.com/watch?v=7--05FF8VAk
@@ -28,7 +28,7 @@ Also some of presentations i upload to speakerdeck https://speakerdeck.com/xfeni
 
 ## Moscow Python Conf++ 2021 28.09.21
 * Video: https://www.youtube.com/watch?v=pVebvoiBIjA
-* Presentation: https://speakerdeck.com/xfenix/dvustoronnii-websocket-routingh or [moscow-python-conf-2021](./moscowpythonconf-27.09.21/moscow-python-conf-2021.pdf)
+* Presentation: https://speakerdeck.com/xfenix/dvustoronnii-websocket-routingh or [moscow-python-conf-2021.pdf](./moscowpythonconf-27.09.21/moscow-python-conf-2021.pdf)
 * Conference page: https://conf.python.ru/moscow/2021/abstracts/7746
 
 ## Pycon 05.09.21

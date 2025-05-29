@@ -201,10 +201,10 @@ section.has-dark-background h6 {
   position: relative;
   width: 70%;
   margin: var(--r-block-margin) auto;
-  padding: 5px;
-  font-style: italic;
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  padding: 20px;
 }
 
 .reveal blockquote p:first-child,

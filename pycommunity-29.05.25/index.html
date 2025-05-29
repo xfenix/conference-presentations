@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
     <link rel="stylesheet" href="dist/theme/white-raif.css">
-    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css">
 </head>
 
 <body>
@@ -29,6 +29,7 @@
                     <li class="fragment">Making CPython faster</li>
                 </ul>
             </section>
+
             <section data-background-color="#4669C8">
                 <h2>JIT</h2>
             </section>
@@ -50,6 +51,70 @@
                     <li class="fragment">Прирост до 20%, но не всегда (больше всего в... bubble sort)</li>
                 </ul>
             </section>
+            <section data-background="media/jit-fibonachi.png" data-background-size="contain"></section>
+            <section>
+                <h1>🤷🏼‍♂️</h1>
+            </section>
+
+            <section data-background-color="#4669C8">
+                <h2>GIL</h2>
+            </section>
+            <section data-background="media/gil.png" data-background-size="contain"></section>
+            <section>
+                <h4>Когда и что?</h4>
+                <ul>
+                    <li class="fragment">Написан руками Sam Gross</li>
+                    <li class="fragment">PEP 703</li>
+                    <li class="fragment">Является частью многолетнего плана</li>
+                </ul>
+            </section>
+            <section data-background="media/nogil-samgross.png" data-background-size="contain"></section>
+            <section>
+                <h3>❌</h3>
+                <pre><code class="language-py" data-trim data-noescape>
+                def cpu_bound_task():
+                    result = 0
+                    for i in range(10000000):
+                        result += i
+                    return result
+
+                threads = [
+                    threading.Thread(target=cpu_bound_task)
+                    for _ in range(4)
+                ]
+                for thread in threads:
+                    thread.start()
+                for thread in threads:
+                    thread.join()
+                </code></pre>
+            </section>
+            <section>
+                <h3>✅</h3>
+                <pre><code class="language-py" data-trim data-noescape>
+                def io_bound_task():
+                    httpx.get(...)
+
+                threads = [
+                    threading.Thread(target=io_bound_task)
+                    for _ in range(4)
+                ]
+                for thread in threads:
+                    thread.start()
+                for thread in threads:
+                    thread.join()
+                </code></pre>
+            </section>
+            <section data-background="media/gil-disabled.png" data-background-size="contain"></section>
+            <section data-background="media/pupupu.png" data-background-size="contain"></section>
+            <section>
+                <blockquote>
+                    «The option to disable the GIL in Python 3.13 is still experimental and <b>not&nbsp;recommended for&nbsp;production use</b> yet»
+                </blockquote>
+            </section>
+            <section data-background-color="#5543AF">
+                <h2>А обещали всё ускорить!</h2>
+            </section>
+
             <section data-background-color="#4669C8">
                 <h2>Экосистема</h2>
             </section>
@@ -61,9 +126,7 @@
                     <li class="fragment">Нацелен заменить mypy</li>
                 </ul>
             </section>
-            <section>
-                <img src="media/ty-screenshot.png" alt="">
-            </section>
+            <section data-background="media/ty-screenshot.png" data-background-size="contain"></section>
             <section>
                 <h4>Планы</h4>
                 <ul>
@@ -73,15 +136,23 @@
                     <li class="fragment">full public релиз в этом году!</li>
                 </ul>
             </section>
-            <section>
-                <img src="media/ty-doesnt-renamed.png" alt="">
+            <section data-background="media/ty-doesnt-renamed.png" data-background-size="contain"></section>
+            <section data-background-color="#642B2B">
+                <h2>UV — становится стандартом,<br>вместо poetry</h2>
             </section>
+            <section>
+                <h4>Основной стек</h4>
+                <ul>
+                    <li class="fragment">uv</li>
+                    <li class="fragment">litestar</li>
+                    <li class="fragment">granian</li>
+                </ul>
+            </section>
+
             <section data-background-color="#2B2D33">
                 <h2>Плохие новости</h2>
             </section>
-            <section>
-                <img src="media/microsoft-layoff.png" alt="">
-            </section>
+            <section data-background="media/microsoft-layoff.png" data-background-size="contain"></section>
             <section>
                 <h4>И причём тут faster cpython?</h4>
                 <ul>
@@ -89,8 +160,50 @@
                     <li class="fragment">Mark Shannon и Eric Snow пошли на&nbsp;рынок</li>
                 </ul>
             </section>
+            <section data-background="media/cpython-faster-layoff.png" data-background-size="contain"></section>
+            <section data-background-color="#3C5814">
+                <h2>Что же будет?</h2>
+            </section>
             <section>
-                <img src="media/cpython-faster-layoff.png" alt="">
+                <h4>Making CPython Faster</h4>
+                <ul>
+                    <li class="fragment">Microsoft не молодцы</li>
+                    <li class="fragment">Но немного молодцы, т.к. python <span style="white-space: nowrap;">3.10 &rarr; 3.14</span> стал на 20-40% быстрее</li>
+                    <li class="fragment"><s>Making CPython Faster</s> &rarr; Performance&nbsp;WG <span class="fragment">без права голоса</span></li>
+                </ul>
+            </section>
+            <section>
+                <blockquote>
+                    «Things might slow down a bit, but that’s all. As Brandt says, this project always was driven by the community, not by&nbsp;Microsoft»
+                </blockquote>
+            </section>
+
+            <section data-background-color="#4669C8">
+                <h2>Интересные PEPы</h2>
+            </section>
+            <section data-background="media/pepi.jpg" data-background-size="contain"></section>
+            <section>
+                <h4>Интересные pep'ы</h4>
+                <ul>
+                    <li class="fragment">PEP 784 – Adding Zstandard to the standard library</li>
+                    <li class="fragment">PEP 758 – Allow except and except* expressions without parentheses</li>
+                    <li class="fragment">PEP 750 – Template Strings</li>
+                </ul>
+            </section>
+            <section data-background="media/pochemu.jpeg" data-background-size="contain"></section>
+            <section>
+                <h4>Способы отформатировать строку</h4>
+                <ul>
+                    <li>.format</li>
+                    <li>%</li>
+                    <li>f''</li>
+                    <li>t''</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#283C78">
+                <img src="dist/theme/raif-logo-white.svg" width="64" alt="" class="raif-logo">
+                <h2>Спасибо за внимание и пока!</h2>
             </section>
         </div>
     </div>
@@ -105,6 +218,8 @@
         Reveal.initialize({
             hash: true,
             controls: false,
+            slideNumber: true,
+            pdfSeparateFragments: false,
             plugins: [RevealHighlight, RevealNotes]
         });
     </script>

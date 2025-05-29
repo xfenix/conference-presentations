@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Новости python экосистемы</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white-raif.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <img src="dist/theme/raif-logo-dark.svg" width="64" alt="" class="raif-logo">
+                <h2>Новости Python экосистемы</h2>
+                <small>Денис Аникин, <a href="https://xfenix.ru" target="_blank">https://xfenix.ru</a></small>
+            </section>
+            <section>
+                <h4>Что у нас нового?</h4>
+                <ul>
+                    <li class="fragment">JIT</li>
+                    <li class="fragment">Free threading режим</li>
+                    <li class="fragment">Making CPython faster</li>
+                </ul>
+            </section>
+            <section data-background-color="#4669C8">
+                <h2>JIT</h2>
+            </section>
+            <section>
+                <h4>Когда и что?</h4>
+                <ul>
+                    <li class="fragment">JIT — это когда байт-код компилируется в машинный прямо в процессе работы</li>
+                    <li class="fragment">Появился в версии 3.13</li>
+                    <li class="fragment">PEP 744</li>
+                    <li class="fragment">Зачем, если есть PyPy?</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Из чего собрано</h4>
+                <ul>
+                    <li class="fragment">Несколько сотен строк кода на&nbsp;питоне&nbsp;и си</li>
+                    <li class="fragment">Память +10-20%</li>
+                    <li class="fragment">C-extensions не надо пересобирать</li>
+                    <li class="fragment">Прирост до 20%, но не всегда (больше всего в... bubble sort)</li>
+                </ul>
+            </section>
+            <section data-background-color="#4669C8">
+                <h2>Экосистема</h2>
+            </section>
+            <section>
+                <h4>RedKnot</h4>
+                <ul>
+                    <li class="fragment">Проект astral</li>
+                    <li class="fragment">Переименован в ty (ти-вай)</li>
+                    <li class="fragment">Нацелен заменить mypy</li>
+                </ul>
+            </section>
+            <section>
+                <img src="media/ty-screenshot.png" alt="">
+            </section>
+            <section>
+                <h4>Планы</h4>
+                <ul>
+                    <li class="fragment">Создатели считают, что уже можно пользоваться</li>
+                    <li class="fragment"><a href="https://play.ty.dev/" target="_blank">https://play.ty.dev/</a></li>
+                    <li class="fragment">beta будет в этом году</li>
+                    <li class="fragment">full public релиз в этом году!</li>
+                </ul>
+            </section>
+            <section>
+                <img src="media/ty-doesnt-renamed.png" alt="">
+            </section>
+            <section data-background-color="#2B2D33">
+                <h2>Плохие новости</h2>
+            </section>
+            <section>
+                <img src="media/microsoft-layoff.png" alt="">
+            </section>
+            <section>
+                <h4>И причём тут faster cpython?</h4>
+                <ul>
+                    <li class="fragment">Проблема в том, что команду уволили</li>
+                    <li class="fragment">Mark Shannon и Eric Snow пошли на&nbsp;рынок</li>
+                </ul>
+            </section>
+            <section>
+                <img src="media/cpython-faster-layoff.png" alt="">
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+            controls: false,
+            plugins: [RevealHighlight, RevealNotes]
+        });
+    </script>
+</body>
+
+</html>

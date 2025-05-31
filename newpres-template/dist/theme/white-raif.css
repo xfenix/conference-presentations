@@ -5,7 +5,7 @@
  */
 @import url("./fonts/navigo/navigo.css");
 @import url("./fonts/hauss/hauss.css");
-
+@import url("./fonts/sourcecodepro/sourcecodepro.css");
 
 body {
   font-family: 'ALS Hauss', sans-serif;
@@ -28,11 +28,11 @@ section.has-dark-background h6 {
   --r-background-color: #FAEBDE;
   --r-main-font: 'ALS Hauss', Helvetica, sans-serif;
   --r-main-font-size: 42px;
-  --r-main-color: #222;
+  --r-main-color: #2B2D33;
   --r-block-margin: 20px;
-  --r-heading-margin: 0 0 20px 0;
+  --r-heading-margin: 0 0 40px 0;
   --r-heading-font: 'Navigo', Helvetica, sans-serif;
-  --r-heading-color: #222;
+  --r-heading-color: #2B2D33;
   --r-heading-line-height: 1.2;
   --r-heading-letter-spacing: normal;
   --r-heading-text-transform: uppercase;
@@ -43,11 +43,11 @@ section.has-dark-background h6 {
   --r-heading2-size: 1.6em;
   --r-heading3-size: 1.3em;
   --r-heading4-size: 1em;
-  --r-code-font: monospace;
-  --r-link-color: #2a76dd;
-  --r-link-color-dark: rgb(30.7720647773, 99.5566801619, 192.7779352227);
-  --r-link-color-hover: rgb(73.95, 138.55, 226.1);
-  --r-selection-background-color: rgb(95.25, 152.25, 229.5);
+  --r-code-font: 'Source Code Pro', monospace;
+  --r-link-color: #2D4691;
+  --r-link-color-dark: #1E3064;
+  --r-link-color-hover: #5A82FA;
+  --r-selection-background-color: #5A82FA;
   --r-selection-color: #fff;
   --r-overlay-element-bg-color: 0, 0, 0;
   --r-overlay-element-fg-color: 240, 240, 240;
@@ -172,6 +172,7 @@ section.has-dark-background h6 {
 
 .reveal ul {
   list-style-type: disc;
+  margin: 0;
 }
 
 .reveal ul ul {
@@ -187,7 +188,6 @@ section.has-dark-background h6 {
 .reveal ol ol,
 .reveal ol ul {
   display: block;
-  margin-left: 40px;
 }
 
 .reveal dt {
@@ -307,7 +307,7 @@ section.has-dark-background h6 {
 }
 
 .reveal img {
-  margin: var(--r-block-margin) 0;
+  margin: 0;
 }
 
 /*********************************************
@@ -377,10 +377,25 @@ section.has-dark-background h6 {
   margin: 0 auto 100px auto !important;
 }
 
+.raif-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.raif-columns ul {
+  max-width: 620px;
+}
+
 .reveal ul li {
   list-style-type: none;
   padding-left: 50px;
   position: relative;
+  line-height: 1.12;
+}
+
+.reveal ul li+li {
+  margin-top: 16px;
 }
 
 .reveal ul li::before {
@@ -388,7 +403,7 @@ section.has-dark-background h6 {
   content: "\2014";
   position: absolute;
   left: 0;
-  top: -5px;
+  top: -0.1em;
 }
 
 .no-upper-headers h1,

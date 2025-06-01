@@ -20,6 +20,7 @@ const minify = require('gulp-clean-css')
 const connect = require('gulp-connect')
 const autoprefixer = require('gulp-autoprefixer')
 const replace = require('gulp-replace')
+const merge = require('merge-stream')
 
 const root = yargs.argv.root || '.'
 const port = yargs.argv.port || 8000
@@ -278,29 +279,28 @@ gulp.task('default', gulp.series(gulp.parallel('js', 'css', 'plugins'), 'test'))
 
 gulp.task('build', gulp.parallel('js', 'css', 'plugins'))
 
-gulp.task('remove-menu-plugin', () => {
-    return gulp.src('./index.html')
+gulp.task('package', () => {
+    const indexStream = gulp.src('./index.html', { encoding: false })
         .pipe(replace(/<script src="plugin\/menu\/menu.js"><\/script>/g, ''))
         .pipe(replace(/RevealMenu,?\s*/g, ''))
-        .pipe(replace(/,\s*RevealMenu/g, ''))
-        .pipe(gulp.dest('./'));
-});
+        .pipe(replace(/,\s*RevealMenu/g, ''));
 
-gulp.task('package', gulp.series('remove-menu-plugin', async () => {
-    let dirs = [
-        './index.html',
+    const files = [
         './dist/**',
         './plugin/**',
         './*/*.md'
     ];
 
-    if (fs.existsSync('./lib')) dirs.push('./lib/**');
-    if (fs.existsSync('./images')) dirs.push('./images/**');
-    if (fs.existsSync('./slides')) dirs.push('./slides/**');
+    if (fs.existsSync('./lib')) files.push('./lib/**');
+    if (fs.existsSync('./images')) files.push('./images/**');
+    if (fs.existsSync('./slides')) files.push('./slides/**');
 
-    return gulp.src(dirs, { base: './', encoding: false })
-        .pipe(zip('reveal-js-presentation.zip')).pipe(gulp.dest('./'))
-}))
+    const otherFilesStream = gulp.src(files, { base: './', encoding: false });
+
+    return merge(indexStream, otherFilesStream)
+        .pipe(zip('reveal-js-presentation.zip'))
+        .pipe(gulp.dest('./'));
+});
 
 gulp.task('reload', () => gulp.src(['index.html'])
     .pipe(connect.reload()));

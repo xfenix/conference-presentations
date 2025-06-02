@@ -51,6 +51,7 @@ section.has-dark-background h6 {
   --r-selection-color: #fff;
   --r-overlay-element-bg-color: 0, 0, 0;
   --r-overlay-element-fg-color: 240, 240, 240;
+  --custom-absolute-padding: 10px;
 }
 
 .reveal-viewport {
@@ -404,6 +405,34 @@ section.has-dark-background h6 {
   position: absolute;
   left: 0;
   top: -0.1em;
+}
+
+.reveal::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: var(--custom-absolute-padding);
+  right: var(--custom-absolute-padding);
+  background: url(./raif-logo-dark.svg) no-repeat center center;
+  background-size: contain;
+  width: 28px;
+  height: 26px;
+  z-index: 10;
+}
+
+.reveal.has-dark-background::before {
+  background: url(./raif-logo-white.svg) no-repeat center center;
+  background-size: contain;
+}
+
+.slide-menu-button {
+  left: var(--custom-absolute-padding) !important;
+  bottom: var(--custom-absolute-padding) !important;
+}
+
+.slide-number {
+  right: var(--custom-absolute-padding) !important;
+  bottom: var(--custom-absolute-padding) !important;
 }
 
 .no-upper-headers h1,

@@ -107,6 +107,7 @@
     }
   },
   "dependencies": {
-    "inliner": "^1.13.1"
+    "gulp-changed": "^4.0.3",
+    "gulp-typograf": "^4.1.0"
   }
 }

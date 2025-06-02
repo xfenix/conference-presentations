@@ -21,6 +21,7 @@ const connect = require('gulp-connect')
 const autoprefixer = require('gulp-autoprefixer')
 const replace = require('gulp-replace')
 const merge = require('merge-stream')
+const typograf = require('gulp-typograf')
 
 const root = yargs.argv.root || '.'
 const port = yargs.argv.port || 8000
@@ -302,11 +303,36 @@ gulp.task('package', () => {
         .pipe(gulp.dest('./'));
 });
 
+
+let typoOnTheWay = false;
+gulp.task('typography', (doneCallback) => {
+    typoOnTheWay = true;
+    return gulp.src('./index.html')
+        .pipe(typograf({
+            locale: ['ru', 'en-US'],
+            htmlEntity: { type: 'name' },
+            safeTags: [
+                ['<\\?php', '\\?>'],
+                ['<no-typography>', '</no-typography>']
+            ],
+            rules: {
+                'common/html/stripTags': false,
+                'common/html/url': false
+            }
+        }))
+        .pipe(gulp.dest('./'))
+        .on('end', () => {
+            setTimeout(() => {
+                typoOnTheWay = false;
+            }, 500);
+            doneCallback();
+        });
+});
+
 gulp.task('reload', () => gulp.src(['index.html'])
     .pipe(connect.reload()));
 
 gulp.task('serve', () => {
-
     connect.server({
         root: root,
         port: port,
@@ -318,12 +344,20 @@ gulp.task('serve', () => {
     gulp.watch([
         slidesRoot + '**/*.html',
         slidesRoot + '**/*.md',
-        `!${slidesRoot}**/node_modules/**`, // ignore node_modules
+        `!${slidesRoot}**/node_modules/**`,
+        '!./index.html',
     ], gulp.series('reload'))
 
     gulp.watch(['js/**'], gulp.series('js', 'reload', 'eslint'))
 
     gulp.watch(['plugin/**/plugin.js', 'plugin/**/*.html'], gulp.series('plugins', 'reload'))
+
+    gulp.watch('./index.html', (doneCallback) => {
+        if (typoOnTheWay) {
+            return doneCallback();
+        }
+        gulp.series('typography', 'reload')(doneCallback);
+    });
 
     gulp.watch([
         'css/theme/source/**/*.{sass,scss}',

@@ -432,13 +432,12 @@ section.has-dark-background h6 {
 
 .reveal .slide-number {
   right: var(--custom-absolute-padding);
-  bottom: var(--custom-absolute-padding);
+  bottom: 12px;
   font-family: var(--r-main-font);
   padding: 0;
-  vertical-align: middle;
+  vertical-align: top;
   background: none;
-  text-align: center;
-  min-width: 12px;
+  text-align: right;
   color: var(--r-main-color);
 }
 
@@ -449,7 +448,7 @@ section.has-dark-background h6 {
 .reveal .slide-number>a {
   margin-bottom: -3px;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 .no-upper-headers h1,

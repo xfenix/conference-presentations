@@ -425,14 +425,31 @@ section.has-dark-background h6 {
   background-size: contain;
 }
 
-.slide-menu-button {
+.reveal .slide-menu-button {
   left: var(--custom-absolute-padding) !important;
   bottom: var(--custom-absolute-padding) !important;
 }
 
-.slide-number {
-  right: var(--custom-absolute-padding) !important;
-  bottom: var(--custom-absolute-padding) !important;
+.reveal .slide-number {
+  right: var(--custom-absolute-padding);
+  bottom: var(--custom-absolute-padding);
+  font-family: var(--r-main-font);
+  padding: 0;
+  vertical-align: middle;
+  background: none;
+  text-align: center;
+  min-width: 12px;
+  color: var(--r-main-color);
+}
+
+.reveal.has-dark-background .slide-number {
+  color: #fff;
+}
+
+.reveal .slide-number>a {
+  margin-bottom: -3px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .no-upper-headers h1,

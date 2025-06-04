@@ -51,7 +51,8 @@ section.has-dark-background h6 {
   --r-selection-color: #fff;
   --r-overlay-element-bg-color: 0, 0, 0;
   --r-overlay-element-fg-color: 240, 240, 240;
-  --custom-absolute-padding: 10px;
+  --basic-padding-of-additional-elements: 20px;
+  --bottom-padding-of-additional-elements: 12px;
 }
 
 .reveal-viewport {
@@ -411,8 +412,8 @@ section.has-dark-background h6 {
   content: '';
   display: block;
   position: fixed;
-  top: var(--custom-absolute-padding);
-  right: var(--custom-absolute-padding);
+  top: var(--basic-padding-of-additional-elements);
+  right: var(--basic-padding-of-additional-elements);
   background: url(./raif-logo-dark.svg) no-repeat center center;
   background-size: contain;
   width: 28px;
@@ -426,13 +427,13 @@ section.has-dark-background h6 {
 }
 
 .reveal .slide-menu-button {
-  left: var(--custom-absolute-padding) !important;
-  bottom: var(--custom-absolute-padding) !important;
+  left: var(--basic-padding-of-additional-elements) !important;
+  bottom: var(--bottom-padding-of-additional-elements) !important;
 }
 
 .reveal .slide-number {
-  right: var(--custom-absolute-padding);
-  bottom: 12px;
+  right: var(--basic-padding-of-additional-elements);
+  bottom: calc(var(--bottom-padding-of-additional-elements) + 2px);
   font-family: var(--r-main-font);
   padding: 0;
   vertical-align: top;

@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Navigo';
+    src: url('./Navigo-Regular-Web.woff2') format('woff2'),
+        url('./Navigo-Regular-Web.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Navigo';
+    src: url('./Navigo-Bold-Web.woff2') format('woff2'),
+        url('./Navigo-Bold-Web.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}

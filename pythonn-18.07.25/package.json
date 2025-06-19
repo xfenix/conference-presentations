@@ -10,7 +10,8 @@
   "scripts": {
     "test": "gulp test",
     "start": "gulp serve",
-    "build": "gulp build"
+    "build": "gulp build",
+    "export": "decktape reveal http://localhost:8000/ slides.pdf"
   },
   "author": {
     "name": "Hakim El Hattab",
@@ -107,6 +108,7 @@
     }
   },
   "dependencies": {
+    "decktape": "^3.15.0",
     "gulp-changed": "^4.0.3",
     "gulp-typograf": "^4.1.0"
   }

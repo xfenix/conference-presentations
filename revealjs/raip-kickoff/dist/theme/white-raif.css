@@ -25,9 +25,9 @@ section.has-dark-background h6 {
  * GLOBAL STYLES
  *********************************************/
 :root {
-    --r-background-color: #F5E1CD;
+    --r-background-color: #F6F3E9;
     --r-main-font: 'ALS Hauss', Helvetica, sans-serif;
-    --r-main-font-size: 42px;
+    --r-main-font-size: 34px;
     --r-main-color: #2B2D33;
     --r-block-margin: 20px;
     --r-heading-margin: 0 0 40px 0;
@@ -413,10 +413,11 @@ section.has-dark-background h6 {
     top: -0.1em;
 }
 
-.reveal::before {
+.reveal::before,
+.pdf-page::before {
     content: '';
     display: block;
-    position: fixed;
+    position: absolute;
     top: var(--basic-padding-of-additional-elements);
     right: var(--basic-padding-of-additional-elements);
     background: url(./raif-logo-dark.svg) no-repeat center center;
@@ -426,7 +427,8 @@ section.has-dark-background h6 {
     z-index: 10;
 }
 
-.reveal.has-dark-background::before {
+.reveal.has-dark-background::before,
+.pdf-page.has-dark-background::before {
     background: url(./raif-logo-white.svg) no-repeat center center;
     background-size: contain;
 }
@@ -463,10 +465,22 @@ section.has-dark-background h6 {
     text-transform: none;
 }
 
-.reveal.has-dark-background a {
+section.has-dark-background a {
     color: #fff;
 }
 
-.reveal.has-dark-background a:hover {
+section.has-dark-background a:hover {
     color: var(--r-link-color-hover);
+}
+
+.print-pdf .pdf-page {
+    position: relative;
+}
+
+.print-pdf .slide-menu-button {
+    display: none;
+}
+
+.print-pdf .reveal::before {
+    display: none;
 }

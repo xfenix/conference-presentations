@@ -477,6 +477,11 @@ section.has-dark-background a:hover {
     position: relative;
 }
 
+/* ugly fix but there is no other way */
+html.reveal-print .reveal .slides section {
+    padding: 0 20px !important;
+}
+
 .print-pdf .slide-menu-button {
     display: none;
 }

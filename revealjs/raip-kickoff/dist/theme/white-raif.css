@@ -473,13 +473,23 @@ section.has-dark-background a:hover {
     color: var(--r-link-color-hover);
 }
 
-.print-pdf .pdf-page {
-    position: relative;
-}
+/* Fixing print styles */
 
 /* ugly fix but there is no other way */
 html.reveal-print .reveal .slides section {
     padding: 0 20px !important;
+}
+
+.print-pdf .pdf-page .slide-number {
+    color: var(--r-main-color);
+}
+
+.print-pdf .pdf-page.has-dark-background .slide-number {
+    color: #fff;
+}
+
+.print-pdf .pdf-page {
+    position: relative;
 }
 
 .print-pdf .slide-menu-button {

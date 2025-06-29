@@ -175,13 +175,14 @@
                     <li class="fragment">При необходимости собираем встречу на&nbsp;троих</li>
                 </ul>
             </section>
-            <section>
+            <section class="no-logo-slide">
                 <img src="./images/troyka.png" alt="">
             </section>
             <section>
                 <h3>А&nbsp;ещё нужно иногда проводить чистки беклога от&nbsp;старых задач</h3>
             </section>
-            <section data-background="./images/ezhov.png" data-background-size="contain"></section>
+            <section class="no-logo-slide" data-background="./images/ezhov.png" data-background-size="contain">
+            </section>
             <section data-background-color="#46378C">
                 <h3>Зачем нужен PBR?</h3>
                 <h3 class="fragment">Помогает систематически<br />наполнять беклог</h3>
@@ -275,33 +276,58 @@
     <script src="plugin/highlight/highlight.js"></script>
     <script src="plugin/menu/menu.js"></script>
     <script>
+        const isNonLocalHostLocation = window.location.hostname !== 'localhost';
+        const isPrintMode = window.location.search.includes('print-pdf');
+        const rootElement = document.querySelector('.reveal');
+        const noLogoClassName = 'no-logo-slide';
+        const darkBgClassName = 'has-dark-background';
+        const printStylesToCopyToparent = [noLogoClassName, darkBgClassName];
+
         Reveal.initialize({
             hash: true,
             controls: false,
             slideNumber: true,
             pdfSeparateFragments: false,
-            plugins: (() => {
-                const plugins = [RevealHighlight, RevealNotes];
-                if (!(window.location.hostname === 'xfenix.github.io' ||
-                    window.location.search.includes('print-pdf'))) {
-                    plugins.push(RevealMenu);
-                }
-                return plugins;
-            })()
+            plugins: [RevealHighlight, RevealNotes, RevealMenu]
+        });
+
+        Reveal.addEventListener('menu-ready', function (event) {
+            const showSideMenuButtonElement = document.querySelector('.slide-menu-button');
+            const additionalClasses = [];
+            if (!showSideMenuButtonElement) {
+                return false;
+            }
+            isNonLocalHostLocation ? additionalClasses.push('slide-menu-button_nonlocal') : '';
+            isPrintMode ? additionalClasses.push('slide-menu-button_pdf') : '';
+            if (additionalClasses) {
+                showSideMenuButtonElement.classList.add(...additionalClasses);
+            }
         });
 
         // fix dark background problem while printing
         Reveal.on('pdf-ready', () => {
-            document.querySelectorAll('.pdf-page').forEach(onePage => {
-                const section = onePage.querySelector('section');
-                console.log(section)
-                if (!section) return;
-
-                if (section.classList.contains('has-dark-background')) {
-                    onePage.classList.add('has-dark-background');
+            document.querySelectorAll('.pdf-page').forEach(onePdfPage => {
+                const oneSection = onePdfPage.querySelector('section');
+                if (!oneSection) {
+                    return false;
                 }
+
+                printStylesToCopyToparent.forEach((oneClassName) => {
+                    if (oneSection.classList.contains(oneClassName)) {
+                        onePdfPage.classList.add(oneClassName);
+                    }
+                });
             });
         });
+
+        // hide logo on contraversial slides or slides where it looks bad
+        const onSlideChangeEvent = eventOfSlide => {
+            rootElement.classList[
+                eventOfSlide.currentSlide.classList.contains(noLogoClassName) ? 'add' : 'remove'
+            ](noLogoClassName);
+        };
+        Reveal.on('slidechanged', onSlideChangeEvent);
+        Reveal.on('ready', onSlideChangeEvent);
     </script>
 </body>
 

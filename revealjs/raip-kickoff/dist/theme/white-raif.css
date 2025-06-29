@@ -51,8 +51,8 @@ section.has-dark-background h6 {
     --r-selection-color: #fff;
     --r-overlay-element-bg-color: 0, 0, 0;
     --r-overlay-element-fg-color: 240, 240, 240;
-    --basic-padding-of-additional-elements: 20px;
-    --bottom-padding-of-additional-elements: 12px;
+    --r-basic-padding-of-additional-elements: 20px;
+    --r-bottom-padding-of-additional-elements: 12px;
 }
 
 .reveal-viewport {
@@ -373,7 +373,9 @@ section.has-dark-background h6 {
     }
 }
 
-/* Custom style */
+/*********************************************
+ * My custom styles!
+ *********************************************/
 .hero-logo {
     display: block;
     margin: 0 auto 50px auto !important;
@@ -418,8 +420,8 @@ section.has-dark-background h6 {
     content: '';
     display: block;
     position: absolute;
-    top: var(--basic-padding-of-additional-elements);
-    right: var(--basic-padding-of-additional-elements);
+    top: var(--r-basic-padding-of-additional-elements);
+    right: var(--r-basic-padding-of-additional-elements);
     background: url(./raif-logo-dark.svg) no-repeat center center;
     background-size: contain;
     width: 28px;
@@ -434,13 +436,21 @@ section.has-dark-background h6 {
 }
 
 .reveal .slide-menu-button {
-    left: var(--basic-padding-of-additional-elements) !important;
-    bottom: var(--bottom-padding-of-additional-elements) !important;
+    left: var(--r-basic-padding-of-additional-elements) !important;
+    bottom: var(--r-bottom-padding-of-additional-elements) !important;
+}
+
+.reveal .slide-menu-button_nonlocal {
+    opacity: 0;
+}
+
+.reveal .slide-menu-button_pdf {
+    display: none;
 }
 
 .reveal .slide-number {
-    right: var(--basic-padding-of-additional-elements);
-    bottom: calc(var(--bottom-padding-of-additional-elements) + 6px);
+    right: var(--r-basic-padding-of-additional-elements);
+    bottom: calc(var(--r-bottom-padding-of-additional-elements) + 6px);
     font-family: var(--r-main-font);
     padding: 0;
     vertical-align: top;
@@ -473,11 +483,15 @@ section.has-dark-background a:hover {
     color: var(--r-link-color-hover);
 }
 
+.no-logo-slide::before {
+    display: none !important;
+}
+
 /* Fixing print styles */
 
 /* ugly fix but there is no other way to print lists properly not ugly */
 html.reveal-print .reveal .slides section {
-    padding: 0 20px !important;
+    padding: 0 var(--r-basic-padding-of-additional-elements) !important;
 }
 
 .print-pdf .pdf-page .slide-number {
@@ -498,4 +512,8 @@ html.reveal-print .reveal .slides section {
 
 .print-pdf .reveal::before {
     display: none;
+}
+
+.print-pdf .pdf-page>section>img {
+    max-width: calc(100% - var(--r-basic-padding-of-additional-elements));
 }

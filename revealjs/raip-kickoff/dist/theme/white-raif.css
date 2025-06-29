@@ -440,7 +440,7 @@ section.has-dark-background h6 {
 
 .reveal .slide-number {
     right: var(--basic-padding-of-additional-elements);
-    bottom: calc(var(--bottom-padding-of-additional-elements) + 2px);
+    bottom: calc(var(--bottom-padding-of-additional-elements) + 6px);
     font-family: var(--r-main-font);
     padding: 0;
     vertical-align: top;
@@ -475,7 +475,7 @@ section.has-dark-background a:hover {
 
 /* Fixing print styles */
 
-/* ugly fix but there is no other way */
+/* ugly fix but there is no other way to print lists properly not ugly */
 html.reveal-print .reveal .slides section {
     padding: 0 20px !important;
 }

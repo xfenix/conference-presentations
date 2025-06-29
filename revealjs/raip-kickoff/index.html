@@ -241,11 +241,11 @@
                 <h2>Разработка</h2>
             </section>
             <section>
-                <h4>Практики в разработке</h4>
+                <h4>Практики в&nbsp;разработке</h4>
                 <ul>
                     <li class="fragment">(почти) Trunk based development</li>
                     <li class="fragment">Обычный code review</li>
-                    <li class="fragment">Стремимся к нормальному CI</li>
+                    <li class="fragment">Стремимся к&nbsp;нормальному CI</li>
                 </ul>
             </section>
 
@@ -253,13 +253,13 @@
                 <h2>Стек</h2>
             </section>
             <section>
-                <h4>Что будет в нашем стеке?</h4>
+                <h4>Что будет в&nbsp;нашем стеке?</h4>
                 <ul>
                     <li class="fragment">Python (неожиданный пункт)</li>
                     <li class="fragment">TypeScript</li>
                     <li class="fragment">k8s, PostgreSQL, Gitlab, Visual studio code</li>
                     <li class="fragment">Разные open-source решения</li>
-                    <li class="fragment">Возможно, немного Java и Kotlin</li>
+                    <li class="fragment">Возможно, немного Java и&nbsp;Kotlin</li>
                 </ul>
             </section>
 
@@ -280,7 +280,14 @@
             controls: false,
             slideNumber: true,
             pdfSeparateFragments: false,
-            plugins: [RevealHighlight, RevealNotes, RevealMenu]
+            plugins: (() => {
+                const plugins = [RevealHighlight, RevealNotes];
+                if (!(window.location.hostname === 'xfenix.github.io' ||
+                    window.location.search.includes('print-pdf'))) {
+                    plugins.push(RevealMenu);
+                }
+                return plugins;
+            })()
         });
 
         // fix dark background problem while printing

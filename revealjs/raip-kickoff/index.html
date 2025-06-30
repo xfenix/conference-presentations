@@ -38,7 +38,7 @@
                 </div>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Церемонии или Мероприятия</h2>
             </section>
             <section>
@@ -57,7 +57,7 @@
                 <img class="fragment" width="600px" src="./images/outlook-meeting.png" alt="">
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Планирование</h2>
             </section>
             <section>
@@ -108,7 +108,7 @@
                 <h3>Чтобы иметь фокус на&nbsp;спринт</h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Ретроспектива</h2>
             </section>
             <section>
@@ -129,7 +129,7 @@
                 <h3 class="fragment">Чтобы исправлять системные проблемы и&nbsp;улучшать всё, что можно</h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Дейли</h2>
             </section>
             <section>
@@ -161,7 +161,7 @@
                 <h3 class="fragment">Чтобы иметь возможность видеть прогресс и&nbsp;быстрее устранять проблемы</h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>PBR</h2>
             </section>
             <section>
@@ -188,7 +188,7 @@
                 <h3 class="fragment">Помогает систематически<br />наполнять беклог</h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Сторипоинты</h2>
             </section>
             <section data-background="images/story-points.png" data-background-size="contain"></section>
@@ -217,7 +217,7 @@
                 <h3 class="fragment">Это исправляет ошибку планирования</h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Zero bug policy</h2>
             </section>
             <section>
@@ -238,7 +238,7 @@
                 </h3>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Разработка</h2>
             </section>
             <section>
@@ -250,7 +250,7 @@
                 </ul>
             </section>
 
-            <section data-background-color="#3C91CD">
+            <section data-background-color="#3C91CD" data-section="1">
                 <h2>Стек</h2>
             </section>
             <section>
@@ -264,7 +264,7 @@
                 </ul>
             </section>
 
-            <section data-background-color="#0F5582">
+            <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
                 <h3>Спасибо за&nbsp;внимание!</h3>
                 <h3>Преза будет опубликована<br />в&nbsp;~ai-platform</h3>
             </section>
@@ -275,6 +275,7 @@
     <script src="plugin/notes/notes.js"></script>
     <script src="plugin/highlight/highlight.js"></script>
     <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/breadcrumbs/breadcrumbs.js"></script>
     <script>
         const isNonLocalHostLocation = window.location.hostname !== 'localhost';
         const isPrintMode = window.location.search.includes('print-pdf');
@@ -288,17 +289,18 @@
             controls: false,
             slideNumber: true,
             pdfSeparateFragments: false,
-            plugins: [RevealHighlight, RevealNotes, RevealMenu]
+            plugins: [RevealHighlight, RevealNotes, RevealMenu, RevealBreadcrumbs]
         });
 
+        // we dont want to show button
         Reveal.addEventListener('menu-ready', function (event) {
             const showSideMenuButtonElement = document.querySelector('.slide-menu-button');
             const additionalClasses = [];
             if (!showSideMenuButtonElement) {
                 return false;
             }
-            isNonLocalHostLocation ? additionalClasses.push('slide-menu-button_nonlocal') : '';
-            isPrintMode ? additionalClasses.push('slide-menu-button_pdf') : '';
+            isNonLocalHostLocation ? additionalClasses.push('non-local') : '';
+            isPrintMode ? additionalClasses.push('print-version') : '';
             if (additionalClasses) {
                 showSideMenuButtonElement.classList.add(...additionalClasses);
             }
@@ -320,7 +322,7 @@
             });
         });
 
-        // hide logo on contraversial slides or slides where it looks bad
+        // hide logo on contraversial slides or slides where it looks bad (print + screen)
         const onSlideChangeEvent = eventOfSlide => {
             rootElement.classList[
                 eventOfSlide.currentSlide.classList.contains(noLogoClassName) ? 'add' : 'remove'

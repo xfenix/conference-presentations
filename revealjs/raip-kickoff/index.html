@@ -278,7 +278,6 @@
     <script src="plugin/breadcrumbs/breadcrumbs.js"></script>
     <script>
         const isNonLocalHostLocation = window.location.hostname !== 'localhost';
-        const isPrintMode = window.location.search.includes('print-pdf');
         const rootElement = document.querySelector('.reveal');
         const noLogoClassName = 'no-logo-slide';
         const darkBgClassName = 'has-dark-background';
@@ -293,21 +292,16 @@
         });
 
         // we dont want to show button
-        Reveal.addEventListener('menu-ready', function (event) {
-            const showSideMenuButtonElement = document.querySelector('.slide-menu-button');
-            const additionalClasses = [];
-            if (!showSideMenuButtonElement) {
-                return false;
-            }
-            isNonLocalHostLocation ? additionalClasses.push('non-local') : '';
-            isPrintMode ? additionalClasses.push('print-version') : '';
-            if (additionalClasses) {
-                showSideMenuButtonElement.classList.add(...additionalClasses);
+        Reveal.addEventListener('menu-ready', () => {
+            if (isNonLocalHostLocation) {
+                document.querySelector('.slide-menu-button').classList.add('non-local');
             }
         });
 
         // fix dark background problem while printing
         Reveal.on('pdf-ready', () => {
+            document.querySelector('.slide-menu-button').classList.add('print-version');
+
             document.querySelectorAll('.pdf-page').forEach(onePdfPage => {
                 const oneSection = onePdfPage.querySelector('section');
                 if (!oneSection) {

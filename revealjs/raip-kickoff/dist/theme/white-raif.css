@@ -441,6 +441,14 @@ section.has-dark-background h6 {
     bottom: 40px !important;
 }
 
+.reveal .slide-menu-button a {
+    color: var(--r-main-color);
+}
+
+.reveal .slide-menu-button a:hover {
+    opacity: 0.8;
+}
+
 .reveal .slide-menu-button.non-local {
     opacity: 0;
 }
@@ -479,15 +487,10 @@ section.has-dark-background h6 {
     text-overflow: ellipsis;
 }
 
-.reveal.has-dark-background {
-    color: #fff;
-}
-
-.reveal.has-dark-background .slide-number {
-    color: #fff;
-}
-
-section.has-dark-background a {
+.reveal.has-dark-background,
+.reveal.has-dark-background .slide-number,
+.reveal.has-dark-background .slide-menu-button a,
+section.has-dark-background a  {
     color: #fff;
 }
 
@@ -499,9 +502,9 @@ section.has-dark-background a:hover {
     display: none !important;
 }
 
-/* Fixing print styles */
+/* My custom print styles */
 
-/* ugly fix but there is no other way to print lists properly not ugly */
+/* ugly fix but there is no other way to print content of slides properly not ugly */
 html.reveal-print .reveal .slides section {
     padding: 0 var(--r-basic-padding-of-additional-elements) !important;
 }
@@ -527,10 +530,7 @@ html.reveal-print .reveal .slides section {
     color: #fff;
 }
 
-.print-pdf .slide-menu-button {
-    display: none;
-}
-
+.print-pdf .slide-menu-button,
 .print-pdf .reveal::before {
     display: none;
 }

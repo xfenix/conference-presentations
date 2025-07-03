@@ -25,9 +25,9 @@ section.has-dark-background h6 {
  * GLOBAL STYLES
  *********************************************/
 :root {
-    --r-background-color: #E5F6E5;
+    --r-background-color: #F6F3E9;
     --r-main-font: 'ALS Hauss', Helvetica, sans-serif;
-    --r-main-font-size: 42px;
+    --r-main-font-size: 34px;
     --r-main-color: #2B2D33;
     --r-block-margin: 20px;
     --r-heading-margin: 0 0 40px 0;
@@ -51,8 +51,9 @@ section.has-dark-background h6 {
     --r-selection-color: #fff;
     --r-overlay-element-bg-color: 0, 0, 0;
     --r-overlay-element-fg-color: 240, 240, 240;
-    --basic-padding-of-additional-elements: 20px;
-    --bottom-padding-of-additional-elements: 12px;
+    --r-basic-padding-of-additional-elements: 20px;
+    --r-bottom-padding-of-additional-elements: 12px;
+    --r-bottom-font-size: 18px;
 }
 
 .reveal-viewport {
@@ -373,7 +374,9 @@ section.has-dark-background h6 {
     }
 }
 
-/* Custom style */
+/*********************************************
+ * My custom styles!
+ *********************************************/
 .hero-logo {
     display: block;
     margin: 0 auto 50px auto !important;
@@ -413,12 +416,13 @@ section.has-dark-background h6 {
     top: -0.1em;
 }
 
-.reveal::before {
+.reveal::before,
+.pdf-page::before {
     content: '';
     display: block;
-    position: fixed;
-    top: var(--basic-padding-of-additional-elements);
-    right: var(--basic-padding-of-additional-elements);
+    position: absolute;
+    top: var(--r-basic-padding-of-additional-elements);
+    right: var(--r-basic-padding-of-additional-elements);
     background: url(./raif-logo-dark.svg) no-repeat center center;
     background-size: contain;
     width: 28px;
@@ -426,39 +430,111 @@ section.has-dark-background h6 {
     z-index: 10;
 }
 
-.reveal.has-dark-background::before {
+.reveal.has-dark-background::before,
+.pdf-page.has-dark-background::before {
     background: url(./raif-logo-white.svg) no-repeat center center;
     background-size: contain;
 }
 
 .reveal .slide-menu-button {
-    left: var(--basic-padding-of-additional-elements) !important;
-    bottom: var(--bottom-padding-of-additional-elements) !important;
+    left: var(--r-basic-padding-of-additional-elements) !important;
+    bottom: 40px !important;
 }
 
-.reveal .slide-number {
-    right: var(--basic-padding-of-additional-elements);
-    bottom: calc(var(--bottom-padding-of-additional-elements) + 2px);
-    font-family: var(--r-main-font);
-    padding: 0;
-    vertical-align: top;
-    background: none;
-    text-align: right;
+.reveal .slide-menu-button a {
     color: var(--r-main-color);
 }
 
-.reveal.has-dark-background .slide-number {
-    color: #fff;
+.reveal .slide-menu-button a:hover {
+    opacity: 0.8;
+}
+
+.reveal .slide-menu-button.non-local {
+    opacity: 0;
+}
+
+.reveal .slide-menu-button.print-version {
+    display: none;
+}
+
+.reveal .slide-number {
+    right: var(--r-basic-padding-of-additional-elements);
+    bottom: calc(var(--r-bottom-padding-of-additional-elements) + 6px);
+    font-family: var(--r-main-font);
+    font-size: var(--r-bottom-font-size) !important;
+    color: var(--r-main-color);
+    padding: 0;
+    background: none;
+    text-align: right;
 }
 
 .reveal .slide-number>a {
-    margin-bottom: -3px;
+    margin-bottom: -6px;
     display: inline-block;
     vertical-align: bottom;
 }
 
-.no-upper-headers h1,
-.no-upper-headers h2,
-.no-upper-headers h3 {
-    text-transform: none;
+.reveal .breadcrumbs {
+    max-width: 35%;
+    position: absolute;
+    left: var(--r-basic-padding-of-additional-elements);
+    bottom: var(--r-bottom-padding-of-additional-elements);
+    font-family: var(--r-main-font);
+    font-size: var(--r-bottom-font-size);
+    padding: 0;
+    z-index: 40;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.reveal.has-dark-background,
+.reveal.has-dark-background .slide-number,
+.reveal.has-dark-background .slide-menu-button a,
+section.has-dark-background a  {
+    color: #fff;
+}
+
+section.has-dark-background a:hover {
+    color: var(--r-link-color-hover);
+}
+
+.no-logo-slide::before {
+    display: none !important;
+}
+
+/* My custom print styles */
+
+/* ugly fix but there is no other way to print content of slides properly not ugly */
+html.reveal-print .reveal .slides section {
+    padding: 0 var(--r-basic-padding-of-additional-elements) !important;
+}
+
+.print-pdf .pdf-page {
+    color: var(--r-main-color);
+}
+
+.print-pdf .pdf-page.has-dark-background {
+    color: #fff !important;
+}
+
+.print-pdf .pdf-page {
+    position: relative;
+}
+
+.print-pdf .pdf-page .slide-number {
+    bottom: calc(var(--r-basic-padding-of-additional-elements) - 8px);
+    color: var(--r-main-color);
+}
+
+.print-pdf .pdf-page.has-dark-background .slide-number {
+    color: #fff;
+}
+
+.print-pdf .slide-menu-button,
+.print-pdf .reveal::before {
+    display: none;
+}
+
+.print-pdf .pdf-page>section>img {
+    max-width: calc(100% - var(--r-basic-padding-of-additional-elements));
 }

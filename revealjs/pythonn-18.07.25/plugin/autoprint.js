@@ -8,7 +8,6 @@ window.RevealAutoPrint = {
   id: "autoprint",
   init: () => {
     const isPrintPdf = () => window.location.search.includes(PRINT_PDF_MARKER);
-
     const waitForStylesheets = (callback) => {
       const interval = setInterval(() => {
         const allLoaded = Array.from(document.styleSheets).every((s) => {
@@ -24,13 +23,11 @@ window.RevealAutoPrint = {
         }
       }, CHECK_STYLES_INTERVAL_MS);
     };
-
     const redirectToPrintPdf = () => {
       const url = new URL(window.location.href);
       const newUrl = `${url.origin}${url.pathname}?${PRINT_PDF_MARKER}${url.hash}`;
       window.location.href = newUrl;
     };
-
     const cleanPrintPdfUrl = () => {
       const url = new URL(window.location.href);
       const cleanUrl = `${url.origin}${url.pathname}${url.hash}`;

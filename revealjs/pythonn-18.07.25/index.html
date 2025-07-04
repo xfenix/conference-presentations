@@ -49,13 +49,15 @@
     <script src="plugin/menu/menu.js"></script>
     <script src="plugin/breadcrumbs.js"></script>
     <script src="plugin/raif.js"></script>
+    <script src="plugin/autoprint.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
             controls: false,
             slideNumber: true,
             pdfSeparateFragments: false,
-            plugins: [RevealHighlight, RevealNotes, RevealMenu, RevealBreadcrumbs]
+            plugins: [RevealHighlight, RevealNotes, RevealMenu,
+                      RevealBreadcrumbs, RevealRaif, RevealAutoPrint]
         });
     </script>
 </body>

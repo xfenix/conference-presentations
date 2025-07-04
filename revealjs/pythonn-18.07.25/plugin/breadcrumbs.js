@@ -7,7 +7,6 @@ const headerElementsArr = headerElements
 const breadcrumbsClass = "breadcrumbs";
 const breadcrumbsAttribute = "data-breadcrumbs";
 const resetBreadcrumbsAttribute = "data-reset-breadcrumbs";
-const pluginId = "breadcrumbs";
 
 const isHeadingOnlySlide = (slideElement) => {
   const children = Array.from(slideElement.querySelectorAll(":scope > *"));
@@ -17,7 +16,7 @@ const isHeadingOnlySlide = (slideElement) => {
 };
 
 window.RevealBreadcrumbs = {
-  id: pluginId,
+  id: "breadcrumbs",
   init: (revealInstance) => {
     const allSlides = revealInstance.getSlides();
     let lastSectionTitle = "";

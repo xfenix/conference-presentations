@@ -35,8 +35,10 @@ window.RevealAutoPrint = {
       if (isPrintShortcut) {
         e.preventDefault();
         if (!isPrintPdf()) {
-          const base = window.location.href.split("?")[0];
-          window.location.href = `${base}?${PRINT_PDF_MARKER}`;
+          const url = new URL(window.location.href);
+          // Preserve hash while adding ?print-pdf
+          const newUrl = `${url.origin}${url.pathname}?${PRINT_PDF_MARKER}${url.hash}`;
+          window.location.href = newUrl;
         } else {
           window.print();
         }
@@ -45,8 +47,9 @@ window.RevealAutoPrint = {
       if (e.key === "Escape" && isPrintPdf()) {
         e.preventDefault();
         const url = new URL(window.location.href);
-        url.searchParams.delete(PRINT_PDF_MARKER);
-        history.replaceState(null, "", `${url.origin}${url.pathname}`);
+        // Remove ?print-pdf but keep the hash
+        const cleanUrl = `${url.origin}${url.pathname}${url.hash}`;
+        history.replaceState(null, "", cleanUrl);
         location.reload();
       }
     });

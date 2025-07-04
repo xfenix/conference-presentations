@@ -8,6 +8,7 @@ window.RevealAutoPrint = {
   id: "autoprint",
   init: () => {
     const isPrintPdf = () => window.location.search.includes(PRINT_PDF_MARKER);
+
     const waitForStylesheets = (callback) => {
       const interval = setInterval(() => {
         const allLoaded = Array.from(document.styleSheets).every((s) => {
@@ -24,6 +25,19 @@ window.RevealAutoPrint = {
       }, CHECK_STYLES_INTERVAL_MS);
     };
 
+    const redirectToPrintPdf = () => {
+      const url = new URL(window.location.href);
+      const newUrl = `${url.origin}${url.pathname}?${PRINT_PDF_MARKER}${url.hash}`;
+      window.location.href = newUrl;
+    };
+
+    const cleanPrintPdfUrl = () => {
+      const url = new URL(window.location.href);
+      const cleanUrl = `${url.origin}${url.pathname}${url.hash}`;
+      history.replaceState(null, "", cleanUrl);
+      location.reload();
+    };
+
     document.addEventListener("keydown", (e) => {
       const isMac =
         navigator.userAgentData?.platform === "macOS" ||
@@ -35,10 +49,7 @@ window.RevealAutoPrint = {
       if (isPrintShortcut) {
         e.preventDefault();
         if (!isPrintPdf()) {
-          const url = new URL(window.location.href);
-          // Preserve hash while adding ?print-pdf
-          const newUrl = `${url.origin}${url.pathname}?${PRINT_PDF_MARKER}${url.hash}`;
-          window.location.href = newUrl;
+          redirectToPrintPdf();
         } else {
           window.print();
         }
@@ -46,11 +57,15 @@ window.RevealAutoPrint = {
 
       if (e.key === "Escape" && isPrintPdf()) {
         e.preventDefault();
-        const url = new URL(window.location.href);
-        // Remove ?print-pdf but keep the hash
-        const cleanUrl = `${url.origin}${url.pathname}${url.hash}`;
-        history.replaceState(null, "", cleanUrl);
-        location.reload();
+        cleanPrintPdfUrl();
+      }
+    });
+
+    // Detect print via browser menu
+    window.addEventListener("beforeprint", (e) => {
+      if (!isPrintPdf()) {
+        e.preventDefault();
+        redirectToPrintPdf();
       }
     });
 

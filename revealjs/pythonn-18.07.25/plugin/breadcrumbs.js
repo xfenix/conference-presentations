@@ -1,17 +1,17 @@
 "use strict";
 
-const headerElements = "h1, h2";
-const headerElementsArr = headerElements
+const HEADER_ELEMENTS = "h1, h2";
+const HEADER_ELEMENTS_ARR = HEADER_ELEMENTS
   .split(",")
   .map((oneString) => oneString.trim().toUpperCase());
-const breadcrumbsClass = "breadcrumbs";
-const breadcrumbsAttribute = "data-breadcrumbs";
-const resetBreadcrumbsAttribute = "data-reset-breadcrumbs";
+const BREADCRUMBS_CLASS = "breadcrumbs";
+const BREADCRUMBS_ATTRIBUTE = "data-breadcrumbs";
+const RESET_BREADCRUMBS_ATTRIBUTE = "data-reset-breadcrumbs";
 
 const isHeadingOnlySlide = (slideElement) => {
   const children = Array.from(slideElement.querySelectorAll(":scope > *"));
   return (
-    children.length === 1 && headerElementsArr.includes(children[0].tagName)
+    children.length === 1 && HEADER_ELEMENTS_ARR.includes(children[0].tagName)
   );
 };
 
@@ -23,13 +23,13 @@ window.RevealBreadcrumbs = {
 
     // auto markup breadcrumbs
     for (const slide of allSlides) {
-      const manualBreadcrumb = slide.hasAttribute(breadcrumbsAttribute);
-      const resetBreadcrumb = slide.hasAttribute(resetBreadcrumbsAttribute);
-      const header = slide.querySelector(headerElements);
+      const manualBreadcrumb = slide.hasAttribute(BREADCRUMBS_ATTRIBUTE);
+      const resetBreadcrumb = slide.hasAttribute(RESET_BREADCRUMBS_ATTRIBUTE);
+      const header = slide.querySelector(HEADER_ELEMENTS);
 
       if (resetBreadcrumb) {
         lastSectionTitle = "";
-        if (!manualBreadcrumb) slide.setAttribute(breadcrumbsAttribute, "");
+        if (!manualBreadcrumb) slide.setAttribute(BREADCRUMBS_ATTRIBUTE, "");
         continue;
       }
 
@@ -39,20 +39,20 @@ window.RevealBreadcrumbs = {
       }
 
       if (!manualBreadcrumb) {
-        slide.setAttribute(breadcrumbsAttribute, lastSectionTitle);
+        slide.setAttribute(BREADCRUMBS_ATTRIBUTE, lastSectionTitle);
       }
     }
 
     revealInstance.on("ready", () => {
       const rootContainer = document.createElement("div");
-      rootContainer.classList.add(breadcrumbsClass);
+      rootContainer.classList.add(BREADCRUMBS_CLASS);
       revealInstance.getRevealElement().appendChild(rootContainer);
 
       const updateBreadcrumbs = (event) => {
         const currentSlide = event.currentSlide;
         const showBreadcrumb = !isHeadingOnlySlide(currentSlide);
         rootContainer.textContent = showBreadcrumb
-          ? currentSlide.getAttribute(breadcrumbsAttribute) || ""
+          ? currentSlide.getAttribute(BREADCRUMBS_ATTRIBUTE) || ""
           : "";
         rootContainer.setAttribute(
           "aria-hidden",
@@ -71,11 +71,11 @@ window.RevealBreadcrumbs = {
 
         if (isHeadingOnlySlide(slide)) return;
 
-        const breadcrumbText = slide.getAttribute(breadcrumbsAttribute);
+        const breadcrumbText = slide.getAttribute(BREADCRUMBS_ATTRIBUTE);
         if (!breadcrumbText) return;
 
         const breadcrumbElement = document.createElement("div");
-        breadcrumbElement.classList.add(breadcrumbsClass);
+        breadcrumbElement.classList.add(BREADCRUMBS_CLASS);
         breadcrumbElement.textContent = breadcrumbText;
 
         pdfPage.insertBefore(breadcrumbElement, pdfPage.firstChild);

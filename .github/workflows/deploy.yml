@@ -15,24 +15,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  update-content:
+  update-readme:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Generate revealjs/README.md and index.html
+      - name: Generate revealjs/README.md
         run: |
           base_url="https://${{ github.repository_owner }}.github.io/conference-presentations"
-
-          # Generate README.md
           echo "# Presentations" > revealjs/README.md
           for d in revealjs/*/; do
             name=$(basename "$d")
             [ "$name" = "_template" ] && continue
             echo "- [$name](${base_url}/${name}/)" >> revealjs/README.md
           done
+
+      - name: Commit and push README.md
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add revealjs/README.md
+          git commit -m "Update revealjs/README.md with presentation links" || exit 0
+          git push
+
+  deploy:
+    needs: update-readme
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Generate index.html and copy presentations
+        run: |
+          base_url="https://${{ github.repository_owner }}.github.io/conference-presentations"
 
           # Generate index.html
           echo '<!DOCTYPE html>
@@ -52,6 +71,10 @@ jobs:
               <h1>Conference Presentations</h1>
               <ul>' > index.html
 
+          mkdir public
+          shopt -s extglob
+          cp -r revealjs/!(_template) public/
+
           for d in revealjs/*/; do
             name=$(basename "$d")
             [ "$name" = "_template" ] && continue
@@ -62,28 +85,7 @@ jobs:
           </body>
           </html>' >> index.html
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add revealjs/README.md index.html
-          git commit -m "Update presentation list" || exit 0
-          git push
-
-  deploy:
-    needs: update-content
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - run: |
-          mkdir public
-          shopt -s extglob
-          cp -r revealjs/!(_template) public/
-          cp index.html public/
+          mv index.html public/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public

@@ -36,10 +36,10 @@ jobs:
           done
 
           # Archive presentations
-          echo -e "\n## Archived Presentations" >> revealjs/README.md
+          echo -e "\n### Archived Presentations" >> revealjs/README.md
           for d in revealjs/archive/*/; do
             name=$(basename "$d")
-            echo "- [$name (archived)](${base_url}/${name}/)" >> revealjs/README.md
+            echo "- [$name](${base_url}/${name}/)" >> revealjs/README.md
           done
 
       - name: Commit and push README.md

@@ -99,11 +99,11 @@ jobs:
 
           # Archive presentations
           echo '              </ul>
-              <h2>Archived Presentations</h2>
+              <h4>Archived Presentations</h4>
               <ul>' >> index.html
           for d in revealjs/archive/*/; do
             name=$(basename "$d")
-            echo "                  <li><a href=\"${base_url}/${name}/\">${name} (archived)</a></li>" >> index.html
+            echo "                  <li><a href=\"${base_url}/${name}/\">${name}</a></li>" >> index.html
           done
 
           echo '              </ul>

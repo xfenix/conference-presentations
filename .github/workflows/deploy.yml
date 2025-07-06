@@ -26,10 +26,20 @@ jobs:
         run: |
           base_url="https://${{ github.repository_owner }}.github.io/conference-presentations"
           echo "# Presentations" > revealjs/README.md
+
+          # Main presentations
           for d in revealjs/*/; do
             name=$(basename "$d")
             [ "$name" = "_template" ] && continue
+            [ "$name" = "archive" ] && continue
             echo "- [$name](${base_url}/${name}/)" >> revealjs/README.md
+          done
+
+          # Archive presentations
+          echo -e "\n## Archived Presentations" >> revealjs/README.md
+          for d in revealjs/archive/*/; do
+            name=$(basename "$d")
+            echo "- [$name (archived)](${base_url}/${name}/)" >> revealjs/README.md
           done
 
       - name: Commit and push README.md
@@ -72,13 +82,28 @@ jobs:
               <ul>' > index.html
 
           mkdir public
-          shopt -s extglob
-          cp -r revealjs/!(_template) public/
+          # Copy all presentations including archive (without archive folder structure)
+          cp -r revealjs/* public/
+          for d in revealjs/archive/*/; do
+            name=$(basename "$d")
+            cp -r "$d" "public/$name"
+          done
 
+          # Main presentations
           for d in revealjs/*/; do
             name=$(basename "$d")
             [ "$name" = "_template" ] && continue
+            [ "$name" = "archive" ] && continue
             echo "                  <li><a href=\"${base_url}/${name}/\">${name}</a></li>" >> index.html
+          done
+
+          # Archive presentations
+          echo '              </ul>
+              <h2>Archived Presentations</h2>
+              <ul>' >> index.html
+          for d in revealjs/archive/*/; do
+            name=$(basename "$d")
+            echo "                  <li><a href=\"${base_url}/${name}/\">${name} (archived)</a></li>" >> index.html
           done
 
           echo '              </ul>

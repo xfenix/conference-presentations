@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Retail AI&nbsp;Platform Strategy</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white-raif.css">
+    <link rel="stylesheet" href="plugin/highlight/github-dark.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-color="#0F5582">
+                <img src="images/title-ilu.svg" width="200px" alt="" class="hero-logo">
+                <h3>Retail AI&nbsp;Platform Strategy</h3>
+                <small>Денис Аникин, <a href="https://xfenix.ru" target="_blank">https://xfenix.ru</a></small>
+            </section>
+
+            <section data-background-color="#3C91CD" data-section="1">
+                <h2>Выбор технологий</h2>
+            </section>
+            <section>
+                <h4>Векторная база данных</h4>
+                <ul>
+                    <li class="fragment">Основной кандидат: Milvus (через Андрея Суханя)</li>
+                    <li class="fragment">Альтернатива для отдельных случаев: pgvector</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>LLM Gateway</h4>
+                <ul>
+                    <li class="fragment">Требуется унифицированный интерфейс для работы с разными LLM</li>
+                    <li class="fragment">Обоснование: централизованное управление моделями, квотами, мониторинг</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Отношения с Андреем Суханем</h4>
+                <ul>
+                    <li class="fragment">Потенциальное сотрудничество по Milvus</li>
+                    <li class="fragment">Необходимо проработать условия взаимодействия</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Интеграция LLM Playground с платформой</h4>
+                <ul>
+                    <li class="fragment">План поэтапного объединения функционала</li>
+                    <li class="fragment">Унификация API и интерфейсов управления</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Выбор провайдера LLM</h4>
+                <ul>
+                    <li class="fragment">Основной кандидат: Just.ai</li>
+                    <li class="fragment">Текущий статус: пилотирование</li>
+                    <li class="fragment">Преимущества: используется в топ-5 банках, гибкость</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Альтернативы Just.ai</h4>
+                <ul>
+                    <li class="fragment">AIR (air.fail)</li>
+                    <li class="fragment">Проблемы: малая команда (1.5 человека), низкая надежность</li>
+                    <li class="fragment">Технические проблемы, высокая наценка на токены</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>План на ближайшие месяцы</h4>
+                <ul>
+                    <li class="fragment">Проведение тендера (3-4 месяца)</li>
+                    <li class="fragment">Окончательный выбор провайдера LLM</li>
+                    <li class="fragment">Интеграция выбранных решений</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
+                <h3>Спасибо за внимание!</h3>
+                <h3>Вопросы?</h3>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/breadcrumbs.js"></script>
+    <script src="plugin/raif.js"></script>
+    <script src="plugin/autoprint.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: false,
+            slideNumber: true,
+            pdfSeparateFragments: false,
+            plugins: [RevealHighlight, RevealNotes, RevealMenu,
+                      RevealBreadcrumbs, RevealRaif, RevealAutoPrint,]
+        });
+    </script>
+</body>
+
+</html>

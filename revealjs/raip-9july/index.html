@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Retail AI&nbsp;Platform Strategy</title>
+    <title>Retail AI&nbsp;Platform планы, стратегия</title>
 
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
@@ -18,74 +18,179 @@
         <div class="slides">
             <section data-background-color="#0F5582">
                 <img src="images/title-ilu.svg" width="200px" alt="" class="hero-logo">
-                <h3>Retail AI&nbsp;Platform Strategy</h3>
-                <small>Денис Аникин, <a href="https://xfenix.ru" target="_blank">https://xfenix.ru</a></small>
-            </section>
-
-            <section data-background-color="#3C91CD" data-section="1">
-                <h2>Выбор технологий</h2>
+                <h3>Retail AI&nbsp;Platform планы, стратегия</h3>
+                <small>9&nbsp;июля 2025</small>
             </section>
             <section>
-                <h4>Векторная база данных</h4>
+                <h4>Представлюсь</h4>
+                <div class="raif-columns">
+                    <div>
+                        <img src="images/xfenix-qr.svg" width="300px" alt="">
+                    </div>
+                    <ul>
+                        <li class="fragment">Техлид в&nbsp;Retail AI&nbsp;Platform</li>
+                        <li class="fragment">Ранее лидил разработку Chat, AI&nbsp;Assistants, RCRM, Knowledge Base</li>
+                        <li class="fragment">SCL Python Community</li>
+                        <li class="fragment">Python, typescript, kubernetes, фронтенд, ахитектура</li>
+                        <li class="fragment">Выступаю, вхожу в&nbsp;ПК&nbsp;кучи Python конференций</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section data-background-color="#3C91CD">
+                <h2>Что делаем</h2>
+            </section>
+            <section>
+                <h4>Текущее состояние</h4>
                 <ul>
-                    <li class="fragment">Основной кандидат: Milvus (через Андрея Суханя)</li>
-                    <li class="fragment">Альтернатива для отдельных случаев: pgvector</li>
+                    <li class="fragment">Скоро (~неделя) начнём давать LLM gateway<span class="fragment">, прошедшим опрос</span></li>
+                    <li class="fragment">Модели&nbsp;&mdash; внутренние (сейчас)</li>
+                    <li class="fragment">Проводим пилот copilot IDE</li>
+                    <li class="fragment">Проводим пилот n8n (пока доступ не&nbsp;даём)</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Пилот Copilot</h4>
+                <ul>
+                    <li class="fragment">Раздали ключи в&nbsp;Retail</li>
+                    <li class="fragment">200 участников</li>
+                    <li class="fragment">Java, Kotlin, Javascript, Android, Python, DS</li>
                 </ul>
             </section>
 
+            <section data-background-color="#3C91CD">
+                <h2>LLM gateway</h2>
+            </section>
             <section>
-                <h4>LLM Gateway</h4>
+                <h4>Архитектура</h4>
+                <img src="./images/llm-gateway-arch.svg" alt="">
+            </section>
+            <section>
+                <h4>Наш выбор gateway</h4>
                 <ul>
-                    <li class="fragment">Требуется унифицированный интерфейс для работы с разными LLM</li>
-                    <li class="fragment">Обоснование: централизованное управление моделями, квотами, мониторинг</li>
+                    <li class="fragment">🚅 LiteLLM</li>
+                    <li class="fragment">Написан на&nbsp;python</li>
+                    <li class="fragment">Мультимодален&nbsp;&mdash; для внешних и&nbsp;внутренних</li>
+                    <li class="fragment">Много интеграций</li>
+                    <li class="fragment">Много фич&nbsp;&mdash; fallback, retry, лимиты, биллинг</li>
                 </ul>
             </section>
 
+            <section data-background-color="#3C91CD">
+                <h2>Векторные базы</h2>
+            </section>
             <section>
-                <h4>Отношения с Андреем Суханем</h4>
+                <h4>Зачем?</h4>
                 <ul>
-                    <li class="fragment">Потенциальное сотрудничество по Milvus</li>
-                    <li class="fragment">Необходимо проработать условия взаимодействия</li>
+                    <li class="fragment">Поиск по&nbsp;семантику (смыслу)</li>
+                    <li class="fragment">Для RAG (retrieval augmented generation)</li>
+                    <li class="fragment">Кластеризация, рекомендации</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Одно из&nbsp;сравнений</h4>
+                <table style="font-size: 16px;">
+                    <tr>
+                        <td></td>
+                        <td>Звезд</td>
+                        <td>Гибрид</td>
+                        <td>Индексы</td>
+                        <td>gRPC</td>
+                        <td>Язык</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Meilisearch</td>
+                        <td>41к</td>
+                        <td>✅</td>
+                        <td>FLAT</td>
+                        <td></td>
+                        <td>Rust</td>
+                        <td>Векторный поиск является experimental<br />Примитивный гибридный поиск</td>
+                    </tr>
+                    <tr>
+                        <td>Milvus</td>
+                        <td>25к</td>
+                        <td></td>
+                        <td>FLAT<br />
+                            IVF_FLAT<br />
+                            IVF_PQ<br />
+                            IVF_SQ8<br />
+                            HNSW<br />
+                            SCANN (beta)<br />
+                            BIN_FLAT<br />
+                            BIN_IVF_FLAT</td>
+                        <td>✅</td>
+                        <td>Go</td>
+                        <td>Необходимо указывать максимальную длину для текстового payload<br />
+                            Используют в&nbsp;ВШЕ для поиска по&nbsp;миллионам научных текстов</td>
+                    </tr>
+                    <tr>
+                        <td>Qdrant</td>
+                        <td>16к</td>
+                        <td></td>
+                        <td>HNSW</td>
+                        <td>✅</td>
+                        <td>Rust</td>
+                        <td>Есть только один тип индекса&nbsp;&mdash;
+                            приближенный (остальные тестировались с&nbsp;brute-force индексом FLAT)<br />
+                            Есть асинхронный клиент
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Weaviate</td>
+                        <td>8к</td>
+                        <td>✅</td>
+                        <td>FLAT (+ BQ)<br />HNSW (+ PQ)</td>
+                        <td>✅</td>
+                        <td>Go</td>
+                        <td>Строит полнотекстовый индекс с&nbsp;BM25, можно использовать как классический поисковый движок<br />
+                            Есть продвинутый гибридный поиск с&nbsp;несколькими вариантами алгоритмов<br />
+                            Субъективно лучшее качество поисковой выдачи на&nbsp;коротких &laquo;keyword&raquo;-like запросах
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <section>
+                <h4>Подитоги</h4>
+                <ul>
+                    <li class="fragment">Скорость&nbsp;&mdash; milvus, qdrant</li>
+                    <li class="fragment">Есть опыт с&nbsp;meilisearch, weaviate</li>
+                    <li class="fragment">Для ограниченного количества векторов&nbsp;&mdash; pgvector</li>
+                    <li class="fragment">Андрей Сухань работает над milvus</li>
                 </ul>
             </section>
 
-            <section>
-                <h4>Интеграция LLM Playground с платформой</h4>
-                <ul>
-                    <li class="fragment">План поэтапного объединения функционала</li>
-                    <li class="fragment">Унификация API и интерфейсов управления</li>
-                </ul>
+            <section data-background-color="#3C91CD">
+                <h2>Планы</h2>
             </section>
-
             <section>
-                <h4>Выбор провайдера LLM</h4>
-                <ul>
-                    <li class="fragment">Основной кандидат: Just.ai</li>
-                    <li class="fragment">Текущий статус: пилотирование</li>
-                    <li class="fragment">Преимущества: используется в топ-5 банках, гибкость</li>
-                </ul>
+                <h4>Что такое llm playground?</h4>
+         ! Тут будет скриншот плейграунда!.png
             </section>
-
             <section>
-                <h4>Альтернативы Just.ai</h4>
-                <ul>
-                    <li class="fragment">AIR (air.fail)</li>
-                    <li class="fragment">Проблемы: малая команда (1.5 человека), низкая надежность</li>
-                    <li class="fragment">Технические проблемы, высокая наценка на токены</li>
-                </ul>
+                <h4>Что такое tools?</h4>
+                <div class="mermaid">
+                    graph TD
+                        User[Пользователь] --> LLM
+                        LLM -->|Запрос инструмента| Tool[Внешний API/Функция]
+                        Tool -->|Результат| LLM
+                        LLM -->|Финальный ответ| User
+                </div>
             </section>
-
             <section>
-                <h4>План на ближайшие месяцы</h4>
+                <h4>Что далее</h4>
                 <ul>
-                    <li class="fragment">Проведение тендера (3-4 месяца)</li>
-                    <li class="fragment">Окончательный выбор провайдера LLM</li>
-                    <li class="fragment">Интеграция выбранных решений</li>
+                    <li class="fragment">RAG в&nbsp;llm playground (возможно, с&nbsp;mivlus)</li>
+                    <li class="fragment">Ключи через llm playground</li>
+                    <li class="fragment">pgvector для тех, кто хочет отдельную векторную базу</li>
+                    <li class="fragment">tools в&nbsp;llm playground</li>
+                    <li class="fragment">MCP</li>
                 </ul>
             </section>
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
-                <h3>Спасибо за внимание!</h3>
+                <h3>Спасибо за&nbsp;внимание!</h3>
                 <h3>Вопросы?</h3>
             </section>
         </div>
@@ -98,6 +203,7 @@
     <script src="plugin/breadcrumbs.js"></script>
     <script src="plugin/raif.js"></script>
     <script src="plugin/autoprint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@11.6.0/plugin/mermaid/mermaid.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
@@ -105,7 +211,8 @@
             slideNumber: true,
             pdfSeparateFragments: false,
             plugins: [RevealHighlight, RevealNotes, RevealMenu,
-                      RevealBreadcrumbs, RevealRaif, RevealAutoPrint,]
+                      RevealBreadcrumbs, RevealRaif, RevealAutoPrint,
+                      RevealMermaid, ]
         });
     </script>
 </body>

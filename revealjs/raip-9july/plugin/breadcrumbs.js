@@ -1,9 +1,9 @@
 "use strict";
 
 const HEADER_ELEMENTS = "h1, h2";
-const HEADER_ELEMENTS_ARR = HEADER_ELEMENTS
-  .split(",")
-  .map((oneString) => oneString.trim().toUpperCase());
+const HEADER_ELEMENTS_ARR = HEADER_ELEMENTS.split(",").map((oneString) =>
+  oneString.trim().toUpperCase()
+);
 const BREADCRUMBS_CLASS = "breadcrumbs";
 const BREADCRUMBS_ATTRIBUTE = "data-breadcrumbs";
 const RESET_BREADCRUMBS_ATTRIBUTE = "data-reset-breadcrumbs";
@@ -65,6 +65,8 @@ window.RevealBreadcrumbs = {
     });
 
     revealInstance.on("pdf-ready", () => {
+      // remove regular container, because on print it shows in wrong place
+      document.querySelector(`.reveal > .${BREADCRUMBS_CLASS}`).remove();
       document.querySelectorAll(".pdf-page").forEach((pdfPage) => {
         const slide = pdfPage.querySelector("section");
         if (!slide) return;
@@ -72,7 +74,8 @@ window.RevealBreadcrumbs = {
         if (isHeadingOnlySlide(slide)) return;
 
         const breadcrumbText = slide.getAttribute(BREADCRUMBS_ATTRIBUTE);
-        if (!breadcrumbText) return;
+        const resetBreadcrumb = slide.hasAttribute(RESET_BREADCRUMBS_ATTRIBUTE);
+        if (!breadcrumbText || resetBreadcrumb) return;
 
         const breadcrumbElement = document.createElement("div");
         breadcrumbElement.classList.add(BREADCRUMBS_CLASS);

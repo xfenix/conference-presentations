@@ -71,8 +71,17 @@
                     <li class="fragment">🚅 LiteLLM</li>
                     <li class="fragment">Написан на&nbsp;python</li>
                     <li class="fragment">Мультимодален&nbsp;&mdash; для внешних и&nbsp;внутренних</li>
-                    <li class="fragment">Много интеграций</li>
+                    <li class="fragment">Много интеграций, openai api, anthropic api</li>
                     <li class="fragment">Много фич&nbsp;&mdash; fallback, retry, лимиты, биллинг</li>
+                </ul>
+            </section>
+            <section data-background="./images/litellm.png" data-background-size="contain"></section>
+            <section>
+                <h4>Модельная политика</h4>
+                <ul>
+                    <li class="fragment">Large</li>
+                    <li class="fragment">Base</li>
+                    <li class="fragment">Base coding</li>
                 </ul>
             </section>
 
@@ -164,29 +173,57 @@
             <section data-background-color="#3C91CD">
                 <h2>Планы</h2>
             </section>
-            <section>
-                <h4>Что такое llm playground?</h4>
-         ! Тут будет скриншот плейграунда!.png
+
+            <section data-background-color="#3C91CD">
+                <h3>LLM playground</h3>
             </section>
             <section>
-                <h4>Что такое tools?</h4>
+                <h4>Как сейчас&nbsp;&mdash; обычный чат</h4>
+                <img src="./images/playground-usual.png" alt="">
+            </section>
+            <section>
+                <h4>Как сейчас&nbsp;&mdash; ассисенты</h4>
+                <img src="./images/playground-assist1.png" alt="">
+            </section>
+            <section>
+                <h4>RAG 1</h4>
+                <img src="./images/playground-upload.jpg" alt="">
+            </section>
+            <section>
+                <h4>RAG 2</h4>
+                <img src="./images/playground-knowbase.jpg" alt="">
+            </section>
+            <section>
+                <h4>Что ещё?</h4>
+                <ul>
+                    <li class="fragment">RAG в&nbsp;llm playground (возможно, с&nbsp;mivlus)</li>
+                    <li class="fragment">Ключи через llm playground</li>
+                    <li class="fragment">pgvector для тех, кто хочет отдельную векторную базу</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Tools в&nbsp;playground</h4>
+                <img src="./images/tools.png" alt="">
+            </section>
+            <section>
+                <h4>Как работают tools?</h4>
                 <div class="mermaid">
                     graph TD
-                        User[Пользователь] --> LLM
-                        LLM -->|Запрос инструмента| Tool[Внешний API/Функция]
+                        User[Пользователь] -->|Промпт| LLM
+                        LLM -->|Нужен tool, вызови его| Tool[Внешний API/Функция]
                         Tool -->|Результат| LLM
                         LLM -->|Финальный ответ| User
                 </div>
             </section>
             <section>
-                <h4>Что далее</h4>
-                <ul>
-                    <li class="fragment">RAG в&nbsp;llm playground (возможно, с&nbsp;mivlus)</li>
-                    <li class="fragment">Ключи через llm playground</li>
-                    <li class="fragment">pgvector для тех, кто хочет отдельную векторную базу</li>
-                    <li class="fragment">tools в&nbsp;llm playground</li>
-                    <li class="fragment">MCP</li>
-                </ul>
+                <h4>А&nbsp;как&nbsp;же MCP?</h4>
+                <div class="mermaid">
+                    graph TD
+                        User[Пользователь] -->|Промпт| LLM
+                        LLM -->|Нужен MCP, вызови его| MCP
+                        MCP -->|Результат| LLM
+                        LLM -->|Финальный ответ| User
+                </div>
             </section>
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">

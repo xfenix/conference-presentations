@@ -43,7 +43,8 @@
             <section>
                 <h4>Что делаем</h4>
                 <ul>
-                    <li class="fragment">Скоро (~неделя) начнём давать LLM gateway<span class="fragment">, прошедшим опрос</span></li>
+                    <li class="fragment">Скоро (~неделя) начнём давать LLM gateway<span class="fragment">, прошедшим
+                            опрос</span></li>
                     <li class="fragment">Модели&nbsp;&mdash; внутренние (сейчас)</li>
                     <li class="fragment">Проводим пилот copilot IDE</li>
                     <li class="fragment">Проводим пилот n8n (пока доступ не&nbsp;даём)</li>
@@ -86,7 +87,8 @@
                     <li class="fragment">base-vlm&nbsp;&mdash; текст + изображение</li>
                     <li class="fragment">large&nbsp;&mdash; высокая точность, сложные задачи</li>
                     <li class="fragment">small&nbsp;&mdash; быстрая, для простых задач</li>
-                    <li class="fragment">embedding&nbsp;&mdash; текст в&nbsp;векторы, для RAG</li>
+                    <li class="fragment">embedding/embedding-large&nbsp;&mdash; текст в&nbsp;векторы, для RAG</li>
+                    <li class="fragment">reranker&nbsp;&mdash; для реранкинга</li>
                     <li class="fragment">coding&nbsp;&mdash; генерация кода</li>
                 </ul>
             </section>
@@ -192,9 +194,11 @@
                         <td>FLAT (+ BQ)<br />HNSW (+ PQ)</td>
                         <td>✅</td>
                         <td>Go</td>
-                        <td>Строит полнотекстовый индекс с&nbsp;BM25, можно использовать как классический поисковый движок<br />
+                        <td>Строит полнотекстовый индекс с&nbsp;BM25, можно использовать как классический поисковый
+                            движок<br />
                             Есть продвинутый гибридный поиск с&nbsp;несколькими вариантами алгоритмов<br />
-                            Субъективно лучшее качество поисковой выдачи на&nbsp;коротких &laquo;keyword&raquo;-like запросах
+                            Субъективно лучшее качество поисковой выдачи на&nbsp;коротких &laquo;keyword&raquo;-like
+                            запросах
                         </td>
                     </tr>
                 </table>
@@ -252,20 +256,20 @@
                 <h4>Как работают tools?</h4>
                 <div class="mermaid" style="margin-left: -50px">
                     graph TD
-                        User[Пользователь] -->|Промпт| LLM
-                        LLM -->|Нужен tool, вызови его| Tool[Внешний API/Функция]
-                        Tool -->|Результат| LLM
-                        LLM -->|Финальный ответ| User
+                    User[Пользователь] -->|Промпт| LLM
+                    LLM -->|Нужен tool, вызови его| Tool[Внешний API/Функция]
+                    Tool -->|Результат| LLM
+                    LLM -->|Финальный ответ| User
                 </div>
             </section>
             <section>
                 <h4>А&nbsp;как&nbsp;же MCP?</h4>
                 <div class="mermaid" style="margin-left: -40px">
                     graph TD
-                        User[Пользователь] -->|Промпт| LLM
-                        LLM -->|Нужен MCP, вызови его| MCP
-                        MCP -->|Результат| LLM
-                        LLM -->|Финальный ответ| User
+                    User[Пользователь] -->|Промпт| LLM
+                    LLM -->|Нужен MCP, вызови его| MCP
+                    MCP -->|Результат| LLM
+                    LLM -->|Финальный ответ| User
                 </div>
             </section>
 
@@ -305,8 +309,8 @@
             slideNumber: true,
             pdfSeparateFragments: false,
             plugins: [RevealHighlight, RevealNotes, RevealMenu,
-                      RevealBreadcrumbs, RevealRaif, RevealAutoPrint,
-                      RevealMermaid, ]
+                RevealBreadcrumbs, RevealRaif, RevealAutoPrint,
+                RevealMermaid,]
         });
     </script>
 </body>

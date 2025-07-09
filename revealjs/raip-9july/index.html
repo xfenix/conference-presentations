@@ -77,11 +77,25 @@
             </section>
             <section data-background="./images/litellm.png" data-background-size="contain"></section>
             <section>
-                <h4>Модельная политика</h4>
+                <h4>Документация<br />будет опубликована с&nbsp;релизом,<br />но&nbsp;кое-что покажу сейчас</h4>
+            </section>
+            <section>
+                <h4>Алиасы локальных моделей</h4>
                 <ul>
-                    <li class="fragment">Large</li>
-                    <li class="fragment">Base</li>
-                    <li class="fragment">Base coding</li>
+                    <li class="fragment">base&nbsp;&mdash; универсальная, есть режим рассуждений</li>
+                    <li class="fragment">base-vlm&nbsp;&mdash; текст + изображение</li>
+                    <li class="fragment">large&nbsp;&mdash; высокая точность, сложные задачи</li>
+                    <li class="fragment">small&nbsp;&mdash; быстрая, для простых задач</li>
+                    <li class="fragment">embedding&nbsp;&mdash; текст в&nbsp;векторы, для RAG</li>
+                    <li class="fragment">coding&nbsp;&mdash; генерация кода</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Обновление локальных моделей</h4>
+                <ul>
+                    <li class="fragment">По&nbsp;бенчмаркам</li>
+                    <li class="fragment">Будет &laquo;куллдаун&raquo; для старых моделей</li>
+                    <li class="fragment">Можно будет &laquo;запинить&raquo; старую модель на&nbsp;время</li>
                 </ul>
             </section>
 
@@ -100,6 +114,13 @@
                     <li class="fragment">Был пилот https://air.fail/</li>
                     <li class="fragment">Позднее планируется тендер</li>
                     <li class="fragment">Вена против договора США (openai)</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Дополнения</h4>
+                <ul>
+                    <li class="fragment">Защита&nbsp;&mdash; анонимизатор (есть свой, смотрим llm guard)</li>
+                    <li class="fragment">Пришлём опрос про потребностям</li>
                 </ul>
             </section>
 
@@ -195,7 +216,7 @@
                 <img src="./images/playground-usual.png" alt="">
             </section>
             <section>
-                <h4>Как сейчас&nbsp;&mdash; ассисенты</h4>
+                <h4>Как сейчас&nbsp;&mdash; ассистенты</h4>
                 <img src="./images/playground-assist1.png" alt="">
             </section>
             <section>
@@ -209,7 +230,7 @@
             <section>
                 <h4>Что ещё?</h4>
                 <ul>
-                    <li class="fragment">RAG в&nbsp;llm playground (возможно, с&nbsp;mivlus)</li>
+                    <li class="fragment">RAG в&nbsp;llm playground (возможно, с&nbsp;milvus)</li>
                     <li class="fragment">Ключи через llm playground</li>
                     <li class="fragment">pgvector для тех, кто хочет отдельную векторную базу</li>
                 </ul>
@@ -238,6 +259,20 @@
                         LLM -->|Финальный ответ| User
                 </div>
             </section>
+
+            <section data-background-color="#3C91CD">
+                <h3>Prompt management,<br />evaluation и&nbsp;т.&nbsp;п.</h3>
+            </section>
+            <section>
+                <h4>Решения</h4>
+                <ul>
+                    <li class="fragment">LangFuse&nbsp;&mdash; трассировка, версии, сравнение, т.&nbsp;п.</li>
+                    <li class="fragment">Agenta&nbsp;&mdash; версии, eval, UI&nbsp;+ API</li>
+                    <li class="fragment">PromptSmith&nbsp;&mdash; простой промпт-менеджер, версии</li>
+                    <li class="fragment">Pezzo&nbsp;&mdash; версии, трейсинг, кеш</li>
+                </ul>
+            </section>
+            <section data-background="./images/langfuse.png" data-background-size="contain"></section>
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
                 <h3>Спасибо за&nbsp;внимание!</h3>

@@ -1,9 +1,10 @@
 "use strict";
 
 const HEADER_ELEMENTS = "h1, h2";
-const HEADER_ELEMENTS_ARR = HEADER_ELEMENTS
-  .split(",")
-  .map((oneString) => oneString.trim().toUpperCase());
+const HEADER_ELEMENTS_ARR = HEADER_ELEMENTS.split(",").map((el) =>
+  el.trim().toUpperCase()
+);
+const SUBHEADER_ELEMENT = "h3";
 const BREADCRUMBS_CLASS = "breadcrumbs";
 const BREADCRUMBS_ATTRIBUTE = "data-breadcrumbs";
 const RESET_BREADCRUMBS_ATTRIBUTE = "data-reset-breadcrumbs";
@@ -15,31 +16,44 @@ const isHeadingOnlySlide = (slideElement) => {
   );
 };
 
+const getSingleHeader = (slide, tagName) =>
+  slide.querySelector(`${tagName}:only-child`) || null;
+
 window.RevealBreadcrumbs = {
   id: "breadcrumbs",
   init: (revealInstance) => {
     const allSlides = revealInstance.getSlides();
-    let lastSectionTitle = "";
+    let groupTitle = "";
+    let subGroupTitle = "";
 
-    // auto markup breadcrumbs
     for (const slide of allSlides) {
       const manualBreadcrumb = slide.hasAttribute(BREADCRUMBS_ATTRIBUTE);
       const resetBreadcrumb = slide.hasAttribute(RESET_BREADCRUMBS_ATTRIBUTE);
-      const header = slide.querySelector(HEADER_ELEMENTS);
 
       if (resetBreadcrumb) {
-        lastSectionTitle = "";
+        groupTitle = "";
+        subGroupTitle = "";
         if (!manualBreadcrumb) slide.setAttribute(BREADCRUMBS_ATTRIBUTE, "");
         continue;
       }
 
+      const h3tag = getSingleHeader(slide, SUBHEADER_ELEMENT);
       if (isHeadingOnlySlide(slide)) {
-        lastSectionTitle = header.textContent.trim();
+        const header = slide.querySelector(HEADER_ELEMENTS);
+        if (header) {
+          groupTitle = header.textContent.trim();
+          subGroupTitle = "";
+          continue;
+        }
+      } else if (h3tag && slide.children.length === 1) {
+        subGroupTitle = h3tag.textContent.trim();
         continue;
       }
 
       if (!manualBreadcrumb) {
-        slide.setAttribute(BREADCRUMBS_ATTRIBUTE, lastSectionTitle);
+        let breadcrumb = groupTitle;
+        if (subGroupTitle) breadcrumb += ` :: ${subGroupTitle}`;
+        slide.setAttribute(BREADCRUMBS_ATTRIBUTE, breadcrumb);
       }
     }
 
@@ -50,14 +64,11 @@ window.RevealBreadcrumbs = {
 
       const updateBreadcrumbs = (event) => {
         const currentSlide = event.currentSlide;
-        const showBreadcrumb = !isHeadingOnlySlide(currentSlide);
-        rootContainer.textContent = showBreadcrumb
+        const show = !isHeadingOnlySlide(currentSlide);
+        rootContainer.textContent = show
           ? currentSlide.getAttribute(BREADCRUMBS_ATTRIBUTE) || ""
           : "";
-        rootContainer.setAttribute(
-          "aria-hidden",
-          showBreadcrumb ? "false" : "true"
-        );
+        rootContainer.setAttribute("aria-hidden", show ? "false" : "true");
       };
 
       updateBreadcrumbs({ currentSlide: revealInstance.getCurrentSlide() });
@@ -65,6 +76,7 @@ window.RevealBreadcrumbs = {
     });
 
     revealInstance.on("pdf-ready", () => {
+      document.querySelector(`.reveal > .${BREADCRUMBS_CLASS}`)?.remove();
       document.querySelectorAll(".pdf-page").forEach((pdfPage) => {
         const slide = pdfPage.querySelector("section");
         if (!slide) return;
@@ -72,13 +84,13 @@ window.RevealBreadcrumbs = {
         if (isHeadingOnlySlide(slide)) return;
 
         const breadcrumbText = slide.getAttribute(BREADCRUMBS_ATTRIBUTE);
-        if (!breadcrumbText) return;
+        const resetBreadcrumb = slide.hasAttribute(RESET_BREADCRUMBS_ATTRIBUTE);
+        if (!breadcrumbText || resetBreadcrumb) return;
 
-        const breadcrumbElement = document.createElement("div");
-        breadcrumbElement.classList.add(BREADCRUMBS_CLASS);
-        breadcrumbElement.textContent = breadcrumbText;
-
-        pdfPage.insertBefore(breadcrumbElement, pdfPage.firstChild);
+        const el = document.createElement("div");
+        el.classList.add(BREADCRUMBS_CLASS);
+        el.textContent = breadcrumbText;
+        pdfPage.insertBefore(el, pdfPage.firstChild);
       });
     });
   },

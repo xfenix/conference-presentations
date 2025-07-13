@@ -56,6 +56,7 @@ section.has-dark-background h6 {
     --r-bottom-font-size: 18px;
 }
 
+
 .reveal-viewport {
     background: #fff;
     background-color: var(--r-background-color);
@@ -425,8 +426,8 @@ section.has-dark-background h6 {
     right: var(--r-basic-padding-of-additional-elements);
     background: url(./raif-logo-dark.svg) no-repeat center center;
     background-size: contain;
-    width: 28px;
-    height: 26px;
+    width: 36px;
+    height: 33px;
     z-index: 10;
 }
 

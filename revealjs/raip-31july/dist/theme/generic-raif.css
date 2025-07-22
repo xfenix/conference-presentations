@@ -53,7 +53,7 @@ section.has-dark-background h6 {
     --r-overlay-element-fg-color: 240, 240, 240;
     --r-basic-padding-of-additional-elements: 20px;
     --r-bottom-padding-of-additional-elements: 12px;
-    --r-bottom-font-size: 18px;
+    --r-bottom-font-size: 24px;
 }
 
 .reveal-viewport {

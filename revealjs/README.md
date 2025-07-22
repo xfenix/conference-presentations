@@ -1,4 +1,6 @@
 # Presentations
+- [pycon-2025](https://xfenix.github.io/conference-presentations/pycon-2025/)
+- [raip-31july](https://xfenix.github.io/conference-presentations/raip-31july/)
 
 ### Archived Presentations
 - [pycommunity-29.05.25](https://xfenix.github.io/conference-presentations/pycommunity-29.05.25/)

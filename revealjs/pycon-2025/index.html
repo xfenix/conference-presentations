@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>
+        Переложи всё на&nbsp;инфру
+    </title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/generic-raif.css" />
+    <link rel="stylesheet" href="plugin/highlight/github-dark.css" />
+</head>
+
+<body>
+    <!-- Типовой слайд 2: HEX #AAD9E6 (пастельно-голубой) -->
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-color="#0F5582">
+                <img src="images/title-ilu.svg" width="200px" alt="" class="hero-logo" />
+                <h3>
+                    Переложи всё на&nbsp;инфру
+                </h3>
+                <small>Денис Аникин,
+                    <a href="https://xfenix.ru" target="_blank">https://xfenix.ru</a></small>
+            </section>
+            <section>
+                <h4>Кто я</h4>
+                <div class="raif-columns">
+                    <div>
+                        <img src="images/xfenix-qr.svg" width="300px" alt="" />
+                    </div>
+                    <ul>
+                        <li class="fragment">
+                            Техлид в&nbsp;AI&nbsp;Platform в&nbsp;Райфе
+                        </li>
+                        <li class="fragment">Лидер корп. Python Community</li>
+                        <li class="fragment">
+                            Python, typescript, kubernetes, архитектура
+                        </li>
+                        <li class="fragment">Выступаю, работаю в&nbsp;ПК</li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h4>Типовой слайд</h4>
+                <ul>
+                    <li class="fragment">Раз</li>
+                    <li class="fragment">Два</li>
+                    <li class="fragment">Трис бомбс привет</li>
+                </ul>
+            </section>
+            <section data-background-color="#3C2F6E">
+                <h2>Разделитель 1</h2>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Разделитель 2</h3>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Какая-то важная мысль</h4>
+            </section>
+
+            <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
+                <img src="images/xfenix-qr-white.svg" width="300px" alt="" class="last-logo" />
+                <h2>Спасибо за&nbsp;внимание!</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/breadcrumbs.js"></script>
+    <script src="plugin/raif.js"></script>
+    <script src="plugin/autoprint.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: false,
+            slideNumber: true,
+            pdfSeparateFragments: false,
+            width: 1080,
+            height: 608,
+            plugins: [
+                RevealHighlight,
+                RevealNotes,
+                RevealMenu,
+                RevealBreadcrumbs,
+                RevealRaif,
+                RevealAutoPrint,
+            ],
+        });
+    </script>
+</body>
+
+</html>

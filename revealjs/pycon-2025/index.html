@@ -16,11 +16,31 @@
 </head>
 
 <body>
-    <!-- Типовой слайд 2: HEX #AAD9E6 (пастельно-голубой) -->
     <div class="reveal">
         <div class="slides">
+            <!-- Типовой слайд 2: HEX #AAD9E6 (пастельно-голубой) -->
+            <!--
+            <section>
+                <h4>Типовой слайд</h4>
+                <ul>
+                    <li class="fragment">Раз</li>
+                    <li class="fragment">Два</li>
+                    <li class="fragment">Трис бомбс привет</li>
+                </ul>
+            </section>
+            <section data-background-color="#3C2F6E">
+                <h2>Разделитель 1</h2>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Разделитель 2</h3>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Какая-то важная мысль</h4>
+            </section>
+            -->
+
             <section data-background-color="#0F5582">
-                <img src="images/title-ilu.svg" width="200px" alt="" class="hero-logo" />
+                <img src="./images/title-ilu.svg" width="200px" alt="" class="hero-logo" />
                 <h3>
                     Переложи всё на&nbsp;инфру
                 </h3>
@@ -46,37 +66,92 @@
                 </div>
             </section>
             <section>
-                <h4>Типовой слайд</h4>
+                <h4>О&nbsp;чём доклад</h4>
                 <ul>
-                    <li class="fragment">Раз</li>
-                    <li class="fragment">Два</li>
-                    <li class="fragment">Трис бомбс привет</li>
+                    <li class="fragment">Ключевые микросервисные паттерны</li>
+                    <li class="fragment">Надёжность</li>
+                    <li class="fragment">Как всё сделать дешевле (на&nbsp;инфре)</li>
                 </ul>
-            </section>
-            <section data-background-color="#3C2F6E">
-                <h2>Разделитель 1</h2>
-            </section>
-            <section data-background-color="#3C5073">
-                <h3>Разделитель 2</h3>
-            </section>
-            <section data-background-color="#FEF280">
-                <h4>Какая-то важная мысль</h4>
-            </section>
-
-            <section data-background-color="#3C2F6E">
-                <h2>Популярные микросервисные паттерны</h2>
             </section>
             <section>
-                <h4>Типовой слайд</h4>
-                <ul>
-                    <li class="fragment">123</li>
-                    <li class="fragment">456</li>
-                    <li class="fragment">123</li>
-                </ul>
+                <img src="./images/richardson-micro.png" class="r-stretch" />
             </section>
 
             <section data-background-color="#3C2F6E">
-                <h2>Надежность</h2>
+                <h2>Shared database</h2>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>О&nbsp;паттерне</h3>
+            </section>
+            <section>
+                <h4>Важные моменты</h4>
+                <ul>
+                    <li class="fragment">Считается анти-паттерном</li>
+                    <li class="fragment">Решает задачи</li>
+                    <li class="fragment">Иногда можно</li>
+                </ul>
+            </section>
+            <section>
+                <h4>И&nbsp;когда&nbsp;же?</h4>
+                <ul>
+                    <li class="fragment">Немного изменений</li>
+                    <li class="fragment">Небольшая нагрузка</li>
+                    <li class="fragment">Не&nbsp;очень важна устойчивость</li>
+                </ul>
+            </section>
+            <section data-svg-src="./images/schemas/shared-database.svg"></section>
+            <section>
+                <h4>Прочие проблемы</h4>
+                <ul>
+                    <li class="fragment">Количество соединений</li>
+                    <li class="fragment">+ Рестарт</li>
+                    <li class="fragment">+ Деплой</li>
+                </ul>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Как быть с&nbsp;надежностью?</h3>
+            </section>
+            <section>
+                <h4>Перейти к&hellip;</h4>
+            </section>
+
+            <section data-background-color="#3C2F6E">
+                <h2>Database per service</h2>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>О&nbsp;паттерне</h3>
+            </section>
+            <section>
+                <h4>Важные моменты</h4>
+                <ul>
+                    <li class="fragment">База для любой микросервисной архитектуры</li>
+                    <li class="fragment">Каждый сервис&nbsp;&mdash;&nbsp;своя база</li>
+                    <li class="fragment">Всё вроде просто, но&hellip;</li>
+                </ul>
+            </section>
+            <section data-svg-src="./images/schemas/database-per-service-1.svg"></section>
+            <section data-background-color="#3C5073">
+                <h3>Получаем данные другого сервиса</h3>
+            </section>
+            <section data-svg-src="./images/schemas/database-per-service-2.svg"></section>
+            <section data-background-color="#FF7364">
+                <h4>Идея не&nbsp;очень</h4>
+            </section>
+            <section>
+                <h4>Мы&nbsp;вернулись к&nbsp;shared database</h4>
+            </section>
+            <section data-svg-src="./images/schemas/database-per-service-3.svg"></section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="|2" class="language-python">
+                async def fetch_some_data_from_service_b(httpx_client):
+                    service_b_data = await httpx_client.get("https://service-b/entity")
+                    ...
+                    service_b_data["title"]  # используем где-то
+                    ...
+                </code></pre>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Получаем данные сервиса B&nbsp;надёжно</h3>
             </section>
 
             <section data-background-color="#3C2F6E">
@@ -97,6 +172,7 @@
     <script src="plugin/breadcrumbs.js"></script>
     <script src="plugin/raif.js"></script>
     <script src="plugin/autoprint.js"></script>
+    <script src="plugin/svgload.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
@@ -112,7 +188,11 @@
                 RevealBreadcrumbs,
                 RevealRaif,
                 RevealAutoPrint,
+                RevealSVGLoad,
             ],
+            mermaid: {
+                flowchart: { useMaxWidth: true },
+            },
         });
     </script>
 </body>

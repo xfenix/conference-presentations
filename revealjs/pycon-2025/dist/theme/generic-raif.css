@@ -550,3 +550,11 @@ html.reveal-print .reveal .slides section {
 .reveal .slides section[data-vertical-align-top]{
 	top: 0 !important;
 }
+
+.reveal .mermaid {
+    scale: 1.5;
+}
+
+.reveal .mermaid > svg {
+    margin-bottom: -20px;
+}

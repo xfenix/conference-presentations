@@ -99,7 +99,9 @@
                     <li class="fragment">Не&nbsp;очень важна устойчивость</li>
                 </ul>
             </section>
-            <section data-svg-src="./images/schemas/shared-database.svg"></section>
+            <section>
+                <div data-svg-src="./images/schemas/shared-database.svg"></div>
+            </section>
             <section>
                 <h4>Прочие проблемы</h4>
                 <ul>
@@ -129,23 +131,32 @@
                     <li class="fragment">Всё вроде просто, но&hellip;</li>
                 </ul>
             </section>
-            <section data-svg-src="./images/schemas/database-per-service-1.svg"></section>
+            <section>
+                <div data-svg-src="./images/schemas/database-per-service-1.svg"></div>
+            </section>
             <section data-background-color="#3C5073">
                 <h3>Получаем данные другого сервиса</h3>
             </section>
-            <section data-svg-src="./images/schemas/database-per-service-2.svg"></section>
+            <section>
+                <div data-svg-src="./images/schemas/database-per-service-2.svg"></div>
+            </section>
             <section data-background-color="#FF7364">
                 <h4>Идея не&nbsp;очень</h4>
             </section>
             <section>
                 <h4>Мы&nbsp;вернулись к&nbsp;shared database</h4>
             </section>
-            <section data-svg-src="./images/schemas/database-per-service-3.svg"></section>
+            <section data-background-color="#3C5073">
+                <h3>Получаем данные &laquo;сервиса B&raquo; синхронно</h3>
+            </section>
+            <section>
+                <div data-svg-src="./images/schemas/database-per-service-3.svg"></div>
+            </section>
             <section>
                 <h4>Нюансы REST</h4>
                 <ul>
                     <li class="fragment">Не&nbsp;текут абстракции</li>
-                    <li class="fragment">Контракт стабилен</li>
+                    <li class="fragment">Контракт стабилен (&laquo;ну&nbsp;типа&raquo;)</li>
                     <li class="fragment">Но&nbsp;всё&nbsp;ли ок?</li>
                 </ul>
             </section>
@@ -159,15 +170,262 @@
                 </code></pre>
             </section>
             <section data-background-color="#3C5073">
-                <h3>Получаем данные сервиса B&nbsp;надёжно</h3>
+                <h3>Синхронно + надёжно</h3>
+            </section>
+            <section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Что это?</th>
+                            <th>Как достичь?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td>Robustness</td>
+                            <td>Плохой ввод не&nbsp;ломает</td>
+                            <td>Pydantic, defensive prog. (100% mypy), ruff
+                            </td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Resilience</td>
+                            <td>Восстанавливается после сбоя</td>
+                            <td>Circuit breakers, retries,
+                                fallbacks + cache, bulkhead</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Reliability</td>
+                            <td>Работает стабильно и&nbsp;предсказуемо</td>
+                            <td>Репликация, мониторинг, алерты, auto-restart</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="3-100|1-2" class="language-python">
+                @cachebox.cached(cachebox.TTLCache(0, ttl=30))
+                @stamina.retry(on=httpx.HTTPError, attempts=3, wait_initial=0.2)
+                async def really_fetch_data_from_b(...):
+                    return await httpx_client.get("https://service-b/entity")
+
+                async def fetch_some_data_from_service_b(...):
+                    ...
+                    service_b_data = really_fetch_data_from_b(...)
+                    service_b_data["title"]  # используем где-то
+                    ...
+                </code></pre>
+            </section>
+            <section>
+                <div data-svg-src="./images/schemas/database-per-service-rest.svg"></div>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="8-100|3-7" class="language-python">
+                from aiobreaker import CircuitBreaker
+
+                emergency_db_breaker = CircuitBreaker(fail_max=5, reset_timeout=... 60)
+
+                @emergency_db_breaker
+                @cachebox.cached(cachebox.TTLCache(0, ttl=30))
+                @stamina.retry(on=httpx.HTTPError, attempts=3, wait_initial=0.2)
+                async def really_fetch_data_from_b(...):
+                    return await httpx_client.get("https://service-b/entity")
+
+                async def fetch_some_data_from_service_b(...):
+                    ...
+                    service_b_data = really_fetch_data_from_b(...)
+                    service_b_data["title"]  # используем где-то
+                    ...
+                </code></pre>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>И&nbsp;это не&nbsp;всё</h4>
+            </section>
+            <section>
+                <h4>Ещё проблемы!</h4>
+                <ul>
+                    <li class="fragment">Большой трафик &rarr; завалим другой сервис</li>
+                    <li class="fragment">Решение? 2 паттерна</li>
+                    <li class="fragment">rate limiter принимающий</li>
+                    <li class="fragment">bulkhead исходящий</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="3-8,10" class="language-python">
+                from aiobreaker import CircuitBreaker
+
+                emergency_db_breaker = CircuitBreaker(fail_max=5, reset_timeout=... 60)
+                bulkhead_for_service_b = asyncio.Semaphore(10)
+
+                @emergency_db_breaker
+                @cachebox.cached(cachebox.TTLCache(0, ttl=30))
+                @stamina.retry(on=httpx.HTTPError, attempts=3, wait_initial=0.2)
+                async def really_fetch_data_from_b(...):
+                    async with bulkhead_for_service_b:
+                        return await httpx_client.get("https://service-b/entity")
+
+                async def fetch_some_data_from_service_b(...):
+                    ...
+                    service_b_data = really_fetch_data_from_b(...)
+                    service_b_data["title"]  # используем где-то
+                    ...
+                </code></pre>
+            </section>
+            <section>
+                <img src="./images/ne-boisa.png" alt="">
             </section>
             <section data-background-color="#3C5073">
+                <h3>Синхронно + перекладываем на&nbsp;инфру</h3>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Берём service mesh&hellip;</h4>
+            </section>
+            <section>
+                <h4>Resilience</h4>
+                <pre><code data-trim data-noescape data-line-numbers="5-7" class="language-yaml">
+                    kind: HTTPRoute
+                    …
+                    metadata:
+                        annotations:
+                            retry.linkerd.io/http: 5xx
+                            retry.linkerd.io/limit: "2"
+                            retry.linkerd.io/timeout: 300ms
+                    spec:
+                    parentRefs:
+                        - name: schlep
+                        kind: Service
+                        …
+                    rules:
+                        - matches:
+                            - path:
+                                type: PathPrefix
+                                value: "/some-service/"
+                </code></pre>
+            </section>
+            <section>
+                <h4>Circuit breaker</h4>
+                <pre><code data-trim data-noescape data-line-numbers="6-10" class="language-yaml">
+                    kind: Service
+                    metadata:
+                        name: orders
+                        namespace: shop
+                        annotations:
+                            balancer.linkerd.io/failure-accrual: consecutive
+                            balancer.linkerd.io/failure-accrual-consecutive-max-failures: "5"
+                            balancer.linkerd.io/failure-accrual-consecutive-min-penalty: 10s
+                            balancer.linkerd.io/failure-accrual-consecutive-max-penalty: 1m
+                            balancer.linkerd.io/failure-accrual-consecutive-jitter-ratio: "0.5"
+                        spec:
+                        selector:
+                            app: orders
+                        ports:
+                            - protocol: TCP
+                            …
+                </code></pre>
+            </section>
+            <section>
+                <h4>Rate limiter</h4>
+                <pre><code data-trim data-noescape data-line-numbers="8,10,12" class="language-yaml">
+                    kind: HTTPLocalRateLimitPolicy
+                    ...
+                    spec:
+                        targetRef:
+                            group: policy.linkerd.io
+                            ...
+                        total:
+                            requestsPerSecond: 100
+                        identity:
+                            requestsPerSecond: 20
+                        overrides:
+                        - requestsPerSecond: 25
+                            clientRefs:
+                            - kind: ServiceAccount
+                            ...
+                </code></pre>
+            </section>
+            <section>
+                <h4>Осталось всего ничего!</h4>
+                <ul>
+                    <li class="fragment">Добавить кеш + fallback</li>
+                    <li class="fragment">Семафор (он&nbsp;же bulkhead)</li>
+                    <li class="fragment">Ну&nbsp;и&nbsp;топ</li>
+                </ul>
+            </section>
+            <section class="no-logo-slide">
+                <img src="./images/architecture-punch.png" alt="">
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Как обычно мы&nbsp;делаем?</h4>
+            </section>
+
+            <section data-background-color="#3C5073">
+                <h3>Получаем данные &laquo;сервиса&nbsp;B&raquo; асинхронно</h3>
+            </section>
+            <section>
+                <h4>Какой мотив?</h4>
+                <ul>
+                    <li class="fragment">Это надёжно!</li>
+                    <li class="fragment">Low latency</li>
+                </ul>
+            </section>
+            <section data-svg-src="./images/schemas/database-per-service-mq.svg"></section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="|2" class="language-python">
+                async def calculate_in_service_a(cart_items):
+                    attributes = await select_from_database_service_b_data(product_ids)
+
+                    for item in cart_items:
+                        buffer.append(attributes[item["id"]]["price"])
+
+                    return await calculate_llm_reccomendations(buffer)
+                </code></pre>
+            </section>
+            <section>
+                <h4>Нюансы MQ</h4>
+                <ul>
+                    <li class="fragment">Триггерится сервис b</li>
+                    <li class="fragment">Ловим в&nbsp;сервисе а, делаем реплику</li>
+                    <li class="fragment">Но&nbsp;тут есть проблема&hellip;</li>
+                </ul>
+            </section>
+            <section data-svg-src="./images/schemas/database-per-service-mq-alembic.svg"></section>
+            <section>
+                <img src="./images/exhausted.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/k-chertu.png" class="r-stretch" alt="">
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Мы&nbsp;так часто делаем</h4>
+            </section>
+
+            <section data-background-color="#3C5073">
+                <h3>Асинхронно + перекладываем на&nbsp;инфру</h3>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Итак, представим</h4>
+            </section>
+            <section>
+                <div data-svg-src="./images/schemas/sync-db.svg"></div>
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Магия: CDC</h4>
+            </section>
+            <section>
+                <img src="./images/debezium.png" class="r-stretch" />
+            </section>
+            <section data-svg-src="./images/schemas/debezium.svg"></section>
+            <section data-background-color="#FEF280">
+                <h4>Кода нет!</h4>
+            </section>
+
+            <!-- <section data-background-color="#3C5073">
                 <h3>Переложи всё на&nbsp;инфру!</h3>
             </section>
 
             <section data-background-color="#3C2F6E">
                 <h2>Делаем всё на&nbsp;инфре</h2>
-            </section>
+            </section> -->
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
                 <img src="images/xfenix-qr-white.svg" width="300px" alt="" class="last-logo" />

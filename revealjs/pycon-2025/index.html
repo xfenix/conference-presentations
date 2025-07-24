@@ -434,16 +434,106 @@
                 <h2>Transactional Outbox</h2>
             </section>
             <section>
-                <img src="./images/transactional-outbox.png" />
+                <img src="./images/event-driven.png" class="r-stretch" />
             </section>
-
-            <!-- <section data-background-color="#3C5073">
-                <h3>Переложи всё на&nbsp;инфру!</h3>
+            <section data-background-color="#FEF280">
+                <h4>Проблема транзакционности в&nbsp;EDA</h4>
+            </section>
+            <section>
+                <img src="./images/event-driven-problem.png" class="r-stretch" />
+            </section>
+            <section>
+                <img src="./images/transactional-outbox.png" class="r-stretch" />
+            </section>
+            <section data-background-color="#FEF280">
+                <h4>Приходится писать руками</h4>
+            </section>
+            <section>
+                <img src="./images/transactional-outbox-kafka.webp" class="r-stretch" />
+            </section>
+            <section>
+                <img src="./images/magik.jpg" class="r-stretch" />
             </section>
 
             <section data-background-color="#3C2F6E">
-                <h2>Делаем всё на&nbsp;инфре</h2>
-            </section> -->
+                <h2>Auth</h2>
+            </section>
+            <section>
+                <img src="./images/one-brain-cell.jpg" />
+            </section>
+            <section>
+                <h4>Авторизация и&nbsp;аутентификация (УЖИМАЕМ)</h4>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">Аутентификация&nbsp;&mdash; логопас <span
+                            class="fragment" data-fragment-index="2">&larr; штука не&nbsp;уникальная</span></li>
+                    <li class="fragment" data-fragment-index="1">Авторизация&nbsp;&mdash; проверка токена <span
+                            class="fragment" data-fragment-index="3">&larr; у&nbsp;всех своя</span></li>
+                </ul>
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Аутентификация</h3>
+            </section>
+            <section>
+                <img src="./images/keycloak.png" class="r-stretch" alt="">
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Авторизация</h3>
+            </section>
+            <section>
+                <img src="./images/jwt.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-json">
+                {
+                    "keys": [
+                        {
+                            "kid": "0A12E2001ARUUH76GHD567E669AF8A30",
+                            "x5c": [
+                                "MIIGkTCCBXmgAwIBAgIQChLiA..."
+                            ],
+                            "use": "sig",
+                            "validFrom": 1641907986,
+                            "validUntil": 1673444586,
+                            "certificateOID": ["1.2.643.6.57.42.21.3.2.1"],
+                            "kty": "RSA",
+                            "e": "AQAB",
+                            "n": "uGeu01Jmc_YrURmkos71It1O51H7hVQYIb8Fmk2L3wq..."
+                        },
+                    ...
+                }
+                </code></pre>
+            </section>
+            <section>
+                <img src="./images/jwt.png" class="r-stretch" alt="">
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Авторизация + переложи всё на&nbsp;инфру!</h3>
+            </section>
+            <section>
+                <img src="./images/apisix.webp" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/apisix-oidc.png" class="r-stretch" alt="">
+            </section>
+            <section data-background-color="#3C5073">
+                <h3>Межсервисный auth</h3>
+            </section>
+            <section>
+                Смешная картинка с&nbsp;адищной аутентификацией
+            </section>
+            <section>
+                <pre><code data-trim data-noescape data-line-numbers="6-7" class="language-yaml">
+                    apiVersion: v1
+                    kind: Namespace
+                    metadata:
+                    name: demo
+                    annotations:
+                        linkerd.io/inject: enabled
+                        config.linkerd.io/default-inbound-policy: all-authenticated
+                </code></pre>
+            </section>
+
+            <section>Выходная щутка + посыл доклада (переложи всё на&nbsp;инфру)</section>
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
                 <img src="images/xfenix-qr-white.svg" width="300px" alt="" class="last-logo" />

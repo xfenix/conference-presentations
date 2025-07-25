@@ -462,7 +462,7 @@
                 <img src="./images/one-brain-cell.jpg" />
             </section>
             <section>
-                <h4>Авторизация и&nbsp;аутентификация (УЖИМАЕМ)</h4>
+                <h4>Авторизация и&nbsp;аутентификация</h4>
                 <ul>
                     <li class="fragment" data-fragment-index="0">Аутентификация&nbsp;&mdash; логопас <span
                             class="fragment" data-fragment-index="2">&larr; штука не&nbsp;уникальная</span></li>
@@ -470,25 +470,15 @@
                             class="fragment" data-fragment-index="3">&larr; у&nbsp;всех своя</span></li>
                 </ul>
             </section>
-            <section data-background-color="#3C5073">
-                <h3>Аутентификация</h3>
+            <section>
+                <div class="r-stack">
+                    <img src="./images/keycloak.png" data-fragment-index="0" class="fragment fade-out" alt="">
+                    <img src="./images/apisix.webp" data-fragment-index="0" class="fragment current-visible" alt="">
+                    <img src="./images/apisix-oidc.png" class="fragment" alt="">
+                </div>
             </section>
             <section>
-                <img src="./images/keycloak.png" class="r-stretch" alt="">
-            </section>
-            <section data-background-color="#3C5073">
-                <h3>Авторизация + переложи всё на&nbsp;инфру!</h3>
-            </section>
-            <section>
-                <img src="./images/apisix.webp" class="r-stretch" alt="">
-            </section>
-            <section>
-                <img src="./images/apisix-oidc.png" class="r-stretch" alt="">
-            </section>
-            <section data-background-color="#3C5073">
-                <h3>Межсервисный auth</h3>
-            </section>
-            <section>
+                <h4>Межсервисная аутентификация</h4>
                 <pre><code data-trim data-noescape data-line-numbers="6-7" class="language-yaml">
                     apiVersion: v1
                     kind: Namespace
@@ -500,7 +490,9 @@
                 </code></pre>
             </section>
 
-            <section>Выходная щутка + посыл доклада (переложи всё на&nbsp;инфру)</section>
+            <section>
+                <img src="./images/ley-na-prod.png" class="r-stretch" alt="">
+            </section>
 
             <section data-background-color="#0F5582" data-reset-breadcrumbs="1">
                 <img src="images/xfenix-qr-white.svg" width="300px" alt="" class="last-logo" />

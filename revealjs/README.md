@@ -1,4 +1,5 @@
 # Presentations
+- [vladimirtechtalks-05.09.24](https://xfenix.github.io/conference-presentations/vladimirtechtalks-05.09.24/)
 
 ### Archived Presentations
 - [pycommunity-29.05.25](https://xfenix.github.io/conference-presentations/pycommunity-29.05.25/)

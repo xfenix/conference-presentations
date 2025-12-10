@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>
+        Микросервисы 2025&nbsp;&mdash; что под капотом?
+    </title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/white-raif.css" />
+    <link rel="stylesheet" href="plugin/highlight/github-dark.css" />
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-color="#99471B">
+                <img src="images/title-ilu.svg" width="200px" alt="" class="hero-logo" />
+                <h3>
+                    Микросервисы 2025&nbsp;&mdash; что под капотом?
+                </h3>
+                <small>Денис Аникин,
+                    <a href="https://xfenix.ru" target="_blank">https://xfenix.ru</a></small>
+            </section>
+            <section>
+                <h4>Кто я</h4>
+                <div class="raif-columns">
+                    <div>
+                        <img src="images/xfenix-qr.svg" width="300px" alt="" />
+                    </div>
+                    <ul>
+                        <li class="fragment">
+                            Техлид в&nbsp;AI&nbsp;Platform в&nbsp;Райфе
+                        </li>
+                        <li class="fragment">Лидер корп. Python Community</li>
+                        <li class="fragment">
+                            Python, typescript, kubernetes, архитектура
+                        </li>
+                        <li class="fragment">Выступаю, работаю в&nbsp;ПК</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Наш стек</h2>
+            </section>
+            <!--section data-background-color="#50701E">
+                <h3>Подраздел</h3>
+            </section-->
+            <section>
+                <img src="./images/litestar.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/litestar-speed.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/granian.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/granian-speed.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                        class SpecificResponse(pydantic.BaseModel):
+                            status: int
+
+                        class SomeSpecificClient(base_client.BaseClient):
+                            async def run_request(self, params: dict[str, str]) -> SpecificResponse:
+                                response = await self.send(
+                                    self.prepare_request(
+                                        "GET", "/status/500", params=params, timeout=httpx.Timeout(5)
+                                    )
+                                )
+                                return response_to_model(model_type=SpecificResponse, response=response)
+                            ...
+
+                        await SomeSpecificClient(
+                            client=httpx.AsyncClient(base_url="https://postman-echo.com", timeout=...),
+                            retrier=circuit_breaker_box.Retrier[httpx.Response](...),
+                        ).run_request()
+                </code></pre>
+            </section>
+            <section>
+                <img src="./images/that-depends.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <h4>Почему не&nbsp;dishka?</h4>
+            </section>
+            <section>
+                <img src="./images/faststream.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <h4>Под вопросом</h4>
+                <img src="./images/taskiq.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <h4>Сомнения на&nbsp;тему таскика</h4>
+            </section>
+            <section>
+                <h4>Как выбираем решения?</h4>
+            </section>
+            <section>
+                <h4>Что ещё?</h4>
+                <ul>
+                    <li class="fragment">aiofile > aiofiles</li>
+                    <li class="fragment">mpire > multiprocessing</li>
+                    <li class="fragment">selectolax > beautifulsoup</li>
+                    <li class="fragment">cachebox</li>
+                    <li class="fragment">pyvips > pillow</li>
+                    <li class="fragment">polars > pandas</li>
+                    <li class="fragment">structlog + memory handler</li>
+                    <li class="fragment">pydantic ai</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Полный список</h4>
+                <a
+                    href="https://github.com/community-of-python/pylines/blob/main/our-stack.md">https://github.com/community-of-python/pylines/&hellip;/our-stack.md</a>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Layout микросервиса</h2>
+            </section>
+            <section>
+                <a
+                    href="https://habr.com/ru/companies/raiffeisenbank/articles/885792/">https://habr.com/ru/companies/raiffeisenbank/articles/885792/</a>
+            </section>
+            <section>
+                <img src="./images/microbootstrap.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/pylines.png" class="r-stretch" alt="" />
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Код стайл</h2>
+            </section>
+            <section>
+                <a
+                    href="https://github.com/community-of-python/pylines/blob/main/code-style.md">https://github.com/community-of-python/pylines/&hellip;/code-style.md</a>
+            </section>
+            <section>
+                <h4>Основные принципы</h4>
+                <ul>
+                    <li class="fragment">Соблюдать PEP8, PEP257, PEP484, PEP526</li>
+                    <li class="fragment">Длина строки до&nbsp;120 символов</li>
+                    <li class="fragment">Импорты встроенных библиотек целиком</li>
+                    <li class="fragment">Более 2 импортов из&nbsp;модуля&nbsp;&mdash; импортировать весь модуль</li>
+                    <li class="fragment">Покрывать 100% кода аннотациями типов</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Типизация</h4>
+                <ul>
+                    <li class="fragment">Скалярные типы выводятся mypy автоматически</li>
+                    <li class="fragment">Сужать типы максимально</li>
+                    <li class="fragment">Использовать typing.Final для констант</li>
+                    <li class="fragment">TypedDict для сложных структур</li>
+                    <li class="fragment">dict с&nbsp;Literal для максимально точной типизации</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    import typing
+
+                    SOME_CONST: typing.Final[
+                        dict[typing.Literal['what', 'kek'], typing.Literal[5, 'raz']]
+                    ] = {
+                        'what': 5,
+                        'kek': 'raz',
+                    }
+                </code></pre>
+            </section>
+            <section>
+                <h4>Обращения по&nbsp;индексам и&nbsp;ключам</h4>
+                <ul>
+                    <li class="fragment">item[0] и&nbsp;item[&laquo;key&raquo;] могут падать&nbsp;&mdash; обрабатывать
+                        try-except</li>
+                    <li class="fragment">Использовать get для словарей при необходимости</li>
+                    <li class="fragment">Иерархия ошибок: LookupError &rarr; IndexError/KeyError</li>
+                    <li class="fragment">Проверять ключи через in&nbsp;вместо перехвата исключений</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Исключения</h4>
+                <ul>
+                    <li class="fragment">Использовать конкретные классы ошибок</li>
+                    <li class="fragment">Сужать количество строк внутри try</li>
+                    <li class="fragment">Проверять условие лучше, чем ловить исключение</li>
+                    <li class="fragment">Exception только в&nbsp;исключительных случаях</li>
+                </ul>
+            </section>
+            <section>
+                <img src="./images/py-errors.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <h4>Именование</h4>
+                <ul>
+                    <li class="fragment">Имена переменных и&nbsp;функций &ge;8 символов</li>
+                    <li class="fragment">Использовать осмысленные названия</li>
+                    <li class="fragment">Функции называют глаголами</li>
+                    <li class="fragment">Не&nbsp;использовать get без нужды</li>
+                    <li class="fragment">Самодокументируемый код вместо комментариев</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    class HttpFetcher:
+                        def fetch_http_result(self):
+                            self._http_connection.get(...)
+
+                    class SomethingWithCache:
+                        def build_cache_key(self, user_id):
+                            return self._cache_key + str(user_id)
+                </code></pre>
+            </section>
+            <section>
+                <h4>Неизменяемость</h4>
+                <ul>
+                    <li class="fragment">Переменные&nbsp;&mdash; typing.Final</li>
+                    <li class="fragment">Классы&nbsp;&mdash; typing.final</li>
+                    <li class="fragment">Словари&nbsp;&mdash; types.MappingProxyType</li>
+                    <li class="fragment">Использовать dataclasses с&nbsp;frozen и&nbsp;slots</li>
+                    <li class="fragment">Минимизировать изменение состояния</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    import dataclasses
+                    import types
+                    import typing
+
+                    SOME_CONST: typing.Final = types.MappingProxyType({'key': 'value'})
+
+                    @dataclasses.dataclass(kw_only=True, slots=True, frozen=True)
+                    class HttpClient:
+                        httpx_connection: typing.Any
+
+                        def fetch_user_balance_from_crm(self, user_uuid: str) -> decimal.Decimal:
+                            ...
+                </code></pre>
+            </section>
+            <section>
+                <h4>Инверсия условий</h4>
+                <ul>
+                    <li class="fragment">Использовать early return</li>
+                    <li class="fragment">Минимизировать вложенность if</li>
+                    <li class="fragment">Пример: проверить исключение вместо ловли</li>
+                    <li class="fragment">Упрощает чтение и&nbsp;поддержку</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def process_something_important(user_payload):
+                        if not user_payload:
+                            print("No data")
+                            return
+                        if not isinstance(user_payload, list):
+                            print("Invalid data")
+                            return
+                        if not all(isinstance(some_index, int) for some_index in user_payload):
+                            print("Invalid list")
+                            return
+
+                        print(
+                            f"Result: {sum(user_payload)}"
+                            if sum(user_payload) > 0
+                            else "Sum is non-positive"
+                        )
+                </code></pre>
+            </section>
+            <section>
+                <h4>Работа с&nbsp;retry и&nbsp;надежностью</h4>
+                <ul>
+                    <li class="fragment">Использовать stamina для ретраев</li>
+                    <li class="fragment">Применять к&nbsp;sql, файлам, HTTP, consumer/producer</li>
+                    <li class="fragment">Ограничивать количество попыток и&nbsp;интервал рандомизировать</li>
+                    <li class="fragment">circuit breaker для защиты сервисов</li>
+                    <li class="fragment">Важные операции именовать retry/resilient/robust</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Избегать магии</h4>
+                <ul>
+                    <li class="fragment">Не&nbsp;использовать hasattr/getattr без причины</li>
+                    <li class="fragment">Не&nbsp;создавать временные переменные без смысла</li>
+                    <li class="fragment">Использовать прямые вызовы вместо лишних присвоений</li>
+                </ul>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def something_kek():
+                        return do_another_job()
+
+                    Path("config.json").write_text("{}")
+                </code></pre>
+            </section>
+            <section>
+                <h4>Регулярные выражения</h4>
+                <ul>
+                    <li class="fragment">Проверять на&nbsp;уязвимость REDoS</li>
+                    <li class="fragment">https://devina.io/redos-checker</li>
+                    <li class="fragment">Избегать сложных и&nbsp;непроверенных шаблонов</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>SOLID</h2>
+            </section>
+            <section>
+                <h4>SOLID:</h4>
+                <ul>
+                    <li class="fragment">чувствую! Интуитивно!</li>
+                    <li class="fragment">перечислишь буквы?</li>
+                    <li class="fragment">это база!</li>
+                    <li class="fragment">это хороший код!</li>
+                    <li class="fragment">ща&nbsp;объясню!</li>
+                    <li class="fragment">но&nbsp;там многословно, короче частями следую!</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Примеры</h4>
+            </section>
+            <section>
+                <img src="./images/solid-fail1.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/solid-fail2.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/solid-fail3.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/solid-fail4.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/doctor-cox-freak.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <a href="https://github.com/community-of-python/pylines/blob/main/solid.md" class="r-stretch">
+                    <img src="./images/solid-good.png" alt="" /></a>
+            </section>
+            <section>
+                <h4>Чем наш гайд лучше?</h4>
+            </section>
+            <section>
+                <h4>Какие проблемы решили?</h4>
+            </section>
+            <section>
+                <h4>Почему SOLID?</h4>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>REST</h2>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Тесты</h2>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Пайплайны и&nbsp;инфра</h2>
+            </section>
+            <section>
+                <h4>Что входит</h4>
+                <ul>
+                    <li class="fragment">Сборка: kaniko или buildah</li>
+                    <li class="fragment">Автоверсионирование (семвер)</li>
+                    <li class="fragment">Один образ для всех окружений</li>
+                    <li class="fragment">Линтинг</li>
+                    <li class="fragment">Тесты</li>
+                    <li class="fragment">ИБ</li>
+                </ul>
+            </section>
+            <section>
+                <img src="./images/pypelines.jpg" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/pypelines-1.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/pypelines-2.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <h4>Линтинг</h4>
+                <ul>
+                    <li class="fragment">Аннотации (mypy, typy, pyrefly)</li>
+                    <li class="fragment">Ruff</li>
+                    <li class="fragment">We&nbsp;make styleguide</li>
+                    <li class="fragment">Hadolint</li>
+                    <li class="fragment">Auto typing final</li>
+                </ul>
+            </section>
+            <section>
+                <img src="./images/ty.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <h4>AI&nbsp;описание PR</h4>
+                <img src="./images/mr-description.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <a href="https://habr.com/ru/articles/820451/">https://habr.com/ru/articles/820451/</a>
+            </section>
+
+            <section data-background-color="#99471B" data-reset-breadcrumbs="1">
+                <img src="images/xfenix-qr-white.svg" width="300px" alt="" class="last-logo" />
+                <h2>Спасибо за&nbsp;внимание и&nbsp;пока!</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/breadcrumbs.js"></script>
+    <script src="plugin/raif.js"></script>
+    <script src="plugin/autoprint.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: false,
+            slideNumber: true,
+            pdfSeparateFragments: false,
+            width: 1080,
+            height: 608,
+            plugins: [
+                RevealHighlight,
+                RevealNotes,
+                RevealMenu,
+                RevealBreadcrumbs,
+                RevealRaif,
+                RevealAutoPrint,
+            ],
+        });
+    </script>
+</body>
+
+</html>

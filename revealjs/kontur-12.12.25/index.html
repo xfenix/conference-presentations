@@ -130,7 +130,39 @@
                     href="https://habr.com/ru/companies/raiffeisenbank/articles/885792/">https://habr.com/ru/companies/raiffeisenbank/articles/885792/</a>
             </section>
             <section>
+                <h4>Что нужно в&nbsp;микросервисе</h4>
+                <ul>
+                    <li class="fragment">Правильное логгирование (json, memory handler)</li>
+                    <li class="fragment">Open telemetry</li>
+                    <li class="fragment">Sentry/Glitchtip</li>
+                    <li class="fragment">CORS</li>
+                    <li class="fragment">Prometheus, Pyroscope</li>
+                    <li class="fragment">Healthcheck</li>
+                    <li class="fragment">APP сервер (<s>uvicorn</s>, granian)</li>
+                </ul>
+            </section>
+            <section>
                 <img src="./images/microbootstrap.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <img src="./images/before-microbootstrap.png" class="r-stretch" alt="" />
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    # settings.py
+                    from microbootstrap import LitestarSettings
+
+                    class YourSettings(LitestarSettings):
+                        ...  # Your settings are stored here
+                    settings = YourSettings()
+
+                    # application.py
+                    import litestar
+                    from microbootstrap.bootstrappers.litestar import LitestarBootstrapper
+                    from your_application.settings import settings
+
+                    application: litestar.Litestar = LitestarBootstrapper(settings).bootstrap()
+                </code></pre>
             </section>
             <section>
                 <img src="./images/pylines.png" class="r-stretch" alt="" />
@@ -178,7 +210,7 @@
             <section>
                 <h4>Обращения по&nbsp;индексам и&nbsp;ключам</h4>
                 <ul>
-                    <li class="fragment">item[0] и&nbsp;item[&laquo;key&raquo;] могут падать&nbsp;&mdash; обрабатывать
+                    <li class="fragment">item[0] и&nbsp;item[&laquo;key&raquo;] будут падать&nbsp;&mdash; обрабатывать
                         try-except</li>
                     <li class="fragment">Использовать get для словарей при необходимости</li>
                     <li class="fragment">Иерархия ошибок: LookupError &rarr; IndexError/KeyError</li>
@@ -203,11 +235,39 @@
                     <li class="fragment">Имена переменных и&nbsp;функций &ge;8 символов</li>
                     <li class="fragment">Использовать осмысленные названия</li>
                     <li class="fragment">Функции называют глаголами</li>
-                    <li class="fragment">Не&nbsp;использовать get без нужды</li>
-                    <li class="fragment">Самодокументируемый код вместо комментариев</li>
                 </ul>
             </section>
             <section>
+                <h4>Самодокументироемость 1</h4>
+                <pre><code data-trim data-noescape class="language-python">
+                    employee_number = 10 # employee number
+                    employee_id = 1 # employee id
+
+                    def sum_two_numbers(a: int, b: int) -> int:
+                        """
+                        Sums two numbers. Do not remove. Critical logic.
+                        a should be a, b should be b. If a != a or b != b, behavior undefined.
+                        Might break everything if changed. Works on my machine.
+
+                        :param a: int — first number, probably
+                        :param b: int — second number, hopefully
+                        :return: int — result (don’t touch)
+                        """
+                        return a + b
+                </code></pre>
+            </section>
+            <section>
+                <h4>Самодокументироемость 2</h4>
+                <pre><code data-trim data-noescape class="language-python">
+                    employee_number: typing.Final = 10
+                    employee_id: typing.Final = 1
+
+                    def sum_two_numbers(first_number: int, second_number: int) -> int:
+                        return first_number + second_number
+                </code></pre>
+            </section>
+            <section>
+                <h4>Бой со&nbsp;словом &laquo;get&raquo;</h4>
                 <pre><code data-trim data-noescape class="language-python">
                     class HttpFetcher:
                         def fetch_http_result(self):
@@ -357,9 +417,43 @@
             <section data-background-color="#7864D7">
                 <h2>REST</h2>
             </section>
+            <section>
+                <h4>Что такое REST?</h4>
+                <img src="./images/vse-ploho.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <img src="./images/typical-rest.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <h4>Кажется, REST как таковой, слабо достижим</h4>
+            </section>
+            <section>
+                <h4>Поэтому</h4>
+                <ul>
+                    <li class="fragment">Урлы&nbsp;&mdash; сущности (что такое сущность?)</li>
+                    <li class="fragment">/rest[-(public|web|mobile|admin|internal)]/[имя-сервиса]/[имя-сущности]/</li>
+                    <li class="fragment">
+                        /rpc[-(public|web|mobile|admin|internal)]/[имя-сервиса]/сделай-что-то-что-в-сущность-не-укладывается/
+                    </li>
+                    <li class="fragment">Скажем нет вложенности, остальное&nbsp;&mdash; query параметры</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Версионирование</h4>
+                <ul>
+                    <li class="fragment">Версия&nbsp;&mdash; не&nbsp;часть сущности, поэтому /v1/ скажем нет</li>
+                    <li class="fragment">Версия&nbsp;&mdash; метаинформация, а&nbsp;ей&nbsp;место в&nbsp;заголовках</li>
+                    <li class="fragment">accept: application/vnd.some.name+json; version=1.0</li>
+                    <li class="fragment">By&nbsp;default&nbsp;&mdash; версионирование мешает, лучше без него</li>
+                    <li class="fragment">Когда точно нужно: мобила, неконтролируемые клиенты</li>
+                </ul>
+            </section>
 
             <section data-background-color="#7864D7">
                 <h2>Тесты</h2>
+            </section>
+            <section>
+                <img src="./images/dont-test-on-animals.png" class="r-stretch" alt="">
             </section>
 
             <section data-background-color="#7864D7">

@@ -405,13 +405,32 @@
                     <img src="./images/solid-good.png" alt="" /></a>
             </section>
             <section>
+                <h4>А&nbsp;как авторитетные люди объясняют SOLID?</h4>
+                <ul>
+                    <li class="fragment">Это так (не) работает!</li>
+                    <li class="fragment">Там есть нюансы и/или подводные камни!</li>
+                    <li class="fragment">Это (не) (правильно|очевидно)</li>
+                    <li class="fragment">Ты&nbsp;не&nbsp;понимаешь!</li>
+                    <li class="fragment">Это другое!</li>
+                    <li class="fragment">Правильные вопросы задавай, правильно будет</li>
+                </ul>
+            </section>
+            <section>
+                <img src="./images/zoidburg-woop.gif" alt="">
+            </section>
+            <section>
                 <h4>Чем наш гайд лучше?</h4>
+                <img src="./images/nash-cod.png" alt="">
             </section>
             <section>
                 <h4>Какие проблемы решили?</h4>
             </section>
             <section>
                 <h4>Почему SOLID?</h4>
+            </section>
+            <section>
+                <h4>Немного о&nbsp;буквах</h4>
+                <img src="https://professorweb.ru/my/it/blog/net/images/solid.png" class="r-stretch" alt="">
             </section>
 
             <section data-background-color="#7864D7">
@@ -426,6 +445,10 @@
             </section>
             <section>
                 <h4>Кажется, REST как таковой, слабо достижим</h4>
+            </section>
+            <section>
+                <img src="https://images.playground.com/45e7ef21-4f17-4b56-9e84-f3f6102b72d4.jpeg" class="r-stretch"
+                    alt="">
             </section>
             <section>
                 <h4>Поэтому</h4>
@@ -454,6 +477,126 @@
             </section>
             <section>
                 <img src="./images/dont-test-on-animals.png" class="r-stretch" alt="">
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def sum_two_numbers(first_number: int, second_number: int) -> int:
+                        return first_number + second_number
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def test_sum_simple():
+                        assert sum_two_numbers(2, 3) == 5
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def test_sum_simple():
+                        assert sum_two_numbers(2, 3) == 5
+
+                    def test_sum_simple2():
+                        assert sum_two_numbers(-2, 3) == 1
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def test_sum_simple():
+                        assert sum_two_numbers(2, 3) == 5
+
+                    def test_sum_simple2():
+                        assert sum_two_numbers(-2, 3) == 1
+
+                    def test_sum_simple3():
+                        assert sum_two_numbers(0, 0) == 0
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    def test_sum_simple():
+                        assert sum_two_numbers(2, 3) == 5
+
+                    def test_sum_simple2():
+                        assert sum_two_numbers(-2, 3) == 1
+
+                    def test_sum_simple3():
+                        assert sum_two_numbers(0, 0) == 0
+
+                    def test_sum_simple3():
+                        assert sum_two_numbers(0, 0) == 0
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    import pytest
+
+                    @pytest.mark.parametrize(
+                        "a, b, expected",
+                        [
+                            (2, 3, 5),
+                            (-2, 3, 1),
+                            (0, 0, 0),
+                            (10**9, 10**9, 2 * 10**9),
+                            (-10**9, 10**9, 0),
+                        ],
+                    )
+                    def test_sum_parametrized(a, b, expected):
+                        assert sum_two_numbers(a, b) == expected
+                </code></pre>
+            </section>
+            <section>
+                <img src="./images/hypothesis.png" alt="" class="r-stretch" />
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    from hypothesis import given, strategies as st
+
+                    @given(st.integers(), st.integers())
+                    def test_integers(first, second):
+                        assert sum_two_numbers(first, second) == first + second
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    class RestController:
+                        ...
+
+                    class BusinessService:
+                        ...
+
+                    class Repository:
+                        ...
+
+                    # connections, helpers, etc
+                </code></pre>
+            </section>
+            <section>
+                <pre><code data-trim data-noescape class="language-python">
+                    class RestController:  # <- here
+                        ...
+
+                    class BusinessService:
+                        ...
+
+                    class Repository:
+                        ...
+
+                    # connections, helpers, etc
+                </code></pre>
+            </section>
+            <section>
+                <h4>Что это за&nbsp;подход?</h4>
+                <ul>
+                    <li class="fragment">Я&nbsp;называю это &laquo;интеграционными&raquo; тестами</li>
+                    <li class="fragment">Поклонники Фаулера&nbsp;&mdash; sociable тестами</li>
+                    <li class="fragment">Буквоедство?</li>
+                </ul>
+            </section>
+            <section>
+                <img src="./images/sociable.png" alt="" />
+            </section>
+            <section>
+                <h4>В&nbsp;чём плюс подхода?</h4>
             </section>
 
             <section data-background-color="#7864D7">
@@ -498,6 +641,20 @@
             </section>
             <section>
                 <a href="https://habr.com/ru/articles/820451/">https://habr.com/ru/articles/820451/</a>
+            </section>
+
+            <section data-background-color="#7864D7">
+                <h2>Пару слов о&nbsp;шаблонах</h2>
+            </section>
+            <section>
+                <h4>Шаблоны</h4>
+                <ul>
+                    <li class="fragment">cookiecutter или copier</li>
+                    <li class="fragment">Обновлять его и&nbsp;обновлять сгенерированные проекты&nbsp;&mdash; боль</li>
+                    <li class="fragment">Не&nbsp;стоит его раздувать</li>
+                    <li class="fragment">Всё, что раздувается&nbsp;&mdash; лучше выносить в&nbsp;пакеты</li>
+                    <li class="fragment">Дополнительно: scaraplate, nitpick</li>
+                </ul>
             </section>
 
             <section data-background-color="#99471B" data-reset-breadcrumbs="1">

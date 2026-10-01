@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Харнесс терминальных агентов&nbsp;&mdash; лучшее на&nbsp;осень 2026</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/generic.css" />
+    <link rel="stylesheet" href="plugin/highlight/github.css" />
+    <style>
+        :root {
+            --r-link-color: #B06BB0;
+            --r-link-color-dark: #2B2D33;
+            --r-link-color-hover: #DC94DD;
+            --r-selection-background-color: #F5DFF5;
+            --r-selection-color: #2B2D33;
+        }
+
+        div.caption {
+            font-size: 0.5em;
+            margin: -20px 0 20px 0;
+        }
+
+        .source {
+            font-size: 0.4em;
+            color: #827F7F;
+            margin-top: 8px;
+        }
+
+        .two-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .two-col>* {
+            flex: 1;
+        }
+
+        .two-col ul {
+            font-size: 0.7em;
+        }
+
+        .two-col img {
+            flex: 0 1 42%;
+            min-width: 0;
+            max-height: 52vh;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .compact {
+            font-size: 0.75em;
+        }
+
+        .typical-table {
+            font-size: 55%;
+        }
+
+        .typical-table th,
+        .typical-table td {
+            border-color: #D7D2D2 !important;
+        }
+
+        .typical-table th {
+            color: #AFAAAA;
+        }
+
+        .reveal pre {
+            font-size: 0.42em;
+            width: 100%;
+            box-shadow: none;
+        }
+
+        .reveal pre code {
+            max-height: 420px;
+            padding: 16px 20px;
+        }
+
+        .bignum {
+            color: #B06BB0;
+            font-weight: 700;
+            font-size: 2.2em;
+            line-height: 1;
+            margin-top: 0.3em;
+        }
+
+        .bignum-row {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+        }
+
+        .bignum-row p {
+            font-size: 0.6em;
+            max-width: 380px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-color="#2B2D33">
+                <h1>Харнесс терминальных агентов</h1>
+                <h4>лучшее на&nbsp;осень 2026</h4>
+            </section>
+
+            <section>
+                <h4>Бинго-словарь</h4>
+                <div class="caption">чтобы дальше говорить об&nbsp;одном и&nbsp;том&nbsp;же</div>
+                <ul>
+                    <li class="fragment"><strong>Харнесс</strong>&nbsp;&mdash; обвязка вокруг модели: инструменты, права,
+                        правила, бюджет контекста</li>
+                    <li class="fragment"><strong>Скилл</strong>&nbsp;&mdash; инструкция в&nbsp;markdown, агент достаёт её
+                        по&nbsp;описанию</li>
+                    <li class="fragment"><strong>MCP</strong>&nbsp;&mdash; протокол, через который агент ходит во&nbsp;внешние
+                        системы</li>
+                    <li class="fragment"><strong>Хук</strong>&nbsp;&mdash; скрипт на&nbsp;событие. Его запускает харнесс,
+                        а&nbsp;не&nbsp;модель</li>
+                    <li class="fragment"><strong>Плагин</strong>&nbsp;&mdash; коробка, в&nbsp;которой всё это ставится одной
+                        командой</li>
+                    <li class="fragment"><strong>Субагент</strong>&nbsp;&mdash; отдельное окно контекста под подзадачу</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Про какого агента речь</h4>
+                <ul>
+                    <li class="fragment">Примеры&nbsp;&mdash; на&nbsp;Claude Code, у&nbsp;него самая богатая обвязка</li>
+                    <li class="fragment">Скиллы и&nbsp;MCP&nbsp;&mdash; открытые стандарты. Codex CLI, Cursor, OpenCode, Gemini
+                        CLI их&nbsp;тоже понимают</li>
+                    <li class="fragment">Хуки и&nbsp;плагины у&nbsp;каждого агента свои</li>
+                    <li class="fragment">Звёзды GitHub в&nbsp;докладе&nbsp;&mdash; на&nbsp;1&nbsp;октября 2026</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/memes/coworkers-like-claude.png" class="r-stretch" alt="мем: отвечаю коллегам как Claude">
+                <div class="source">r/ClaudeAI</div>
+            </section>
+
+            <section>
+                <h4>План</h4>
+                <ul>
+                    <li>Скиллы</li>
+                    <li>MCP</li>
+                    <li>Хуки</li>
+                    <li>Плагины</li>
+                    <li>Экономия токенов</li>
+                    <li>Готовые сборки</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Скиллы</h2>
+            </section>
+
+            <section>
+                <h4>Скилл изнутри</h4>
+                <div class="caption">открытый стандарт agentskills.io</div>
+                <ul>
+                    <li class="fragment">Папка с&nbsp;файлом <code>SKILL.md</code>: шапка <code>name</code>
+                        и&nbsp;<code>description</code>, ниже инструкция</li>
+                    <li class="fragment">На&nbsp;старте агент видит только описание&nbsp;&mdash; около 100&nbsp;токенов
+                        на&nbsp;скилл</li>
+                    <li class="fragment">Тело грузится, когда скилл понадобился. Стандарт советует до&nbsp;500&nbsp;строк
+                    </li>
+                    <li class="fragment"><code>scripts/</code>, <code>references/</code>, <code>assets/</code>&nbsp;&mdash;
+                        только по&nbsp;запросу</li>
+                    <li class="fragment">Один и&nbsp;тот&nbsp;же скилл работает в&nbsp;разных агентах</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Пример скилла</h4>
+                <div class="caption">от&nbsp;description зависит, позовёт агент скилл или нет</div>
+                <pre><code class="language-markdown" data-trim>
+---
+name: release-notes
+description: Собирает release notes из коммитов с последнего тега.
+  Звать, когда просят changelog или «что нового в релизе».
+---
+
+1. Найди последний тег: `git describe --tags --abbrev=0`
+2. Возьми коммиты после него: `git log <тег>..HEAD --oneline`
+3. Разложи по группам: фичи, фиксы, прочее
+4. Технические коммиты (merge, bump, ci) выкинь
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Где брать скиллы</h4>
+                <ul>
+                    <li class="fragment"><code>npx skills add owner/repo</code>&nbsp;&mdash; CLI от&nbsp;Vercel, ставит
+                        в&nbsp;Claude Code, Codex, Cursor, OpenCode</li>
+                    <li class="fragment">skills.sh&nbsp;&mdash; каталог и&nbsp;рейтинг установок</li>
+                    <li class="fragment">anthropics/skills&nbsp;&mdash; официальные скиллы и&nbsp;шаблон</li>
+                    <li class="fragment">Официальный маркетплейс плагинов&nbsp;&mdash; там лежат и&nbsp;популярные наборы
+                        скиллов</li>
+                    <li class="fragment">Awesome-списки: VoltAgent/awesome-agent-skills (1000+), ComposioHQ</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Топ установок на&nbsp;skills.sh</h4>
+                <div class="caption">за&nbsp;всё время, 1&nbsp;октября 2026</div>
+                <table class="typical-table">
+                    <thead>
+                        <tr>
+                            <th>Скилл</th>
+                            <th>Чей</th>
+                            <th>Установок</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>find-skills</td>
+                            <td>vercel-labs</td>
+                            <td>3,6&nbsp;млн</td>
+                        </tr>
+                        <tr>
+                            <td>grill-me</td>
+                            <td>mattpocock</td>
+                            <td>1,3&nbsp;млн</td>
+                        </tr>
+                        <tr>
+                            <td>agent-browser</td>
+                            <td>vercel-labs</td>
+                            <td>991&nbsp;тыс.</td>
+                        </tr>
+                        <tr>
+                            <td>frontend-design</td>
+                            <td>anthropics</td>
+                            <td>940&nbsp;тыс.</td>
+                        </tr>
+                        <tr>
+                            <td>caveman</td>
+                            <td>JuliusBrussee</td>
+                            <td>550&nbsp;тыс.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h4>superpowers</h4>
+                <div class="caption">obra/superpowers, 293k&nbsp;★&nbsp;&mdash; порядок работы от&nbsp;идеи
+                    до&nbsp;merge</div>
+                <ul class="compact">
+                    <li class="fragment"><code>brainstorming</code> &rarr; <code>writing-plans</code> &rarr;
+                        <code>executing-plans</code>
+                    </li>
+                    <li class="fragment"><code>test-driven-development</code>&nbsp;&mdash; red, green, refactor</li>
+                    <li class="fragment"><code>systematic-debugging</code>&nbsp;&mdash; ищем причину, а&nbsp;не&nbsp;латаем
+                        симптом</li>
+                    <li class="fragment"><code>subagent-driven-development</code>&nbsp;&mdash; субагенты и&nbsp;ревью
+                        в&nbsp;два этапа: спека, потом код</li>
+                    <li class="fragment"><code>verification-before-completion</code>&nbsp;&mdash; &laquo;готово&raquo; только после
+                        проверки</li>
+                    <li class="fragment"><code>/plugin install superpowers@claude-plugins-official</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Скиллы Мэтта Покока</h4>
+                <div class="caption">mattpocock/skills, 273k&nbsp;★&nbsp;&mdash; маленькие скиллы, которые
+                    собираются как&nbsp;кубики</div>
+                <div class="two-col">
+                    <img src="./images/tools/mattpocock-skills.png" alt="mattpocock/skills">
+                    <ul>
+                        <li class="fragment"><code>grill-me</code>&nbsp;&mdash; допрос по&nbsp;плану, пока не&nbsp;закрыты
+                            все развилки</li>
+                        <li class="fragment"><code>to-spec</code>, <code>to-tickets</code>&nbsp;&mdash; разговор в&nbsp;спеку,
+                            спека в&nbsp;тикеты</li>
+                        <li class="fragment"><code>tdd</code>, <code>diagnosing-bugs</code>&nbsp;&mdash; короткие циклы
+                            обратной связи</li>
+                        <li class="fragment"><code>code-review</code>&nbsp;&mdash; два субагента: по&nbsp;стандартам
+                            и&nbsp;по&nbsp;спеке</li>
+                        <li class="fragment"><code>handoff</code>&nbsp;&mdash; сжать сессию в&nbsp;документ для
+                            следующего агента</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h4>anthropics/skills</h4>
+                <div class="caption">179k&nbsp;★&nbsp;&mdash; официальные скиллы Anthropic</div>
+                <ul>
+                    <li class="fragment"><code>skill-creator</code>&nbsp;&mdash; пишет скиллы и&nbsp;гоняет на&nbsp;них
+                        evals</li>
+                    <li class="fragment"><code>frontend-design</code>&nbsp;&mdash; интерфейс без шаблонного &laquo;ИИ-вида&raquo;</li>
+                    <li class="fragment"><code>docx</code>, <code>pptx</code>, <code>xlsx</code>, <code>pdf</code>&nbsp;&mdash;
+                        офисные документы</li>
+                    <li class="fragment"><code>webapp-testing</code>&nbsp;&mdash; проверка веб-приложения через Playwright
+                    </li>
+                    <li class="fragment"><code>mcp-builder</code>&nbsp;&mdash; как написать свой MCP-сервер</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Ещё заметные</h4>
+                <ul>
+                    <li class="fragment">addyosmani/agent-skills, 100k&nbsp;★&nbsp;&mdash; 25&nbsp;скиллов
+                        с&nbsp;проверками на&nbsp;каждом шаге, от&nbsp;спеки до&nbsp;релиза</li>
+                    <li class="fragment">blader/humanizer, 53k&nbsp;★&nbsp;&mdash; убирает следы ИИ&nbsp;из&nbsp;текста
+                        по&nbsp;статье Википедии &laquo;Signs of&nbsp;AI&nbsp;writing&raquo;</li>
+                    <li class="fragment">andrej-karpathy-skills, 216k&nbsp;★&nbsp;&mdash; по&nbsp;сути один
+                        CLAUDE.md, с&nbsp;апреля не&nbsp;обновлялся</li>
+                    <li class="fragment">Звёзды&nbsp;&mdash; не&nbsp;качество. Скилл читается за&nbsp;пять минут, прочитай
+                        до&nbsp;установки</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/memes/deslop-skill.jpg" class="r-stretch" alt="мем: скилл deslop">
+                <div class="source">r/ProgrammerHumor</div>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>MCP</h2>
+            </section>
+
+            <section>
+                <h4>MCP за&nbsp;минуту</h4>
+                <ul>
+                    <li class="fragment">Anthropic открыла протокол 25&nbsp;ноября 2024</li>
+                    <li class="fragment">С&nbsp;декабря 2025 он&nbsp;в&nbsp;Agentic AI&nbsp;Foundation под Linux Foundation.
+                        Учредители&nbsp;&mdash; Anthropic, Block, OpenAI</li>
+                    <li class="fragment">Тогда&nbsp;же насчитали больше 10&nbsp;000 публичных серверов</li>
+                    <li class="fragment">Спека от&nbsp;28&nbsp;июля 2026: без сессий и&nbsp;рукопожатия
+                        <code>initialize</code>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Цена MCP</h4>
+                <div class="caption">описания инструментов съедают контекст до&nbsp;первого сообщения</div>
+                <div class="bignum-row">
+                    <div>
+                        <div class="bignum">55K</div>
+                        <p>токенов на&nbsp;5&nbsp;серверов и&nbsp;58&nbsp;инструментов. Один Jira&nbsp;&mdash; около&nbsp;17K</p>
+                    </div>
+                    <div class="fragment">
+                        <div class="bignum">134K</div>
+                        <p>столько доходило внутри самой Anthropic</p>
+                    </div>
+                </div>
+                <div class="source">Anthropic, &laquo;Advanced tool use&raquo;, ноябрь 2025</div>
+            </section>
+
+            <section>
+                <img src="./images/memes/context-250k-to-say-hello.jpg" class="r-stretch" alt="мем: четверть контекста на привет">
+                <div class="source">r/ClaudeCode</div>
+            </section>
+
+            <section>
+                <h4>Как не&nbsp;платить за&nbsp;описания</h4>
+                <ul class="compact">
+                    <li class="fragment">Tool search: схемы грузятся по&nbsp;запросу, минус 85% на&nbsp;описаниях</li>
+                    <li class="fragment">В&nbsp;Claude Code он&nbsp;включён по&nbsp;умолчанию</li>
+                    <li class="fragment">Но&nbsp;сам выключается, если <code>ANTHROPIC_BASE_URL</code> смотрит на&nbsp;чужой
+                        прокси. Вернуть: <code>ENABLE_TOOL_SEARCH=true</code></li>
+                    <li class="fragment">Code execution: агент пишет код к&nbsp;инструментам, 150K &rarr; 2K токенов</li>
+                    <li class="fragment">Есть CLI вроде <code>gh</code>&nbsp;&mdash; бери&nbsp;его. У&nbsp;CLI нет списка
+                        инструментов в&nbsp;контексте</li>
+                    <li class="fragment"><code>/context</code> показывает, кто сколько съел</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Топ MCP-серверов</h4>
+                <table class="typical-table">
+                    <thead>
+                        <tr>
+                            <th>Сервер</th>
+                            <th>★</th>
+                            <th>Зачем</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Context7</td>
+                            <td>62,6k</td>
+                            <td>свежая документация библиотек нужной версии</td>
+                        </tr>
+                        <tr>
+                            <td>Chrome DevTools</td>
+                            <td>52,8k</td>
+                            <td>консоль, сеть, производительность, Lighthouse</td>
+                        </tr>
+                        <tr>
+                            <td>codebase-memory</td>
+                            <td>45,6k</td>
+                            <td>граф кода: кто вызывает, что сломается</td>
+                        </tr>
+                        <tr>
+                            <td>Playwright</td>
+                            <td>37,7k</td>
+                            <td>браузер через дерево доступности, без скриншотов</td>
+                        </tr>
+                        <tr>
+                            <td>GitHub</td>
+                            <td>33,3k</td>
+                            <td>issues, PR, Actions</td>
+                        </tr>
+                        <tr>
+                            <td>Serena</td>
+                            <td>29,9k</td>
+                            <td>поиск и&nbsp;правка кода по&nbsp;символам</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h4>Как поставить</h4>
+                <div class="caption"><code>--scope user</code>&nbsp;&mdash; для всех проектов сразу</div>
+                <pre><code class="language-bash" data-trim>
+claude mcp add playwright npx @playwright/mcp@latest
+
+claude mcp add chrome-devtools --scope user npx chrome-devtools-mcp@latest
+
+claude mcp add --scope user --transport http context7 \
+  https://mcp.context7.com/mcp --header "Authorization: Bearer $CONTEXT7_KEY"
+
+claude mcp add --transport http exa https://mcp.exa.ai/mcp
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>serena</h4>
+                <div class="caption">даёт агенту то, что IDE даёт человеку</div>
+                <div class="two-col">
+                    <img src="./images/tools/serena-diagram.svg" alt="схема serena">
+                    <ul>
+                        <li class="fragment">MCP-сервер поверх языковых серверов (LSP)</li>
+                        <li class="fragment"><code>find_symbol</code>, <code>find_referencing_symbols</code>,
+                            <code>replace_symbol_body</code>
+                        </li>
+                        <li class="fragment">Claude по&nbsp;привычке берёт свой Read. Пиши в&nbsp;CLAUDE.md прямо: код
+                            только через serena</li>
+                        <li class="fragment">Авторы просят не&nbsp;ставить её&nbsp;из&nbsp;маркетплейсов</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h4>codebase-memory-mcp</h4>
+                <div class="caption">граф кода на&nbsp;tree-sitter, 162&nbsp;языка</div>
+                <div class="two-col">
+                    <img src="./images/tools/codebase-memory-graph.jpg" alt="граф кода codebase-memory-mcp">
+                    <ul>
+                        <li class="fragment">Отвечает на&nbsp;&laquo;кто вызывает&raquo; и&nbsp;&laquo;что сломается&raquo; без чтения файлов</li>
+                        <li class="fragment">Авторы: 5&nbsp;запросов&nbsp;&mdash; 3,4K токенов против 412K через grep
+                            и&nbsp;read</li>
+                        <li class="fragment">Индекс кода нужен один. Три индекса&nbsp;&mdash; это три описания инструментов
+                            в&nbsp;контексте</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h4>Веб, данные, прод</h4>
+                <ul>
+                    <li class="fragment">Exa, Tavily&nbsp;&mdash; веб-поиск. Firecrawl&nbsp;&mdash; сайт в&nbsp;markdown</li>
+                    <li class="fragment">MCP Toolbox от&nbsp;Google&nbsp;&mdash; Postgres, MySQL, BigQuery</li>
+                    <li class="fragment">Sentry, Grafana&nbsp;&mdash; ошибки и&nbsp;метрики прода</li>
+                    <li class="fragment">Linear, Atlassian, Figma&nbsp;&mdash; официальные удалённые серверы</li>
+                    <li class="fragment">Каталог: punkpeye/awesome-mcp-servers, 95k&nbsp;★</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Хуки</h2>
+            </section>
+
+            <section>
+                <img src="./images/memes/permission-keypad.png" class="r-stretch" alt="мем: клавиатура из трёх кнопок">
+                <div class="source">r/ClaudeAI</div>
+            </section>
+
+            <section>
+                <h4>Хук</h4>
+                <div class="caption">надёжнее просьбы в&nbsp;промпте: его выполняет харнесс</div>
+                <ul>
+                    <li class="fragment">Скрипт на&nbsp;событие: перед вызовом инструмента, после правки, на&nbsp;старте
+                    </li>
+                    <li class="fragment">В&nbsp;справке Claude Code 33&nbsp;события</li>
+                    <li class="fragment">Пять типов: command, http, mcp_tool, prompt, agent</li>
+                    <li class="fragment">Код выхода 2&nbsp;&mdash; действие заблокировано, stderr уходит модели</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>События на&nbsp;каждый день</h4>
+                <ul class="compact">
+                    <li class="fragment"><code>PreToolUse</code>&nbsp;&mdash; до&nbsp;вызова: проверить, запретить,
+                        переписать команду</li>
+                    <li class="fragment"><code>PostToolUse</code>&nbsp;&mdash; после: форматтер, линтер</li>
+                    <li class="fragment"><code>Stop</code>&nbsp;&mdash; агент решил, что всё: проверить тесты</li>
+                    <li class="fragment"><code>SessionStart</code>&nbsp;&mdash; подложить контекст, в&nbsp;том числе после
+                        сжатия</li>
+                    <li class="fragment"><code>Notification</code>&nbsp;&mdash; агент ждёт тебя</li>
+                    <li class="fragment"><code>PreCompact</code>&nbsp;&mdash; сохранить важное перед сжатием</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Форматтер и&nbsp;уведомление</h4>
+                <div class="caption"><code>~/.claude/settings.json</code>, примеры из&nbsp;официального гайда</div>
+                <pre><code class="language-json" data-trim>
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{ "type": "command",
+        "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write" }]
+    }],
+    "Notification": [{
+      "matcher": "",
+      "hooks": [{ "type": "command",
+        "command": "osascript -e 'display notification \"Claude ждёт\"'" }]
+    }]
+  }
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Не&nbsp;отпускать с&nbsp;красными тестами</h4>
+                <div class="caption">без проверки <code>stop_hook_active</code> Claude Code снимет хук после
+                    8&nbsp;блокировок подряд</div>
+                <pre><code class="language-json" data-trim>
+{
+  "hooks": {
+    "Stop": [{
+      "hooks": [{ "type": "command",
+        "command": "jq -e '.stop_hook_active' >/dev/null && exit 0; npm test >/dev/null 2>&1 || { echo 'Тесты красные, чини' >&2; exit 2; }" }]
+    }]
+  }
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <img src="./images/memes/rm-rf-user-profile.jpg" class="r-stretch" alt="скриншот: агент удалил профиль пользователя">
+                <div class="source">r/ClaudeCode, август 2026</div>
+            </section>
+
+            <section>
+                <h4>Защита от&nbsp;rm&nbsp;-rf</h4>
+                <div class="two-col">
+                    <img src="./images/tools/dcg.jpg" alt="destructive command guard">
+                    <ul>
+                        <li class="fragment">dcg, 6,1k&nbsp;★&nbsp;&mdash; ловит <code>git reset --hard</code>,
+                            <code>rm -rf</code> и&nbsp;похожее
+                        </li>
+                        <li class="fragment">cc-safety-net, 1,6k&nbsp;★&nbsp;&mdash; то&nbsp;же для git
+                            и&nbsp;файловой системы</li>
+                        <li class="fragment">hookify&nbsp;&mdash; официальный плагин: &laquo;больше так не&nbsp;делай&raquo; прямо
+                            из&nbsp;разговора превращается в&nbsp;хук</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <img src="./images/memes/claude-bypasses-permissions.png" class="r-stretch" alt="скриншот: Claude обошёл запрет через Bash">
+                <div class="source">Запрет на&nbsp;Edit не&nbsp;закрывает Bash. r/singularity</div>
+            </section>
+
+            <section>
+                <h4>Строка статуса</h4>
+                <div class="caption">контекст, лимиты и&nbsp;инструменты всегда перед глазами</div>
+                <img src="./images/tools/claude-hud.png" class="r-stretch" alt="claude-hud">
+                <div class="source">jarrodwatts/claude-hud, 28k&nbsp;★. Есть ещё ccstatusline, 13k&nbsp;★</div>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Плагины</h2>
+            </section>
+
+            <section>
+                <h4>Плагин&nbsp;&mdash; это коробка</h4>
+                <ul>
+                    <li class="fragment"><code>skills/</code>, <code>agents/</code>, <code>commands/</code></li>
+                    <li class="fragment"><code>hooks/hooks.json</code>, <code>.mcp.json</code>, <code>.lsp.json</code></li>
+                    <li class="fragment"><code>output-styles/</code> и&nbsp;<code>bin/</code> с&nbsp;утилитами для Bash</li>
+                    <li class="fragment">Всё получает префикс: <code>/plugin:skill</code></li>
+                    <li class="fragment">CLAUDE.md внутри плагина не&nbsp;грузится. Инструкции&nbsp;&mdash; в&nbsp;скилл</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Маркетплейсы</h4>
+                <div class="caption">маркетплейс&nbsp;&mdash; репозиторий с&nbsp;файлом
+                    <code>marketplace.json</code>
+                </div>
+                <pre><code class="language-bash" data-trim>
+/plugin marketplace add owner/repo
+/plugin install name@marketplace
+                </code></pre>
+                <ul class="compact">
+                    <li class="fragment">Официальный подключён сам и&nbsp;обновляется сам: 315&nbsp;плагинов, 53&nbsp;из&nbsp;них
+                        от&nbsp;Anthropic</li>
+                    <li class="fragment">В&nbsp;карточке видно, сколько токенов плагин добавит к&nbsp;каждому сообщению</li>
+                    <li class="fragment">Сторонние по&nbsp;умолчанию не&nbsp;обновляются</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Что взять из&nbsp;официального</h4>
+                <ul class="compact">
+                    <li class="fragment"><code>code-review</code>, <code>pr-review-toolkit</code>&nbsp;&mdash; ревью PR
+                        несколькими агентами</li>
+                    <li class="fragment"><code>feature-dev</code>&nbsp;&mdash; фича по&nbsp;шагам, с&nbsp;агентами для
+                        разведки кода</li>
+                    <li class="fragment"><code>security-guidance</code>&nbsp;&mdash; предупреждает об&nbsp;уязвимостях
+                        прямо при правке</li>
+                    <li class="fragment"><code>claude-md-management</code>&nbsp;&mdash; аудит CLAUDE.md</li>
+                    <li class="fragment"><code>hookify</code>, <code>skill-creator</code>, <code>plugin-dev</code>&nbsp;&mdash;
+                        делать своё</li>
+                    <li class="fragment">LSP-плагины для 13&nbsp;языков: <code>pyright-lsp</code>,
+                        <code>typescript-lsp</code>, <code>gopls-lsp</code>&hellip;
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/tools/claude-md-improver.png" class="r-stretch" alt="claude-md-improver">
+                <div class="source">claude-md-management: аудит нашёл, что CLAUDE.md отстал от&nbsp;схемы БД</div>
+            </section>
+
+            <section>
+                <h4>LSP прямо в&nbsp;Claude Code</h4>
+                <ul>
+                    <li class="fragment">Встроенный инструмент LSP: после каждой правки отдаёт ошибки типов</li>
+                    <li class="fragment">Переход к&nbsp;определению и&nbsp;поиск ссылок по&nbsp;символу</li>
+                    <li class="fragment">Включается LSP-плагином, сам языковой сервер ставишь отдельно</li>
+                    <li class="fragment">В&nbsp;облачных сессиях не&nbsp;запускается</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Экономия токенов</h2>
+            </section>
+
+            <section>
+                <img src="./images/memes/tokens-remaining-in-time.png" class="r-stretch" alt="мем: остаток токенов на руке">
+                <div class="source">r/ClaudeAI</div>
+            </section>
+
+            <section>
+                <h4>Куда уходят деньги</h4>
+                <div class="bignum-row">
+                    <div>
+                        <div class="bignum">$13</div>
+                        <p>средний активный день разработчика в&nbsp;Claude Code. У&nbsp;90% меньше $30</p>
+                    </div>
+                    <div class="fragment">
+                        <div class="bignum">вход</div>
+                        <p>основной счёт&nbsp;&mdash; чтение контекста, а&nbsp;не&nbsp;ответы модели</p>
+                    </div>
+                </div>
+                <div class="source">документация Claude Code, раздел Costs; замер JetBrains, июль 2026</div>
+            </section>
+
+            <section>
+                <h4>Бесплатно и&nbsp;встроено</h4>
+                <div class="caption">начинать отсюда</div>
+                <ul class="compact">
+                    <li class="fragment"><code>/clear</code> между задачами. <code>/compact</code>&nbsp;&mdash; сам по&nbsp;себе
+                        большой запрос</li>
+                    <li class="fragment">CLAUDE.md до&nbsp;200&nbsp;строк. Частное&nbsp;&mdash; в&nbsp;<code>.claude/rules/</code>
+                        и&nbsp;скиллы</li>
+                    <li class="fragment">Шумное&nbsp;&mdash; субагенту, можно на&nbsp;модели подешевле</li>
+                    <li class="fragment">Кэш живёт час на&nbsp;подписке и&nbsp;5&nbsp;минут на&nbsp;API. После паузы агент
+                        перечитает всё</li>
+                    <li class="fragment"><code>/context</code> и&nbsp;<code>/usage</code>&nbsp;&mdash; что занимает окно
+                        и&nbsp;сколько стоит</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/memes/opus-to-center-div.jpg" class="r-stretch" alt="мем: топовая модель ради div">
+                <div class="source">r/ProgrammerHumor</div>
+            </section>
+
+            <section>
+                <h4>rtk&nbsp;&mdash; Rust Token Killer</h4>
+                <div class="caption">rtk-ai/rtk, 82k&nbsp;★&nbsp;&mdash; прослойка перед Bash</div>
+                <div class="two-col">
+                    <img src="./images/rtk.png" alt="rtk gain">
+                    <ul>
+                        <li class="fragment">Хук PreToolUse: <code>git status</code> &rarr; <code>rtk git status</code>
+                        </li>
+                        <li class="fragment">Авторы: до&nbsp;90% вывода Bash. И&nbsp;сами пишут, что это не&nbsp;минус&nbsp;90%
+                            счёта</li>
+                        <li class="fragment">Read, Grep и&nbsp;Glob идут мимо: хук видит только Bash</li>
+                        <li class="fragment"><code>rtk init -g</code>, итог&nbsp;&mdash; <code>rtk gain</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h4>context-mode</h4>
+                <div class="caption">mksglu/context-mode, 24k&nbsp;★</div>
+                <div class="two-col">
+                    <img src="./images/tools/context-mode-og.jpg" alt="context-mode">
+                    <ul>
+                        <li class="fragment">Вывод инструментов уходит в&nbsp;песочницу и&nbsp;локальный поиск</li>
+                        <li class="fragment">В&nbsp;контекст попадает только то, что напечатал код</li>
+                        <li class="fragment">Авторы: 315&nbsp;КБ&nbsp;&rarr; 5,4&nbsp;КБ</li>
+                        <li class="fragment">Лицензия ELv2&nbsp;&mdash; исходники открыты, но&nbsp;не&nbsp;OSI</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <img src="./images/memes/caveman-tokens.png" class="r-stretch" alt="мем: Claude говорит как пещерный человек">
+                <div class="source">r/ClaudeAI</div>
+            </section>
+
+            <section>
+                <h4>caveman: заявка и&nbsp;замер</h4>
+                <div class="bignum-row">
+                    <div>
+                        <div class="bignum">&minus;65%</div>
+                        <p>токенов обещает README</p>
+                    </div>
+                    <div class="fragment">
+                        <div class="bignum">&minus;8,5%</div>
+                        <p>выходных токенов намерили JetBrains на&nbsp;86&nbsp;задачах. Качество не&nbsp;изменилось</p>
+                    </div>
+                </div>
+                <p class="fragment source">Adobe Research: сжатый ответ дешевле в&nbsp;1,4&ndash;2,4&nbsp;раза. Сжатый
+                    запрос&nbsp;&mdash; наоборот, дороже</p>
+            </section>
+
+            <section>
+                <h4>ponytail: меньше кода</h4>
+                <img src="./images/tools/ponytail-benchmark.svg" class="r-stretch" alt="бенчмарк ponytail">
+                <div class="source">замер авторов: 12&nbsp;задач, Haiku 4.5. Первые цифры автор сам признал завышенными
+                </div>
+            </section>
+
+            <section>
+                <h4>Память между сессиями</h4>
+                <ul>
+                    <li class="fragment">claude-mem, 95k&nbsp;★&nbsp;&mdash; собирает память хуками. Установщик
+                        предлагает облако, можно отказаться</li>
+                    <li class="fragment">planning-with-files, 27k&nbsp;★&nbsp;&mdash; план в&nbsp;файлах, переживает
+                        падение сессии</li>
+                    <li class="fragment">Встроенная авто-память: MEMORY.md, первые 200&nbsp;строк</li>
+                    <li class="fragment">Память&nbsp;&mdash; тоже контекст. Что в&nbsp;неё легло, то&nbsp;и&nbsp;оплачено</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>ccusage</h4>
+                <div class="caption"><code>npx ccusage@latest</code>&nbsp;&mdash; отчёт по&nbsp;локальным логам</div>
+                <img src="./images/tools/ccusage.jpg" class="r-stretch" alt="ccusage">
+            </section>
+
+            <section>
+                <h4>Что даёт больше всего</h4>
+                <div class="caption">мой рейтинг по&nbsp;источникам, независимых замеров почти нет</div>
+                <ul class="compact">
+                    <li class="fragment">Гигиена контекста: <code>/clear</code>, короткий CLAUDE.md, субагенты</li>
+                    <li class="fragment">Tool search и&nbsp;меньше MCP</li>
+                    <li class="fragment">Сжатие входа: context-mode, rtk</li>
+                    <li class="fragment">Навигация по&nbsp;коду: serena или codebase-memory</li>
+                    <li class="fragment">Стиль ответа: caveman, ponytail</li>
+                    <li class="fragment">Учёт: ccusage, строка статуса. Сам не&nbsp;экономит, но&nbsp;показывает, где течёт
+                    </li>
+                </ul>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Готовые сборки</h2>
+            </section>
+
+            <section>
+                <h4>Три подхода</h4>
+                <ul>
+                    <li class="fragment"><strong>Процесс целиком</strong>: BMAD, spec-kit, GSD, SuperClaude</li>
+                    <li class="fragment"><strong>Кубики</strong>: superpowers, mattpocock, anthropics/skills</li>
+                    <li class="fragment"><strong>Оркестрация агентов</strong>: ruflo, oh-my-claudecode, oh-my-openagent
+                    </li>
+                    <li class="fragment">ECC пытается быть всем сразу</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Топ по&nbsp;звёздам</h4>
+                <table class="typical-table">
+                    <thead>
+                        <tr>
+                            <th>Сборка</th>
+                            <th>★</th>
+                            <th>Суть</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>affaan-m/ECC</td>
+                            <td>270k</td>
+                            <td>&laquo;операционная система&raquo; для харнесса: скиллы, агенты, хуки, память</td>
+                        </tr>
+                        <tr>
+                            <td>github/spec-kit</td>
+                            <td>140k</td>
+                            <td>сначала спека, потом план, задачи и&nbsp;код</td>
+                        </tr>
+                        <tr>
+                            <td>garrytan/gstack</td>
+                            <td>135k</td>
+                            <td>23&nbsp;роли-команды от&nbsp;главы Y&nbsp;Combinator</td>
+                        </tr>
+                        <tr>
+                            <td>ruvnet/ruflo</td>
+                            <td>74k</td>
+                            <td>рои агентов и&nbsp;общая память</td>
+                        </tr>
+                        <tr>
+                            <td>BMAD-METHOD</td>
+                            <td>54k</td>
+                            <td>agile с&nbsp;ролями-агентами</td>
+                        </tr>
+                        <tr>
+                            <td>oh-my-claudecode</td>
+                            <td>39k</td>
+                            <td>команда агентов, режимы autopilot и&nbsp;ralph</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <img src="./images/tools/ecc-hero.png" class="r-stretch" alt="ECC">
+                <div class="source">ECC, бывший everything-claude-code: <code>npx ecc-universal setup</code></div>
+            </section>
+
+            <section>
+                <h4>gstack</h4>
+                <div class="caption">Гарри Тан, глава Y&nbsp;Combinator. Его GitHub до&nbsp;и&nbsp;после агентов</div>
+                <img src="./images/tools/gstack-github-2026.png" class="r-stretch" alt="вклады Гарри Тана на GitHub">
+                <ul class="compact">
+                    <li class="fragment"><code>/office-hours</code>, <code>/plan-ceo-review</code>, <code>/review</code>,
+                        <code>/qa</code>, <code>/ship</code>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>BMAD</h4>
+                <div class="caption">Breakthrough Method for&nbsp;Agile AI-Driven Development</div>
+                <img src="./images/tools/bmad-delivery-loop.svg" class="r-stretch" alt="цикл BMAD">
+            </section>
+
+            <section>
+                <img src="./images/memes/markdown-files-everywhere.jpg" class="r-stretch" alt="мем: лишние markdown-файлы">
+                <div class="source">r/ProgrammerHumor</div>
+            </section>
+
+            <section>
+                <h4>Звёзды не&nbsp;значат &laquo;живой&raquo;</h4>
+                <ul>
+                    <li class="fragment">get-shit-done, 64k&nbsp;★&nbsp;&mdash; в&nbsp;архиве с&nbsp;мая,
+                        переехал в&nbsp;open-gsd/gsd-core</li>
+                    <li class="fragment">Task Master, 28k&nbsp;★&nbsp;&mdash; пять месяцев без коммитов</li>
+                    <li class="fragment">claude-flow, everything-claude-code, oh-my-opencode&nbsp;&mdash; переименованы</li>
+                    <li class="fragment">Перед установкой смотри дату последнего коммита</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Сборка или кубики</h4>
+                <ul>
+                    <li class="fragment">Сборка&nbsp;&mdash; чужой процесс целиком. Выкинуть кусок трудно</li>
+                    <li class="fragment">Покок в&nbsp;README прямо против наборов, которые забирают процесс себе</li>
+                    <li class="fragment">Мой выбор&nbsp;&mdash; кубики. Сборки читаю и&nbsp;утаскиваю идеи</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/memes/ai-pr-rejection-email.png" class="r-stretch" alt="мем: отказ в PR на 4000 строк">
+                <div class="source">r/ClaudeAI</div>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Итого</h2>
+            </section>
+
+            <section>
+                <h4>Собрать за&nbsp;вечер</h4>
+                <ul class="compact">
+                    <li class="fragment">CLAUDE.md до&nbsp;200&nbsp;строк и&nbsp;<code>/clear</code> между задачами</li>
+                    <li class="fragment">rtk и&nbsp;context-mode&nbsp;&mdash; работают молча</li>
+                    <li class="fragment">Context7 и&nbsp;Playwright или Chrome DevTools</li>
+                    <li class="fragment">Два-три скилла: grill-me, superpowers. Не&nbsp;тридцать</li>
+                    <li class="fragment">dcg против <code>rm -rf</code></li>
+                    <li class="fragment">ccusage и&nbsp;<code>/usage</code>&nbsp;&mdash; мерить у&nbsp;себя</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Где следить</h4>
+                <ul>
+                    <li>hesreallyhim/awesome-claude-code</li>
+                    <li>skills.sh</li>
+                    <li>claude.com/marketplace</li>
+                    <li>punkpeye/awesome-mcp-servers</li>
+                    <li>code.claude.com/docs</li>
+                </ul>
+            </section>
+
+            <section data-background-color="#2B2D33" data-reset-breadcrumbs="1">
+                <h3>Спасибо</h3>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/breadcrumbs.js"></script>
+    <script src="plugin/deck.js"></script>
+    <script src="plugin/autoprint.js"></script>
+    <script>
+        const _searchParams = new URLSearchParams(window.location.search);
+        Reveal.initialize({
+            hash: true,
+            controls: false,
+            slideNumber: true,
+            pdfSeparateFragments: _searchParams.has('print-pdf') && _searchParams.has('fragments'),
+            width: 1080,
+            height: 608,
+            plugins: [
+                RevealHighlight,
+                RevealNotes,
+                RevealMenu,
+                RevealBreadcrumbs,
+                RevealDeck,
+                RevealAutoPrint,
+            ],
+        });
+    </script>
+</body>
+
+</html>

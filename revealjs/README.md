@@ -1,4 +1,5 @@
 # Presentations
+- [agent-harness](https://xfenix.github.io/conference-presentations/agent-harness/)
 - [kontur-12.12.25](https://xfenix.github.io/conference-presentations/kontur-12.12.25/)
 
 ### Archived Presentations

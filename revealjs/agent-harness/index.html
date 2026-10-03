@@ -306,6 +306,53 @@
             </section>
 
             <section>
+                <h4>Какие бывают внешние петли</h4>
+                <table class="typical-table">
+                    <thead>
+                        <tr>
+                            <th>Петля</th>
+                            <th>Когда брать</th>
+                            <th>Кто останавливает</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/goal</code></td>
+                            <td>есть проверяемый финал</td>
+                            <td>модель-судья после каждого хода</td>
+                        </tr>
+                        <tr>
+                            <td><code>/loop</code></td>
+                            <td>ждать CI или деплой</td>
+                            <td>ты&nbsp;или конец сессии</td>
+                        </tr>
+                        <tr>
+                            <td>Ralph</td>
+                            <td>долгая работа под тестами</td>
+                            <td>никто, крутится вечно</td>
+                        </tr>
+                        <tr>
+                            <td>Workflows</td>
+                            <td>задача делится на&nbsp;части</td>
+                            <td>скрипт</td>
+                        </tr>
+                        <tr>
+                            <td>Routines, Actions</td>
+                            <td>работа по&nbsp;расписанию</td>
+                            <td>расписание или событие</td>
+                        </tr>
+                        <tr>
+                            <td>Свой агент на&nbsp;SDK</td>
+                            <td>свой продукт</td>
+                            <td>твой код</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="fragment compact">По&nbsp;умолчанию бери <code>/goal</code> или <code>/loop</code>. Свой агент на&nbsp;SDK&nbsp;&mdash; когда петля становится продуктом</p>
+                <div class="source">code.claude.com/docs; ghuntley.com/ralph; github.com/anthropics/claude-code-action</div>
+            </section>
+
+            <section>
                 <h4>Июль 2026: графы?</h4>
                 <ul>
                     <li class="fragment">Питер Штайнбергер: &laquo;Мы&nbsp;ещё про петли или уже про графы?&raquo; Твит посмотрели 3&nbsp;миллиона раз</li>

@@ -1,6 +1,6 @@
 # Мемы: источники
 
-Голоса сняты 2026-10-01 со страниц embed.reddit.com.
+Голоса сняты со страниц embed.reddit.com: первые 11 строк — 2026-10-01, остальные — 2026-10-03.
 
 | файл | тема | заголовок поста | источник | голоса | дата | почему смешно |
 |---|---|---|---|---|---|---|
@@ -15,3 +15,10 @@
 | deslop-skill.jpg | skills | skillWillSurelyHelp | https://www.reddit.com/r/ProgrammerHumor/comments/1rfgevs/ | 974 | 2026-02-26 | Отдельный скилл, чтобы ИИ убирал за ИИ его же код |
 | markdown-files-everywhere.jpg | general agent life | pleaseStopWastingTokensOnMarkdown | https://www.reddit.com/r/ProgrammerHumor/comments/1riufr3/ | 1 643 | 2026-03-02 | Задача сделана, а в репозитории ещё семь лишних .md |
 | context-250k-to-say-hello.jpg | tokens-context | 250K Tokens Just To Say Hello | https://www.reddit.com/r/ClaudeCode/comments/1s42xqg/ | 448 | 2026-03-26 | CLAUDE.md, MCP и скиллы съели четверть контекста ещё до «привет». В шаблоне есть пистолет |
+| developers-2016-vs-2026.png | agent loop | humanInTheLoopWaitingForTheNextButtonPress | https://www.reddit.com/r/ProgrammerHumor/comments/1wja8f4/ | 5 796 | 2026-09-17 | В 2016-м хакер, в 2026-м человек в цикле, который только жмёт кнопку и ждёт |
+| motivate-your-agent.jpg | harness | A good vibe coder motivates their agent. | https://www.reddit.com/r/vibecoding/comments/1wkpdfc/ | 1 756 | 2026-09-19 | Prompt engineering уровня «дыши, не галлюцинируй, ты хороший ИИ» |
+| tokenmaxing-not-successmaxing.jpg | tokens-context | tokenmaxing and successmaxing not the same | https://www.reddit.com/r/ClaudeCode/comments/1v0tw4s/ | 1 867 | 2026-07-19 | 18 млрд токенов потрачено, а успеха как не было |
+| python-imports-real-languages.jpg | python | pipInstallTheRealStuff | https://www.reddit.com/r/ProgrammerHumor/comments/1wazzo3/ | 5 271 | 2026-09-08 | Python — язык, чтобы импортировать то, что написано на настоящих языках |
+| it-changed-the-tests.png | agent loop | itChangedTheTests | https://www.reddit.com/r/ProgrammerHumor/comments/1utbf2u/ | 7 532 | 2026-07-11 | Тесты зелёные, потому что агент переписал сами тесты |
+| python-interpreter-this-is-fine.jpg | python | pythonInterpreterBeLike | https://www.reddit.com/r/ProgrammerHumor/comments/1w8y9n2/ | 177 | 2026-09-06 | Кругом ошибки типов, а интерпретатор спокойно пьёт кофе — зачем нужны mypy и ruff |
+| never-go-full-agentic.jpg | harness | neverGoFullAgentic | https://www.reddit.com/r/ProgrammerHumor/comments/1vngvel/ | 1 336 | 2026-08-13 | Отсылка к «Солдатам неудачи»: полной автономии агенту не давай |

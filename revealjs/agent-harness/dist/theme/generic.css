@@ -3,12 +3,12 @@
  *
  * By Hakim El Hattab, http://hakim.se
  */
-@import url("./fonts/manrope/manrope.css");
-@import url("./fonts/golos/golos.css");
-@import url("./fonts/sourcecodepro/sourcecodepro.css");
+@import url("./fonts/unbounded/unbounded.css");
+@import url("./fonts/onest/onest.css");
+@import url("./fonts/jetbrainsmono/jetbrainsmono.css");
 
 body {
-    font-family: 'Golos Text', sans-serif;
+    font-family: 'Onest', sans-serif;
 }
 
 section.has-dark-background,
@@ -26,12 +26,12 @@ section.has-dark-background h6 {
  *********************************************/
 :root {
     --r-background-color: #F6F3E9;
-    --r-main-font: 'Golos Text', Helvetica, sans-serif;
+    --r-main-font: 'Onest', Helvetica, sans-serif;
     --r-main-font-size: 32px;
     --r-main-color: #2B2D33;
     --r-block-margin: 20px;
     --r-heading-margin: 0 0 40px 0;
-    --r-heading-font: 'Manrope', Helvetica, sans-serif;
+    --r-heading-font: 'Unbounded', Helvetica, sans-serif;
     --r-heading-color: #2B2D33;
     --r-heading-line-height: 1.2;
     --r-heading-letter-spacing: normal;
@@ -43,7 +43,7 @@ section.has-dark-background h6 {
     --r-heading2-size: 1.6em;
     --r-heading3-size: 1.3em;
     --r-heading4-size: 1em;
-    --r-code-font: 'Source Code Pro', monospace;
+    --r-code-font: 'JetBrains Mono', monospace;
     --r-link-color: #2D4691;
     --r-link-color-dark: #1E3064;
     --r-link-color-hover: #5A82FA;
@@ -383,21 +383,24 @@ section.has-dark-background h6 {
 
 .reveal ul li {
     list-style-type: none;
-    padding-left: 50px;
+    padding-left: 1.05em;
     position: relative;
-    line-height: 1.12;
+    line-height: 1.2;
 }
 
 .reveal ul li+li {
-    margin-top: 16px;
+    margin-top: 0.5em;
 }
 
 .reveal ul li::before {
-    display: inline-block;
-    content: "\2014";
+    content: "";
     position: absolute;
     left: 0;
-    top: -0.1em;
+    top: 0.55em;
+    width: 0.55em;
+    height: 0.12em;
+    border-radius: 0.06em;
+    background: var(--r-link-color);
 }
 
 

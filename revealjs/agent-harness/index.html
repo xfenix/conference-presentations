@@ -418,6 +418,18 @@
             </section>
 
             <section>
+                <h4>Контекст гниёт</h4>
+                <div class="caption">промпт, правила, скиллы, MCP и&nbsp;вывод команд лежат в&nbsp;одном окне и&nbsp;оплачиваются на&nbsp;каждом шаге</div>
+                <ul>
+                    <li class="fragment">Context rot: чем больше токенов в&nbsp;окне, тем хуже модель вспоминает, что в&nbsp;нём лежит</li>
+                    <li class="fragment">Lost in&nbsp;the middle: середину длинного контекста модель видит хуже, чем начало и&nbsp;конец</li>
+                    <li class="fragment">Правил тоже бывает много: при 500 инструкциях лучшие модели выполняют 68% из&nbsp;них</li>
+                    <li class="fragment">Мало контекста&nbsp;&mdash; агент гадает. Много&nbsp;&mdash; забывает и&nbsp;путается. Попасть посередине очень трудно</li>
+                </ul>
+                <div class="source">Anthropic, сентябрь 2025; Liu и&nbsp;др., arXiv 2307.03172; IFScale, arXiv 2507.11538</div>
+            </section>
+
+            <section>
                 <h4>Экономия словами: что написать в&nbsp;AGENTS.md</h4>
                 <ul>
                     <li class="fragment">Не&nbsp;читай файлы и&nbsp;ответы API целиком. Разбирай их&nbsp;скриптом и&nbsp;смотри только вывод</li>

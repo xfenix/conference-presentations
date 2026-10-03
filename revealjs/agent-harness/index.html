@@ -101,6 +101,14 @@
             font-variant-ligatures: none;
         }
 
+        .reveal pre.code-tall {
+            font-size: 0.53em;
+        }
+
+        .reveal pre.code-tall code {
+            max-height: 540px;
+        }
+
         .loops {
             width: 100%;
             height: auto;
@@ -144,6 +152,30 @@
             font-weight: 600;
         }
 
+        .test-shapes {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+        }
+
+        .test-shapes .band {
+            fill: #E3DCCB;
+        }
+
+        .test-shapes .band.hot {
+            fill: #B06BB0;
+        }
+
+        .test-shapes text {
+            fill: #2B2D33;
+            font-size: 24px;
+            text-anchor: middle;
+        }
+
+        .test-shapes text.label {
+            font-weight: 600;
+        }
+
         .reveal .links {
             font-size: 0.75em;
             color: #fff;
@@ -165,100 +197,75 @@
             </section>
 
             <section>
-                <h4>Словарь</h4>
-                <div class="caption">чтобы дальше говорить об&nbsp;одном и&nbsp;том&nbsp;же</div>
-                <ul>
-                    <li class="fragment"><strong>Агентный цикл</strong>&nbsp;&mdash; модель зовёт инструмент, результат
-                        возвращается в&nbsp;модель, и&nbsp;так по&nbsp;кругу</li>
-                    <li class="fragment"><strong>Контекст</strong>&nbsp;&mdash; всё, что модель видит за&nbsp;один запрос.
-                        Окно&nbsp;&mdash; его предел</li>
-                    <li class="fragment"><strong>Харнесс</strong>&nbsp;&mdash; весь код вокруг модели, который крутит цикл</li>
-                    <li class="fragment"><strong>Loop engineering</strong>&nbsp;&mdash; система, которая сама запускает
-                        агента и&nbsp;сама решает, когда хватит</li>
-                    <li class="fragment"><strong>Скилл</strong>&nbsp;&mdash; инструкция для агента, <strong>MCP</strong>&nbsp;&mdash;
-                        вход в&nbsp;Jira и&nbsp;GitHub, <strong>хук</strong>&nbsp;&mdash; скрипт на&nbsp;событие</li>
-                </ul>
-            </section>
-
-            <section>
-                <img src="./images/memes/coworkers-like-claude.png" class="r-stretch" alt="мем: отвечаю коллегам как Claude">
-                <div class="source">r/ClaudeAI, июнь 2026</div>
-            </section>
-
-            <section>
                 <h4>План</h4>
-                <div class="caption">примеры на&nbsp;Claude Code. Скиллы и&nbsp;MCP понимают и&nbsp;Codex, Cursor,
-                    OpenCode</div>
+                <div class="caption">примеры на&nbsp;Claude Code. AGENTS.md, скиллы и&nbsp;MCP понимают и&nbsp;Codex, Cursor, opencode</div>
                 <ul>
-                    <li>Петля</li>
-                    <li>Харнесс: скиллы, MCP, хуки</li>
-                    <li>Контекст и&nbsp;токены</li>
-                    <li>При чём тут Python: петлю, хуки и&nbsp;проверки пишут на&nbsp;нём</li>
+                    <li>Как мы&nbsp;дошли от&nbsp;промптов до&nbsp;петель</li>
+                    <li>Харнесс на&nbsp;практике: скиллы, хуки, контекст</li>
+                    <li>Workflows: петля внутри Claude Code</li>
+                    <li>При чём тут Python: код до&nbsp;и&nbsp;после</li>
                 </ul>
             </section>
 
             <section data-background-color="#B06BB0">
-                <h2>Петля</h2>
+                <h2>От&nbsp;промптов к&nbsp;петлям</h2>
             </section>
 
             <section>
-                <h4>Агентный цикл&nbsp;&mdash; это while</h4>
-                <div class="caption">упрощённо, по&nbsp;описанию Runner в&nbsp;OpenAI Agents SDK</div>
-                <pre><code class="language-python" data-trim>
-def run(task, tools, max_turns=10):
-    messages = [task]
-    for _ in range(max_turns):
-        reply = llm(messages, tools)
-        messages.append(reply)
-        if not reply.tool_calls:
-            return reply.text
-        for call in reply.tool_calls:
-            messages.append(tools[call.name](**call.args))
-    raise MaxTurnsExceeded
-                </code></pre>
-            </section>
-
-            <section>
-                <h4>&laquo;Я&nbsp;пишу петли&raquo;</h4>
+                <h4>2022&ndash;2024: от&nbsp;промптов к&nbsp;инструментам</h4>
                 <ul>
-                    <li class="fragment">&laquo;Я&nbsp;больше не&nbsp;пишу промпты Claude. Моя работа&nbsp;&mdash; писать
-                        петли&raquo;&nbsp;&mdash; Борис Черный, создатель Claude Code</li>
-                    <li class="fragment">&laquo;Хватит писать промпты агентам. Строй петли, которые пишут их&nbsp;за&nbsp;тебя&raquo;&nbsp;&mdash;
-                        Питер Штайнбергер, автор OpenClaw</li>
-                    <li class="fragment">Июнь 2026: цитаты разошлись по&nbsp;сети, у&nbsp;приёма появилось имя</li>
+                    <li class="fragment">30&nbsp;ноября 2022 выходит ChatGPT. Работа сводится к&nbsp;тому, чтобы удачно спросить</li>
+                    <li class="fragment">Карпатый, январь 2023: &laquo;Самый модный язык программирования&nbsp;&mdash; английский&raquo;</li>
+                    <li class="fragment">В&nbsp;2023 году модели OpenAI научились вызывать функции, в&nbsp;2024 году&nbsp;&mdash; Claude</li>
+                    <li class="fragment">Anthropic, декабрь 2024: агент&nbsp;&mdash; это модель, которая в&nbsp;цикле зовёт инструменты</li>
                 </ul>
-                <div class="source">Addy Osmani, &laquo;Loop Engineering&raquo;, 8&nbsp;июня 2026</div>
+                <div class="source">openai.com; x.com/karpathy; anthropic.com</div>
             </section>
 
             <section>
-                <h4>Ralph: петля в&nbsp;одну строку</h4>
-                <div class="caption">Джеффри Хантли, июль 2025</div>
-                <pre><code class="language-bash" data-trim>
-while :; do cat PROMPT.md | claude-code ; done
-                </code></pre>
-                <ul class="compact">
-                    <li class="fragment">Агент работает, выходит, его запускают снова с&nbsp;тем&nbsp;же заданием</li>
-                    <li class="fragment">Память&nbsp;&mdash; не&nbsp;в&nbsp;контексте, а&nbsp;в&nbsp;файлах репозитория</li>
-                </ul>
-            </section>
-
-            <section>
-                <h4>Петля&nbsp;&mdash; ступень над харнессом</h4>
-                <div class="caption">что именно мы&nbsp;проектируем</div>
+                <h4>2025: агент переезжает в&nbsp;терминал</h4>
                 <ul>
-                    <li class="fragment"><strong>Промпт</strong>&nbsp;&mdash; как сформулировать просьбу</li>
-                    <li class="fragment"><strong>Контекст</strong>&nbsp;&mdash; что модель видит за&nbsp;один запрос</li>
-                    <li class="fragment"><strong>Харнесс</strong>&nbsp;&mdash; инструменты, правила и&nbsp;проверки вокруг
-                        модели</li>
-                    <li class="fragment"><strong>Петля</strong>&nbsp;&mdash; кто запускает харнесс и&nbsp;когда его
-                        останавливает</li>
+                    <li class="fragment">Карпатый, февраль 2025, придумывает вайб-кодинг: &laquo;отдаёшься вайбу и&nbsp;забываешь, что код вообще существует&raquo;</li>
+                    <li class="fragment">В&nbsp;феврале выходит Claude Code, в&nbsp;мае он&nbsp;доступен всем</li>
+                    <li class="fragment">Агент сам читает файлы, запускает тесты и&nbsp;правит код</li>
                 </ul>
-                <div class="source">arXiv 2608.21884, август 2026</div>
+                <div class="source">x.com/karpathy; anthropic.com</div>
+            </section>
+
+            <section>
+                <h4>2025: главное&nbsp;&mdash; контекст</h4>
+                <ul>
+                    <li class="fragment">Тоби Лютке, глава Shopify, июнь 2025: термин context engineering ему нравится больше, чем prompt engineering</li>
+                    <li class="fragment">Карпатый: это искусство положить в&nbsp;окно модели ровно то, что нужно для следующего шага</li>
+                    <li class="fragment">Anthropic, сентябрь 2025, называет это естественным продолжением работы с&nbsp;промптами</li>
+                </ul>
+                <div class="source">x.com/tobi; x.com/karpathy; anthropic.com</div>
             </section>
 
             <section>
                 <img src="./images/memes/developers-2016-vs-2026.png" class="r-stretch" alt="мем: разработчик в 2016 и в 2026">
                 <div class="source">r/ProgrammerHumor, сентябрь 2026</div>
+            </section>
+
+            <section>
+                <h4>Февраль 2026: харнесс</h4>
+                <ul>
+                    <li class="fragment">Митчелл Хашимото: агент ошибся&nbsp;&mdash; доработай среду, чтобы эта ошибка больше не&nbsp;случилась</li>
+                    <li class="fragment">Он&nbsp;называет это harness engineering. Через неделю о&nbsp;том&nbsp;же пишет OpenAI</li>
+                    <li class="fragment">LangChain, март 2026: всё, что не&nbsp;модель, и&nbsp;есть харнесс</li>
+                </ul>
+                <div class="source">mitchellh.com; openai.com; blog.langchain.com</div>
+            </section>
+
+            <section>
+                <h4>Июнь 2026: петли</h4>
+                <ul>
+                    <li class="fragment">Борис Черный, создатель Claude Code: &laquo;Я&nbsp;больше не&nbsp;пишу промпты. Моя работа&nbsp;&mdash; писать петли&raquo;</li>
+                    <li class="fragment">Петля сама запускает агента и&nbsp;сама решает, когда хватит</li>
+                    <li class="fragment">Эдди Османи даёт приёму имя loop engineering</li>
+                    <li class="fragment">Её предок&nbsp;&mdash; скрипт Ralph 2025 года в&nbsp;одну строку: <code>while :; do cat PROMPT.md | claude-code; done</code></li>
+                </ul>
+                <div class="source">addyo.substack.com; ghuntley.com/ralph</div>
             </section>
 
             <section>
@@ -295,55 +302,27 @@ while :; do cat PROMPT.md | claude-code ; done
             </section>
 
             <section>
-                <h4>Что нужно внешней петле</h4>
+                <h4>Июль 2026: графы?</h4>
                 <ul>
-                    <li class="fragment">Запуск по&nbsp;расписанию или событию в&nbsp;репозитории</li>
-                    <li class="fragment">Условие остановки, которое проверяет машина: тесты, линтер</li>
-                    <li class="fragment">Файлы состояния между запусками</li>
-                    <li class="fragment">Агент-проверяющий и&nbsp;бюджет токенов</li>
-                    <li class="fragment">Точка, где зовут человека</li>
+                    <li class="fragment">Питер Штайнбергер: &laquo;Мы&nbsp;ещё про петли или уже про графы?&raquo; Твит посмотрели 3&nbsp;миллиона раз</li>
+                    <li class="fragment">Граф&nbsp;&mdash; несколько агентов и&nbsp;шагов, связанных между собой. Петля&nbsp;&mdash; самый простой граф</li>
+                    <li class="fragment">LangChain отвечает: идея не&nbsp;новая, новое только имя</li>
                 </ul>
-                <div class="source">arXiv 2608.21884, август 2026: обзор публикаций о&nbsp;loop engineering</div>
-            </section>
-
-            <section>
-                <h4>Мода или практика</h4>
-                <div class="bignum-row">
-                    <div>
-                        <div class="bignum">217</div>
-                        <p>репозиториев с&nbsp;работающими петлями нашли среди 36&nbsp;710</p>
-                    </div>
-                    <div class="fragment">
-                        <div class="bignum">?</div>
-                        <p>сколько команд так работают, никто не&nbsp;мерил. Эндрю Ын: &laquo;модное словечко&raquo;</p>
-                    </div>
-                </div>
-                <div class="source">arXiv 2608.21884; The Batch, 26&nbsp;июня 2026</div>
+                <div class="source">x.com/steipete; langchain.com, 22&nbsp;июля 2026</div>
             </section>
 
             <section data-background-color="#B06BB0">
-                <h2>Харнесс</h2>
+                <h2>Харнесс на&nbsp;практике</h2>
             </section>
 
             <section>
-                <h4>Агент = модель + харнесс</h4>
+                <h4>AGENTS.md: один файл для всех агентов</h4>
                 <ul>
-                    <li class="fragment">&laquo;Всё, что не&nbsp;модель,&nbsp;&mdash; харнесс&raquo;&nbsp;&mdash; LangChain</li>
-                    <li class="fragment">Код, настройки, правила запуска. Всё, кроме самой модели</li>
-                    <li class="fragment">Митчелл Хашимото: агент ошибся&nbsp;&mdash; доработай среду, чтобы ошибка
-                        не&nbsp;повторилась</li>
+                    <li class="fragment">Открытый формат инструкций для агентов. Его используют больше 60&nbsp;тысяч open source проектов</li>
+                    <li class="fragment">Его читают Codex, Cursor, Gemini CLI, Copilot, opencode, Aider, Zed</li>
+                    <li class="fragment">В&nbsp;Claude Code подключи его строкой <code>@AGENTS.md</code> в&nbsp;CLAUDE.md</li>
                 </ul>
-                <div class="source">LangChain, март 2026; mitchellh.com, февраль 2026</div>
-            </section>
-
-            <section>
-                <h4>Из&nbsp;чего харнесс</h4>
-                <ul>
-                    <li class="fragment"><strong>Знания</strong>&nbsp;&mdash; CLAUDE.md и&nbsp;скиллы</li>
-                    <li class="fragment"><strong>Руки</strong>&nbsp;&mdash; инструменты и&nbsp;MCP</li>
-                    <li class="fragment"><strong>Контроль</strong>&nbsp;&mdash; хуки: проверки, которые запускает харнесс,
-                        а&nbsp;не&nbsp;модель</li>
-                </ul>
+                <div class="source">agents.md, 3&nbsp;октября 2026</div>
             </section>
 
             <section>
@@ -356,57 +335,27 @@ while :; do cat PROMPT.md | claude-code ; done
             </section>
 
             <section>
-                <h4>Скилл изнутри</h4>
-                <div class="caption">открытый стандарт agentskills.io</div>
+                <h4>grill-me: сначала допрос, потом код</h4>
+                <div class="caption">скилл&nbsp;&mdash; папка с&nbsp;инструкцией. Агент видит только её&nbsp;описание и&nbsp;читает целиком, когда она нужна</div>
                 <ul>
-                    <li class="fragment">Папка с&nbsp;файлом <code>SKILL.md</code>: шапка <code>name</code>
-                        и&nbsp;<code>description</code>, ниже инструкция</li>
-                    <li class="fragment">На&nbsp;старте агент видит только описание&nbsp;&mdash; около 100&nbsp;токенов
-                        на&nbsp;скилл</li>
-                    <li class="fragment">Остальное агент читает, только когда скилл нужен. Стандарт советует до&nbsp;500&nbsp;строк
-                    </li>
-                    <li class="fragment">Папки <code>scripts/</code>, <code>references/</code>, <code>assets/</code>&nbsp;&mdash;
-                        тоже по&nbsp;запросу</li>
-                    <li class="fragment">Один и&nbsp;тот&nbsp;же скилл работает в&nbsp;разных агентах</li>
+                    <li class="fragment">Агент расспрашивает тебя о&nbsp;плане, пока не&nbsp;закроет все развилки</li>
+                    <li class="fragment">Так лечится главная беда: агент понял задачу не&nbsp;так, как ты</li>
+                    <li class="fragment">Самый популярный скилл Мэтта Покока: 1,3&nbsp;миллиона установок</li>
+                    <li class="fragment">Рядом лежат <code>diagnosing-bugs</code> и&nbsp;<code>handoff</code>: поиск бага через тест и&nbsp;передача работы другому агенту</li>
+                    <li class="fragment">Ставится в&nbsp;любой агент: <code>npx skills add mattpocock/skills</code></li>
                 </ul>
+                <div class="source">github.com/mattpocock/skills; skills.sh</div>
             </section>
 
             <section>
-                <h4>Пример скилла</h4>
-                <div class="caption">от&nbsp;description зависит, позовёт агент скилл или нет</div>
-                <pre><code class="language-markdown" data-trim>
----
-name: release-notes
-description: Собирает release notes из коммитов с последнего тега.
-  Звать, когда просят changelog или «что нового в релизе».
----
-
-1. Найди последний тег: `git describe --tags --abbrev=0`
-2. Возьми коммиты после него: `git log <тег>..HEAD --oneline`
-3. Разложи по группам: фичи, фиксы, прочее
-4. Технические коммиты (merge, bump, ci) выкинь
-                </code></pre>
-            </section>
-
-            <section data-background-color="#2B2D33">
-                <h3>MCP</h3>
-            </section>
-
-            <section>
-                <h4>MCP стоит места</h4>
-                <div class="caption">описания инструментов занимают память модели ещё до&nbsp;вашего вопроса</div>
-                <div class="bignum-row">
-                    <div>
-                        <div class="bignum">55K</div>
-                        <p>токенов на&nbsp;5&nbsp;серверов и&nbsp;58&nbsp;инструментов. Один Jira&nbsp;&mdash; около&nbsp;17K</p>
-                    </div>
-                    <div class="fragment">
-                        <div class="bignum">&minus;85%</div>
-                        <p>если агент подгружает описание, только когда инструмент нужен. В&nbsp;Claude Code так по&nbsp;умолчанию</p>
-                    </div>
-                </div>
-                <p class="fragment">Есть CLI, например <code>gh</code>,&nbsp;&mdash; дай агенту его: описание CLI не&nbsp;висит в&nbsp;контексте</p>
-                <div class="source">Anthropic, &laquo;Advanced tool use&raquo;, ноябрь 2025</div>
+                <h4>superpowers или Покок</h4>
+                <ul>
+                    <li class="fragment">superpowers, 295k&nbsp;★, даёт весь процесс сразу: идея, план, тесты, субагенты, проверка</li>
+                    <li class="fragment">Скиллы Покока, 275k&nbsp;★, маленькие. Ты&nbsp;сам решаешь, какие взять и&nbsp;как их&nbsp;поправить</li>
+                    <li class="fragment">Покок: готовые процессы вроде GSD и&nbsp;BMAD забирают у&nbsp;тебя контроль, и&nbsp;баги в&nbsp;них трудно чинить</li>
+                    <li class="fragment">Мы&nbsp;выбираем Покока: так процесс остаётся под нашим контролем</li>
+                </ul>
+                <div class="source">README obra/superpowers и&nbsp;mattpocock/skills</div>
             </section>
 
             <section data-background-color="#2B2D33">
@@ -419,19 +368,8 @@ description: Собирает release notes из коммитов с после�
             </section>
 
             <section>
-                <h4>Хук</h4>
-                <div class="caption">надёжнее просьбы в&nbsp;промпте: его выполняет харнесс</div>
-                <ul>
-                    <li class="fragment">Скрипт на&nbsp;событие: перед вызовом инструмента, после правки, на&nbsp;старте
-                    </li>
-                    <li class="fragment">В&nbsp;справке Claude Code 33&nbsp;события</li>
-                    <li class="fragment">Код выхода 2&nbsp;&mdash; действие запрещено, текст ошибки получает модель</li>
-                </ul>
-            </section>
-
-            <section>
                 <h4>Хук на&nbsp;Python</h4>
-                <div class="caption">после каждой правки: код выхода 2&nbsp;&mdash; агент видит ошибки ruff</div>
+                <div class="caption">харнесс запускает этот хук после каждой правки. Если скрипт вернул код 2, агент видит ошибки ruff и&nbsp;чинит их</div>
                 <pre><code class="language-python" data-trim>
 #!/usr/bin/env -S uv run --script
 # /// script
@@ -452,8 +390,7 @@ if path.endswith(".py"):
 
             <section>
                 <h4>Стоп-условие&nbsp;&mdash; pytest</h4>
-                <div class="caption">агент не&nbsp;закончит, пока тесты красные. <code>stop_hook_active</code>&nbsp;&mdash;
-                    защита от&nbsp;вечной петли</div>
+                <div class="caption">агент не&nbsp;сможет закончить, пока тесты красные. Флаг <code>stop_hook_active</code> не&nbsp;даёт хуку зациклиться</div>
                 <pre><code class="language-json" data-trim>
 {
   "hooks": {
@@ -468,8 +405,19 @@ if path.endswith(".py"):
             </section>
 
             <section>
-                <img src="./images/memes/it-changed-the-tests.png" class="r-stretch" alt="мем: агент поменял тесты">
-                <div class="source">r/ProgrammerHumor, июль 2026</div>
+                <h4>Хуки опасны</h4>
+                <div class="caption">хук запускается сам: на&nbsp;каждое событие и&nbsp;в&nbsp;каждой сессии</div>
+                <ul>
+                    <li class="fragment">У&nbsp;меня был скилл, который на&nbsp;старте каждой сессии индексировал весь код через rg</li>
+                    <li class="fragment">rg зависал, а&nbsp;новые сессии запускали его снова и&nbsp;снова</li>
+                    <li class="fragment">Память мака кончилась, Spotlight и&nbsp;Касперский начали падать</li>
+                    <li class="fragment">Ставь хуку таймаут и&nbsp;узкую цель. Проверяй его на&nbsp;самом большом репозитории</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./images/memes/rm-rf-user-profile.jpg" class="r-stretch" alt="скриншот: агент удалил профиль пользователя">
+                <div class="source">r/ClaudeCode, август 2026</div>
             </section>
 
             <section data-background-color="#B06BB0">
@@ -492,33 +440,58 @@ if path.endswith(".py"):
             </section>
 
             <section>
-                <h4>Бесплатно и&nbsp;встроено</h4>
-                <div class="caption">начинать отсюда</div>
-                <ul class="compact">
-                    <li class="fragment"><code>/clear</code> между задачами. <code>/compact</code>&nbsp;&mdash; сам по&nbsp;себе
-                        большой запрос</li>
-                    <li class="fragment">CLAUDE.md до&nbsp;200&nbsp;строк. Редкие правила&nbsp;&mdash; в&nbsp;<code>.claude/rules/</code>
-                        и&nbsp;скиллы</li>
-                    <li class="fragment">Шумную задачу&nbsp;&mdash; агенту-помощнику: в&nbsp;разговор вернётся только итог</li>
-                    <li class="fragment">Повтор дешевле, пока жив кэш: час на&nbsp;подписке, 5&nbsp;минут при оплате по&nbsp;токенам</li>
-                    <li class="fragment"><code>/context</code> и&nbsp;<code>/usage</code>&nbsp;&mdash; что занимает окно
-                        и&nbsp;сколько стоит</li>
-                </ul>
+                <h4>context-mode</h4>
+                <div class="caption">mksglu/context-mode, 25k&nbsp;★</div>
+                <div class="two-col">
+                    <img src="./images/tools/context-mode-og.jpg" alt="context-mode">
+                    <ul>
+                        <li class="fragment">Длинный вывод команд остаётся в&nbsp;песочнице. Агенту уходит только итог</li>
+                        <li class="fragment">Авторы: 315&nbsp;КБ превращаются в&nbsp;5,4&nbsp;КБ</li>
+                        <li class="fragment">Работает как MCP-сервер и&nbsp;набор хуков</li>
+                    </ul>
+                </div>
             </section>
 
             <section>
-                <h4>Сжать то, что читает агент</h4>
+                <h4>rtk</h4>
+                <div class="caption">rtk-ai/rtk, 82k&nbsp;★, написан на&nbsp;Rust</div>
                 <div class="two-col">
                     <img src="./images/rtk.png" alt="rtk gain">
                     <ul>
-                        <li class="fragment">rtk, 82k&nbsp;★: хук подменяет <code>git status</code>
-                            на&nbsp;<code>rtk git status</code> и&nbsp;режет вывод</li>
-                        <li class="fragment">Авторы обещают до&nbsp;&minus;90% вывода Bash. Счёт падает меньше&nbsp;&mdash; пишут
-                            они&nbsp;же</li>
-                        <li class="fragment">context-mode, 24k&nbsp;★: длинный вывод остаётся снаружи, агенту&nbsp;&mdash;
-                            только итог. 315&nbsp;КБ&nbsp;&rarr; 5,4&nbsp;КБ</li>
+                        <li class="fragment">Хук незаметно меняет <code>git status</code> на&nbsp;<code>rtk git status</code> и&nbsp;сокращает вывод</li>
+                        <li class="fragment">Авторы обещают сжать вывод Bash до&nbsp;90%. Но&nbsp;честно пишут, что счёт падает меньше</li>
+                        <li class="fragment">Read, Grep и&nbsp;Glob идут мимо: хук видит только Bash</li>
                     </ul>
                 </div>
+            </section>
+
+            <section>
+                <h4>serena: навигация по&nbsp;коду вместо grep</h4>
+                <div class="caption">oraios/serena, 30k&nbsp;★. MCP-сервер поверх языковых серверов, как в&nbsp;IDE</div>
+                <div class="two-col">
+                    <img src="./images/tools/serena-diagram.svg" alt="схема serena">
+                    <ul>
+                        <li class="fragment">grep находит строки, а&nbsp;потом агент читает файлы целиком</li>
+                        <li class="fragment">serena ищет по&nbsp;символам: где функция, кто её&nbsp;вызывает, как заменить её&nbsp;тело</li>
+                        <li class="fragment">Агент читает только нужный кусок кода, а&nbsp;не&nbsp;весь файл</li>
+                        <li class="fragment">По&nbsp;привычке агент тянется к&nbsp;grep. Пропиши в&nbsp;AGENTS.md, что код ищется через serena</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h4>caveman: агент говорит как пещерный человек</h4>
+                <div class="bignum-row">
+                    <div>
+                        <div class="bignum">&minus;65%</div>
+                        <p>токенов обещает README</p>
+                    </div>
+                    <div class="fragment">
+                        <div class="bignum">&minus;8,5%</div>
+                        <p>выходных токенов в&nbsp;лучшем случае намерили JetBrains. Качество не&nbsp;изменилось</p>
+                    </div>
+                </div>
+                <div class="source">JuliusBrussee/caveman, 109k&nbsp;★; блог JetBrains, июль 2026</div>
             </section>
 
             <section>
@@ -526,60 +499,51 @@ if path.endswith(".py"):
                 <div class="source">r/ClaudeCode, июль 2026</div>
             </section>
 
+            <section>
+                <h4>ponytail: агент пишет меньше кода</h4>
+                <div class="caption">на&nbsp;12&nbsp;задачах: на&nbsp;54% меньше строк и&nbsp;на&nbsp;22% меньше токенов. Замер автора, Haiku 4.5</div>
+                <img src="./images/tools/ponytail-benchmark.svg" class="r-stretch" alt="бенчмарк ponytail">
+                <div class="source">DietrichGebert/ponytail, 152k&nbsp;★</div>
+            </section>
+
+            <section data-background-color="#B06BB0">
+                <h2>Workflows</h2>
+            </section>
+
+            <section>
+                <h4>Workflows: петля внутри Claude Code</h4>
+                <ul>
+                    <li class="fragment">Вышли 28&nbsp;мая 2026. Скрипт раздаёт задачи субагентам и&nbsp;собирает их&nbsp;ответы</li>
+                    <li class="fragment">Чтобы запустить, напиши в&nbsp;запросе слово <code>ultracode</code> или попроси &laquo;use a&nbsp;workflow&raquo;</li>
+                    <li class="fragment">Удачный workflow сохрани в&nbsp;<code>.claude/workflows/</code> и&nbsp;вызывай командой <code>/имя</code></li>
+                </ul>
+                <div class="source">code.claude.com/docs; CHANGELOG Claude Code 2.1.154</div>
+            </section>
+
+            <section>
+                <h4>Зачем Workflows</h4>
+                <ul>
+                    <li class="fragment">Обычный агент держит план в&nbsp;своём контексте. В&nbsp;workflow план записан в&nbsp;коде и&nbsp;не&nbsp;теряется</li>
+                    <li class="fragment">Bash-петля вроде Ralph гоняет одну задачу по&nbsp;кругу. Workflow раздаёт разные задачи и&nbsp;сверяет ответы</li>
+                    <li class="fragment">Субагенты работают параллельно, а&nbsp;в&nbsp;разговор возвращается только итог</li>
+                    <li class="fragment">Минусы: это дорого, и&nbsp;посреди запуска нельзя ничего спросить у&nbsp;человека</li>
+                </ul>
+                <div class="source">code.claude.com/docs; сравнение с&nbsp;Ralph&nbsp;&mdash; наш вывод</div>
+            </section>
+
             <section data-background-color="#B06BB0">
                 <h2>При чём тут Python</h2>
             </section>
 
             <section>
-                <h4>Петли на&nbsp;Python</h4>
-                <div class="caption">звёзды GitHub на&nbsp;3&nbsp;октября 2026</div>
-                <table class="typical-table">
-                    <thead>
-                        <tr>
-                            <th>Проект</th>
-                            <th>★</th>
-                            <th>Суть</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>openai-agents</td>
-                            <td>29,8k</td>
-                            <td>Runner&nbsp;&mdash; цикл с&nbsp;лимитом <code>max_turns</code></td>
-                        </tr>
-                        <tr>
-                            <td>smolagents</td>
-                            <td>29,7k</td>
-                            <td>агент пишет действия кодом на&nbsp;Python, вся логика ~1000 строк</td>
-                        </tr>
-                        <tr>
-                            <td>pydantic-ai</td>
-                            <td>20,4k</td>
-                            <td>цикл агента с&nbsp;типами</td>
-                        </tr>
-                        <tr>
-                            <td>claude-agent-sdk</td>
-                            <td>8,2k</td>
-                            <td>харнесс Claude Code из&nbsp;Python, хуки и&nbsp;инструменты&nbsp;&mdash; функции</td>
-                        </tr>
-                        <tr>
-                            <td>mini-swe-agent</td>
-                            <td>8,2k</td>
-                            <td>~100 строк, единственный инструмент&nbsp;&mdash; bash</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section>
-                <h4>Типы&nbsp;&mdash; бесплатная обратная связь</h4>
+                <h4>pylines: наши правила для Python</h4>
                 <ul>
-                    <li class="fragment">Anthropic: линтер&nbsp;&mdash; отличная проверка по&nbsp;правилам. Поэтому агенту лучше
-                        TypeScript, чем JavaScript</li>
-                    <li class="fragment">Для Python вывод тот&nbsp;же: аннотации типов плюс mypy или pyright. Это мой вывод</li>
-                    <li class="fragment">Плагин <code>pyright-lsp</code>: ошибки типов после каждой правки</li>
-                    <li class="fragment">Хашимото: дай агенту быстрые инструменты, которые скажут, что он&nbsp;неправ</li>
+                    <li class="fragment">Правила для fullstack на&nbsp;Python и&nbsp;TypeScript от&nbsp;community-of-python</li>
+                    <li class="fragment">Ставится как скилл: <code>npx skills add https://github.com/community-of-python/pylines -g</code></li>
+                    <li class="fragment">Скилл раз в&nbsp;час сам подтягивает свежие правила из&nbsp;GitHub</li>
+                    <li class="fragment">Код проверяют ruff со&nbsp;всеми правилами, строгий mypy и&nbsp;свой плагин для flake8</li>
                 </ul>
+                <div class="source">github.com/community-of-python/pylines</div>
             </section>
 
             <section>
@@ -588,25 +552,187 @@ if path.endswith(".py"):
             </section>
 
             <section>
-                <h4>MCP-сервер на&nbsp;Python</h4>
-                <ul>
-                    <li class="fragment"><code>mcp</code> 2.3&nbsp;&mdash; официальный SDK, 24,5k&nbsp;★</li>
-                    <li class="fragment">FastMCP 4.0, 28k&nbsp;★&nbsp;&mdash; самая популярная обёртка для MCP на&nbsp;Python</li>
-                    <li class="fragment">Claude Agent SDK: обычная функция на&nbsp;Python становится инструментом агента
-                    </li>
-                    <li class="fragment">Есть CLI&nbsp;&mdash; сначала дай агенту его. Сервер пиши, когда CLI нет</li>
-                </ul>
+                <h4>Было</h4>
+                <div class="caption">типичный код: короткие имена, голый except, магическое число, print</div>
+                <pre class="code-tall"><code class="language-python" data-trim>
+import requests
+
+def get_total(uid, vip=False, statuses=["paid"]):
+    try:
+        r = requests.get(f"https://shop.example/api/orders?user={uid}")
+        d = r.json()
+    except:
+        print("ERROR!!!")
+        return 0
+    tmp = 0
+    for x in d:
+        if x["status"] in statuses:
+            if vip:
+                tmp += x["amount"] * 0.9
+            else:
+                tmp += x["amount"]
+    print("total:", tmp)
+    return tmp
+                </code></pre>
             </section>
 
             <section>
-                <h4>При чём тут Python</h4>
+                <h4>Стало: данные</h4>
+                <div class="caption">константы вместо магии, модель ответа вместо словаря</div>
+                <pre class="code-tall"><code class="language-python" data-trim>
+import decimal
+import typing
+
+import httpx
+import pydantic
+import stamina
+
+ORDERS_URL: typing.Final = "https://shop.example/api/orders"
+PAID_STATUSES: typing.Final = frozenset({"paid"})
+VIP_DISCOUNT: typing.Final = decimal.Decimal("0.9")
+RETRY_ATTEMPTS: typing.Final = 3
+
+@typing.final
+class OrderPayload(pydantic.BaseModel):
+    order_status: str = pydantic.Field(alias="status")
+    order_amount: decimal.Decimal = pydantic.Field(alias="amount")
+
+ORDERS_ADAPTER: typing.Final = pydantic.TypeAdapter(list[OrderPayload])
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Стало: функция</h4>
+                <pre class="code-tall"><code class="language-python" data-trim>
+@stamina.retry(on=httpx.HTTPError, attempts=RETRY_ATTEMPTS)
+async def calculate_paid_total(
+    http_client: httpx.AsyncClient,
+    *,
+    customer_id: int,
+    is_vip_client: bool = False,
+    order_statuses: frozenset[str] = PAID_STATUSES,
+) -> decimal.Decimal:
+    http_response: typing.Final = await http_client.get(ORDERS_URL, params={"user": customer_id})
+    http_response.raise_for_status()
+    paid_total: typing.Final = sum(
+        (one_order.order_amount
+         for one_order in ORDERS_ADAPTER.validate_json(http_response.content)
+         if one_order.order_status in order_statuses),
+        start=decimal.Decimal(0),
+    )
+    if is_vip_client:
+        return paid_total * VIP_DISCOUNT
+    return paid_total
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Линтер ловит не&nbsp;всё</h4>
+                <div class="bignum-row">
+                    <div>
+                        <div class="bignum">20</div>
+                        <p>ошибок в&nbsp;&laquo;было&raquo; нашли ruff, mypy и&nbsp;плагин pylines. В&nbsp;&laquo;стало&raquo; осталось одно замечание: нет строки с&nbsp;копирайтом</p>
+                    </div>
+                    <div class="fragment">
+                        <div class="bignum">4</div>
+                        <p>проблемы не&nbsp;нашёл ни&nbsp;один линтер: <code>get_</code>, число 0.9, доступ по&nbsp;ключу, нет ретраев</p>
+                    </div>
+                </div>
+                <p class="fragment">Их&nbsp;ловят только правила, которые агент прочитал в&nbsp;скилле</p>
+                <div class="source">прогон с&nbsp;pyproject.toml из&nbsp;pylines, 3&nbsp;октября 2026</div>
+            </section>
+
+            <section>
+                <h4>Пирамида или ромб</h4>
+                <svg class="test-shapes" viewBox="0 0 980 245" role="img" aria-label="Пирамида и ромб тестирования">
+                <rect x="170" y="20" width="160" height="54" rx="8" class="band"/>
+                <text x="250" y="55">e2e</text>
+                <rect x="100" y="82" width="300" height="54" rx="8" class="band"/>
+                <text x="250" y="117">интеграционные</text>
+                <rect x="30" y="144" width="440" height="54" rx="8" class="band hot"/>
+                <text x="250" y="179">юниты</text>
+                <text x="250" y="230" class="label">пирамида</text>
+                <rect x="630" y="20" width="200" height="54" rx="8" class="band"/>
+                <text x="730" y="55">e2e</text>
+                <rect x="510" y="82" width="440" height="54" rx="8" class="band hot"/>
+                <text x="730" y="117">интеграционные</text>
+                <rect x="650" y="144" width="160" height="54" rx="8" class="band"/>
+                <text x="730" y="179">юниты</text>
+                <text x="730" y="230" class="label">ромб из&nbsp;pylines</text>
+                </svg>
+                <ul class="compact">
+                    <li class="fragment">Пирамида: юнитов больше всего, e2e меньше всего</li>
+                    <li class="fragment">Ромб: основа&nbsp;&mdash; тесты через ручку, CLI или обработчик сообщения, приложение собрано целиком</li>
+                    <li class="fragment">Юниты под запретом: они привязаны к&nbsp;устройству кода и&nbsp;ломаются при рефакторинге</li>
+                </ul>
+                <div class="source">tests.md в&nbsp;pylines</div>
+            </section>
+
+            <section>
+                <h4>Что пишет агент без правил</h4>
+                <div class="caption">иллюстрация: по&nbsp;тесту на&nbsp;каждое значение, хардкод и&nbsp;моки внутренностей</div>
+                <pre class="code-tall"><code class="language-python" data-trim>
+def test_get_total_1():
+    assert get_total([{"status": "paid", "amount": 100}]) == 100
+
+def test_get_total_2():
+    assert get_total([{"status": "paid", "amount": 200}]) == 200
+
+def test_get_total_3():
+    assert get_total([{"status": "new", "amount": 100}]) == 0
+
+def test_get_total_4():
+    assert get_total([{"status": "paid", "amount": 100}], vip=True) == 90.0
+
+@patch("app.orders.requests.get")
+def test_get_total_mocked(mock_get):
+    mock_get.return_value.json.return_value = [{"status": "paid", "amount": 100}]
+    assert get_total(1) == 100
+
+# ...и ещё 140 таких же
+                </code></pre>
+            </section>
+
+            <section>
+                <img src="./images/memes/it-changed-the-tests.png" class="r-stretch" alt="мем: агент поменял тесты">
+                <div class="source">r/ProgrammerHumor, июль 2026</div>
+            </section>
+
+            <section>
+                <h4>Чего хочется: тест через ручку</h4>
+                <div class="caption">один тест проходит приложение целиком, от&nbsp;HTTP до&nbsp;хранилища. Данные даёт faker</div>
+                <pre class="code-tall"><code class="language-python" data-trim>
+def test_should_reject_invalid_email_via_api(faker: Faker) -> None:
+    client: typing.Final = TestClient(app=create_application())
+    invalid_payload: typing.Final = {"email": faker.word(), "password": faker.password()}
+
+    response: typing.Final = client.post("/api/users", json=invalid_payload)
+
+    assert response.status_code == 422
+    assert "email" in response.json()["detail"]
+                </code></pre>
+                <p class="fragment">Получается с&nbsp;переменным успехом: агент всё равно тянется к&nbsp;юнитам, и&nbsp;правило приходится повторять</p>
+                <div class="source">по&nbsp;примеру из&nbsp;tests.md в&nbsp;pylines</div>
+            </section>
+
+            <section>
+                <h4>TDD: польза не&nbsp;доказана</h4>
                 <ul>
-                    <li class="fragment"><strong>Петлю пишут на&nbsp;Python</strong>: OpenAI Agents SDK, Claude Agent SDK,
-                        smolagents</li>
-                    <li class="fragment"><strong>Харнесс расширяют на&nbsp;Python</strong>: хуки на&nbsp;uv, MCP
-                        на&nbsp;FastMCP, скрипты в&nbsp;скиллах</li>
-                    <li class="fragment"><strong>Python-инструменты проверяют петлю</strong>: ruff, mypy, pytest как условие
-                        остановки</li>
+                    <li class="fragment">Для людей исследования противоречат друг другу: где-то плюс к&nbsp;качеству, где-то разницы нет</li>
+                    <li class="fragment">В&nbsp;экспериментах важнее мелкие шаги, чем порядок &laquo;сначала тест&raquo;</li>
+                    <li class="fragment">Агенту заметно помогают готовые тесты, которые написал человек</li>
+                    <li class="fragment">Но&nbsp;агент может подогнать код под тесты или переписать сами тесты</li>
+                </ul>
+                <div class="source">Rafique, Mišić, 2013; Fucci и&nbsp;др., 2017; Mathews, Nagappan, 2024; ImpossibleBench</div>
+            </section>
+
+            <section>
+                <h4>Без харнесса&nbsp;&mdash; нейрослоп</h4>
+                <ul>
+                    <li class="fragment">Модель та&nbsp;же самая. Код другой, потому что у&nbsp;агента были правила</li>
+                    <li class="fragment">pylines даёт правила, ruff и&nbsp;mypy проверяют каждую правку, pytest решает, когда можно остановиться</li>
+                    <li class="fragment">Без этого даже сильный агент быстро выдаёт код из&nbsp;слайда &laquo;Было&raquo;</li>
+                    <li class="fragment">И&nbsp;саму петлю, и&nbsp;хуки пишут на&nbsp;Python: OpenAI Agents SDK, Claude Agent SDK</li>
                 </ul>
             </section>
 
@@ -617,21 +743,21 @@ if path.endswith(".py"):
             <section>
                 <h4>Собрать за&nbsp;вечер</h4>
                 <ul class="compact">
-                    <li class="fragment">CLAUDE.md до&nbsp;200&nbsp;строк и&nbsp;<code>/clear</code> между задачами</li>
-                    <li class="fragment">Хуки на&nbsp;Python: ruff после правки, pytest перед &laquo;готово&raquo;</li>
-                    <li class="fragment"><code>pyright-lsp</code>, Context7, Playwright</li>
-                    <li class="fragment">grill-me и&nbsp;набор superpowers. Не&nbsp;тридцать скиллов</li>
-                    <li class="fragment">Потом&nbsp;&mdash; первая петля: задача по&nbsp;расписанию и&nbsp;стоп по&nbsp;тестам</li>
+                    <li class="fragment">Держи AGENTS.md коротким, до&nbsp;200&nbsp;строк, и&nbsp;очищай контекст между задачами</li>
+                    <li class="fragment">Поставь скиллы Покока и&nbsp;начни с&nbsp;grill-me</li>
+                    <li class="fragment">Подключи pylines, чтобы агент писал Python по&nbsp;правилам</li>
+                    <li class="fragment">Добавь хуки: ruff после каждой правки и&nbsp;pytest перед тем, как агент скажет &laquo;готово&raquo;</li>
+                    <li class="fragment">Поставь context-mode и&nbsp;rtk, чтобы агент читал меньше мусора</li>
                 </ul>
             </section>
 
             <section data-background-color="#2B2D33" data-reset-breadcrumbs="1">
                 <h3>Спасибо</h3>
                 <ul class="links">
-                    <li>hesreallyhim/awesome-claude-code</li>
+                    <li>agents.md</li>
                     <li>skills.sh</li>
-                    <li>claude.com/marketplace</li>
-                    <li>code.claude.com/docs</li>
+                    <li>github.com/mattpocock/skills</li>
+                    <li>github.com/community-of-python/pylines</li>
                 </ul>
             </section>
         </div>

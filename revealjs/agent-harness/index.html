@@ -212,24 +212,15 @@
             </section>
 
             <section>
-                <h4>2022&ndash;2024: от&nbsp;промптов к&nbsp;инструментам</h4>
+                <h4>2022&ndash;2025: от&nbsp;промптов к&nbsp;агентам</h4>
                 <ul>
                     <li class="fragment">30&nbsp;ноября 2022 выходит ChatGPT. Работа сводится к&nbsp;тому, чтобы удачно спросить</li>
                     <li class="fragment">Карпатый, январь 2023: &laquo;Самый модный язык программирования&nbsp;&mdash; английский&raquo;</li>
-                    <li class="fragment">В&nbsp;2023 году модели OpenAI научились вызывать функции, в&nbsp;2024 году&nbsp;&mdash; Claude</li>
+                    <li class="fragment">В&nbsp;2023&ndash;2024 модели OpenAI и&nbsp;Claude учатся вызывать инструменты</li>
                     <li class="fragment">Anthropic, декабрь 2024: агент&nbsp;&mdash; это модель, которая в&nbsp;цикле зовёт инструменты</li>
+                    <li class="fragment">2025: Карпатый придумывает вайб-кодинг, выходит Claude Code, агент переезжает в&nbsp;терминал</li>
                 </ul>
                 <div class="source">openai.com; x.com/karpathy; anthropic.com</div>
-            </section>
-
-            <section>
-                <h4>2025: агент переезжает в&nbsp;терминал</h4>
-                <ul>
-                    <li class="fragment">Карпатый, февраль 2025, придумывает вайб-кодинг: &laquo;отдаёшься вайбу и&nbsp;забываешь, что код вообще существует&raquo;</li>
-                    <li class="fragment">В&nbsp;феврале выходит Claude Code, в&nbsp;мае он&nbsp;доступен всем</li>
-                    <li class="fragment">Агент сам читает файлы, запускает тесты и&nbsp;правит код</li>
-                </ul>
-                <div class="source">x.com/karpathy; anthropic.com</div>
             </section>
 
             <section>
@@ -364,50 +355,24 @@
                 <div class="source">README obra/superpowers и&nbsp;mattpocock/skills</div>
             </section>
 
+            <section>
+                <img src="./images/memes/you-are-absolutely-right.jpg" class="r-stretch" alt="мем: You are absolutely right">
+                <div class="source">r/ProgrammerHumor, сентябрь 2026</div>
+            </section>
+
+            <section>
+                <h4>Свои скиллы: контекст вашей команды</h4>
+                <div class="caption">делаем скиллом skill-creator из&nbsp;anthropics/skills: он&nbsp;пишет скилл и&nbsp;проверяет его на&nbsp;тестовых запросах</div>
+                <ul>
+                    <li class="fragment">Готовые скиллы не&nbsp;знают вашу команду. Свой скилл знает</li>
+                    <li class="fragment">В&nbsp;него хорошо ложатся ваши CLI: как найти логи, завести задачу, выкатить релиз</li>
+                    <li class="fragment">Знания о&nbsp;команде: стенды, адреса, правила веток, кто за&nbsp;что отвечает</li>
+                </ul>
+                <div class="source">github.com/anthropics/skills; agentskills.io</div>
+            </section>
+
             <section data-background-color="#2B2D33">
                 <h3>Хуки</h3>
-            </section>
-
-            <section>
-                <img src="./images/memes/never-go-full-agentic.jpg" class="r-stretch" alt="мем: never go full agentic">
-                <div class="source">r/ProgrammerHumor, август 2026</div>
-            </section>
-
-            <section>
-                <h4>Хук на&nbsp;Python</h4>
-                <div class="caption">харнесс запускает этот хук после каждой правки. Если скрипт вернул код 2, агент видит ошибки ruff и&nbsp;чинит их</div>
-                <pre><code class="language-python" data-trim>
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.12"
-# ///
-import json, subprocess, sys
-
-path = json.load(sys.stdin)["tool_input"].get("file_path", "")
-if path.endswith(".py"):
-    check = subprocess.run(
-        ["uvx", "ruff", "check", path], capture_output=True, text=True
-    )
-    if check.returncode:
-        print(check.stdout, file=sys.stderr)
-        sys.exit(2)
-                </code></pre>
-            </section>
-
-            <section>
-                <h4>Стоп-условие&nbsp;&mdash; pytest</h4>
-                <div class="caption">агент не&nbsp;сможет закончить, пока тесты красные. Флаг <code>stop_hook_active</code> не&nbsp;даёт хуку зациклиться</div>
-                <pre><code class="language-json" data-trim>
-{
-  "hooks": {
-    "Stop": [{
-      "hooks": [{ "type": "command",
-        "command": "jq -e .stop_hook_active >/dev/null || uv run pytest -q >&2 || exit 2"
-      }]
-    }]
-  }
-}
-                </code></pre>
             </section>
 
             <section>
@@ -422,8 +387,10 @@ if path.endswith(".py"):
             </section>
 
             <section>
-                <img src="./images/memes/rm-rf-user-profile.jpg" class="r-stretch" alt="скриншот: агент удалил профиль пользователя">
-                <div class="source">r/ClaudeCode, август 2026</div>
+                <h4>claude-hud: всё видно сразу</h4>
+                <div class="caption">контекст, лимиты, работающие инструменты и&nbsp;субагенты прямо под строкой ввода</div>
+                <img src="./images/tools/claude-hud.png" class="r-stretch" alt="claude-hud">
+                <div class="source">jarrodwatts/claude-hud, 28k&nbsp;★. Похожий ccstatusline, 13k&nbsp;★</div>
             </section>
 
             <section data-background-color="#B06BB0">
@@ -443,6 +410,30 @@ if path.endswith(".py"):
                     </div>
                 </div>
                 <div class="source">документация Claude Code, раздел Costs</div>
+            </section>
+
+            <section>
+                <img src="./images/memes/tokenmaxing-not-successmaxing.jpg" class="r-stretch" alt="мем: 18 миллиардов токенов без успеха">
+                <div class="source">r/ClaudeCode, июль 2026</div>
+            </section>
+
+            <section>
+                <h4>Экономия словами: что написать в&nbsp;AGENTS.md</h4>
+                <ul>
+                    <li class="fragment">Не&nbsp;читай файлы и&nbsp;ответы API целиком. Разбирай их&nbsp;скриптом и&nbsp;смотри только вывод</li>
+                    <li class="fragment">Субагенту ставь самую дешёвую модель, которая справится</li>
+                    <li class="fragment">Ещё дешевле запустить внешнего агента на&nbsp;дешёвой модели и&nbsp;взять из&nbsp;его вывода только итог</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Не&nbsp;грузить всё сразу: MCP и&nbsp;скиллы</h4>
+                <ul>
+                    <li class="fragment">Tool search подгружает описание MCP-инструмента, только когда он&nbsp;нужен. Минус 85% на&nbsp;описаниях</li>
+                    <li class="fragment">Он&nbsp;выключается сам, если агент ходит через прокси. Включи: <code>ENABLE_TOOL_SEARCH=true</code></li>
+                    <li class="fragment">Со&nbsp;скиллами та&nbsp;же беда. skillgrep держит редкие скиллы вне каталога и&nbsp;находит нужный по&nbsp;запросу</li>
+                </ul>
+                <div class="source">Anthropic, &laquo;Advanced tool use&raquo;; github.com/vrslev/skillgrep, <code>npx skills add vrslev/skillgrep</code></div>
             </section>
 
             <section>
@@ -472,6 +463,17 @@ if path.endswith(".py"):
             </section>
 
             <section>
+                <h4>rtk: что говорят критики</h4>
+                <ul>
+                    <li class="fragment">Он&nbsp;сжимает только вывод Bash, а&nbsp;это 3&ndash;6% счёта по&nbsp;оценке самих авторов</li>
+                    <li class="fragment">JetBrains: на&nbsp;низком усилии с&nbsp;rtk вышло на&nbsp;7,6% дороже, на&nbsp;высоком разницы нет</li>
+                    <li class="fragment">Счётчик rtk считает токены как байты, делённые на&nbsp;4, и&nbsp;завышает экономию</li>
+                    <li class="fragment">Были баги: <code>tsc</code> с&nbsp;ошибкой отвечал &laquo;No errors found&raquo;. Их&nbsp;исправили</li>
+                </ul>
+                <div class="source">README rtk; блог JetBrains; issues в&nbsp;rtk-ai/rtk; Hacker News</div>
+            </section>
+
+            <section>
                 <h4>serena: навигация по&nbsp;коду вместо grep</h4>
                 <div class="caption">oraios/serena, 30k&nbsp;★. MCP-сервер поверх языковых серверов, как в&nbsp;IDE</div>
                 <div class="two-col">
@@ -479,8 +481,7 @@ if path.endswith(".py"):
                     <ul>
                         <li class="fragment">grep находит строки, а&nbsp;потом агент читает файлы целиком</li>
                         <li class="fragment">serena ищет по&nbsp;символам: где функция, кто её&nbsp;вызывает, как заменить её&nbsp;тело</li>
-                        <li class="fragment">Агент читает только нужный кусок кода, а&nbsp;не&nbsp;весь файл</li>
-                        <li class="fragment">По&nbsp;привычке агент тянется к&nbsp;grep. Пропиши в&nbsp;AGENTS.md, что код ищется через serena</li>
+                            <li class="fragment">По&nbsp;привычке агент тянется к&nbsp;grep. Пропиши в&nbsp;AGENTS.md, что код ищется через serena</li>
                     </ul>
                 </div>
             </section>
@@ -501,15 +502,15 @@ if path.endswith(".py"):
             </section>
 
             <section>
-                <img src="./images/memes/tokenmaxing-not-successmaxing.jpg" class="r-stretch" alt="мем: 18 миллиардов токенов без успеха">
-                <div class="source">r/ClaudeCode, июль 2026</div>
-            </section>
-
-            <section>
                 <h4>ponytail: агент пишет меньше кода</h4>
                 <div class="caption">на&nbsp;12&nbsp;задачах: на&nbsp;54% меньше строк и&nbsp;на&nbsp;22% меньше токенов. Замер автора, Haiku 4.5</div>
                 <img src="./images/tools/ponytail-benchmark.svg" class="r-stretch" alt="бенчмарк ponytail">
                 <div class="source">DietrichGebert/ponytail, 152k&nbsp;★</div>
+            </section>
+
+            <section>
+                <img src="./images/memes/final-ten-percent-timeline.jpg" class="r-stretch" alt="мем: демо за два часа, последние 10% за полгода">
+                <div class="source">r/vibecoding, сентябрь 2026</div>
             </section>
 
             <section data-background-color="#B06BB0">
@@ -518,23 +519,25 @@ if path.endswith(".py"):
 
             <section>
                 <h4>Workflows: петля внутри Claude Code</h4>
+                <div class="caption">вышли 28&nbsp;мая 2026. Запуск: слово <code>ultracode</code> в&nbsp;запросе, удачный workflow сохраняется в&nbsp;<code>.claude/workflows/</code></div>
                 <ul>
-                    <li class="fragment">Вышли 28&nbsp;мая 2026. Скрипт раздаёт задачи субагентам и&nbsp;собирает их&nbsp;ответы</li>
-                    <li class="fragment">Чтобы запустить, напиши в&nbsp;запросе слово <code>ultracode</code> или попроси &laquo;use a&nbsp;workflow&raquo;</li>
-                    <li class="fragment">Удачный workflow сохрани в&nbsp;<code>.claude/workflows/</code> и&nbsp;вызывай командой <code>/имя</code></li>
+                    <li class="fragment">Скрипт раздаёт задачи субагентам, а&nbsp;в&nbsp;разговор возвращается только итог</li>
+                    <li class="fragment">Обычный агент держит план в&nbsp;своём контексте. Здесь план записан в&nbsp;коде и&nbsp;не&nbsp;теряется</li>
+                    <li class="fragment">Bash-петля вроде Ralph гоняет одну задачу по&nbsp;кругу. Workflow раздаёт разные задачи и&nbsp;сверяет ответы</li>
+                    <li class="fragment">Минусы: это дорого, и&nbsp;посреди запуска нельзя ничего спросить у&nbsp;человека</li>
                 </ul>
-                <div class="source">code.claude.com/docs; CHANGELOG Claude Code 2.1.154</div>
+                <div class="source">code.claude.com/docs; CHANGELOG Claude Code 2.1.154; сравнение с&nbsp;Ralph&nbsp;&mdash; наш вывод</div>
             </section>
 
             <section>
-                <h4>Зачем Workflows</h4>
+                <h4>Пример: разбор моих 50&nbsp;сессий</h4>
+                <div class="caption">&laquo;ultracode: просмотри мои последние 50&nbsp;сессий, найди повторяющиеся ошибки и&nbsp;предложи, где их&nbsp;закрепить&raquo;</div>
                 <ul>
-                    <li class="fragment">Обычный агент держит план в&nbsp;своём контексте. В&nbsp;workflow план записан в&nbsp;коде и&nbsp;не&nbsp;теряется</li>
-                    <li class="fragment">Bash-петля вроде Ralph гоняет одну задачу по&nbsp;кругу. Workflow раздаёт разные задачи и&nbsp;сверяет ответы</li>
-                    <li class="fragment">Субагенты работают параллельно, а&nbsp;в&nbsp;разговор возвращается только итог</li>
-                    <li class="fragment">Минусы: это дорого, и&nbsp;посреди запуска нельзя ничего спросить у&nbsp;человека</li>
+                    <li class="fragment">Workflow отдаёт каждую сессию отдельному субагенту, до&nbsp;16&nbsp;одновременно. Тот возвращает короткую сводку</li>
+                    <li class="fragment">Следующий агент ищет повторы во&nbsp;всех сводках, ещё один их&nbsp;перепроверяет</li>
+                    <li class="fragment">На&nbsp;выходе предложения: правило в&nbsp;AGENTS.md, свой скилл или хук</li>
+                    <li class="fragment">Почему это хороший пример: сессии большие и&nbsp;независимые, а&nbsp;мне в&nbsp;контекст приходит только итог</li>
                 </ul>
-                <div class="source">code.claude.com/docs; сравнение с&nbsp;Ralph&nbsp;&mdash; наш вывод</div>
             </section>
 
             <section data-background-color="#B06BB0">

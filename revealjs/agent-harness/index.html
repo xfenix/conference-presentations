@@ -337,11 +337,6 @@
                             <td>скрипт</td>
                         </tr>
                         <tr>
-                            <td>Routines, Actions</td>
-                            <td>работа по&nbsp;расписанию</td>
-                            <td>расписание или событие</td>
-                        </tr>
-                        <tr>
                             <td>Свой агент на&nbsp;SDK</td>
                             <td>свой продукт</td>
                             <td>твой код</td>
@@ -350,6 +345,45 @@
                 </table>
                 <p class="fragment compact">По&nbsp;умолчанию бери <code>/goal</code> или <code>/loop</code>. Свой агент на&nbsp;SDK&nbsp;&mdash; когда петля становится продуктом</p>
                 <div class="source">code.claude.com/docs; ghuntley.com/ralph; github.com/anthropics/claude-code-action</div>
+            </section>
+
+            <section>
+                <h4>/loop: агент по&nbsp;будильнику</h4>
+                <ul>
+                    <li class="fragment"><code>/loop 5m проверь CI</code> повторяет запрос каждые 5&nbsp;минут, пока открыта сессия</li>
+                    <li class="fragment">Без интервала Claude сам выбирает паузу: от&nbsp;минуты до&nbsp;часа</li>
+                    <li class="fragment">Подходит, когда надо ждать: CI, деплой, комментарии к&nbsp;PR</li>
+                    <li class="fragment">Останавливаешь ты, или Claude решает, что всё сделано. Через 7&nbsp;дней задача удаляется сама</li>
+                </ul>
+                <div class="source">code.claude.com/docs/en/scheduled-tasks; Claude Code 2.1.71, март 2026</div>
+            </section>
+
+            <section>
+                <h4>/goal: &laquo;готово&raquo; говорит не&nbsp;исполнитель</h4>
+                <ul>
+                    <li class="fragment"><code>/goal все тесты в&nbsp;tests/auth зелёные</code> запускает работу и&nbsp;не&nbsp;отдаёт управление, пока цель не&nbsp;достигнута</li>
+                    <li class="fragment">После каждого хода отдельная быстрая модель читает разговор и&nbsp;решает: готово, ещё нет или невозможно</li>
+                    <li class="fragment">В&nbsp;промпте &laquo;делай, пока не&nbsp;будет X&raquo; агент сам решает, что X&nbsp;достигнут. Здесь это решает другая модель</li>
+                    <li class="fragment">Добавь в&nbsp;условие &laquo;или остановись после 20&nbsp;ходов&raquo;. Если агент буксует, Claude Code остановится сам</li>
+                </ul>
+                <div class="source">code.claude.com/docs/en/goal; Claude Code 2.1.139, май 2026</div>
+            </section>
+
+            <section>
+                <h4>Ralph: зачем вечный цикл</h4>
+                <ul class="compact">
+                    <li class="fragment">Каждый круг начинается с&nbsp;чистого контекста, поэтому контекст не&nbsp;гниёт</li>
+                    <li class="fragment">Память живёт в&nbsp;файлах и&nbsp;git: план, заметки, тесты</li>
+                    <li class="fragment">Подходит для долгой работы с&nbsp;нуля, где прогресс видно по&nbsp;тестам</li>
+                    <li class="fragment">Сам он&nbsp;не&nbsp;остановится. Выход придётся дописать: лимит кругов и&nbsp;проверку тестами</li>
+                </ul>
+                <pre class="fragment"><code class="language-bash" data-trim>
+for round in $(seq 20); do
+  cat PROMPT.md | claude -p
+  uv run pytest -q && break
+done
+                </code></pre>
+                <div class="source">ghuntley.com/ralph, июль 2025. Есть плагин ralph-wiggum: <code>--max-iterations</code> и&nbsp;фраза-обещание</div>
             </section>
 
             <section>
@@ -438,6 +472,17 @@
                     <li class="fragment">Память мака кончилась, Spotlight и&nbsp;Касперский начали падать</li>
                     <li class="fragment">Ставь хуку таймаут и&nbsp;узкую цель. Проверяй его на&nbsp;самом большом репозитории</li>
                 </ul>
+            </section>
+
+            <section>
+                <h4>Песочница вместо <code>--dangerously-skip-permissions</code></h4>
+                <ul>
+                    <li class="fragment"><code>/sandbox</code> в&nbsp;Claude Code: сама ОС ограничивает, к&nbsp;каким файлам и&nbsp;сайтам ходят команды агента</li>
+                    <li class="fragment">Внутри этой границы команды идут без подтверждений, и&nbsp;агент не&nbsp;просит &laquo;Allow&raquo; на&nbsp;каждый шаг</li>
+                    <li class="fragment">По&nbsp;умолчанию читать можно почти всё, даже <code>~/.ssh</code>. Закрой это в&nbsp;настройках</li>
+                    <li class="fragment">Полная изоляция&nbsp;&mdash; devcontainer или container-use от&nbsp;Dagger, 4k&nbsp;★</li>
+                </ul>
+                <div class="source">code.claude.com/docs/en/sandboxing; github.com/dagger/container-use</div>
             </section>
 
             <section>
@@ -721,6 +766,28 @@ async def calculate_paid_total(
                 </div>
                 <p class="fragment">Их&nbsp;ловят только правила, которые агент прочитал в&nbsp;скилле</p>
                 <div class="source">прогон с&nbsp;pyproject.toml из&nbsp;pylines, 3&nbsp;октября 2026</div>
+            </section>
+
+            <section>
+                <h4>ty: проверка типов от&nbsp;авторов ruff</h4>
+                <ul>
+                    <li class="fragment">Astral обещает скорость в&nbsp;10&ndash;100 раз выше, чем у&nbsp;mypy и&nbsp;pyright</li>
+                    <li class="fragment">19,8k&nbsp;★ и&nbsp;39&nbsp;миллионов загрузок в&nbsp;месяц, хотя ty ещё в&nbsp;бете</li>
+                    <li class="fragment">Агенту нужна быстрая проверка после каждой правки, а&nbsp;не&nbsp;раз в&nbsp;коммит</li>
+                    <li class="fragment">Есть LSP: агент видит ошибки типов сразу, как ты&nbsp;в&nbsp;IDE. Альтернативы&nbsp;&mdash; pyrefly и&nbsp;basedpyright</li>
+                </ul>
+                <div class="source">github.com/astral-sh/ty; pypistats.org, сентябрь 2026</div>
+            </section>
+
+            <section>
+                <h4>pre-commit: проверка на&nbsp;каждом коммите</h4>
+                <ul>
+                    <li class="fragment">pre-commit, 15,6k&nbsp;★, или lefthook, 8,9k&nbsp;★, гоняют ruff, типы и&nbsp;тесты перед каждым коммитом</li>
+                    <li class="fragment">Работает в&nbsp;любом агенте и&nbsp;у&nbsp;человека: настроил один раз в&nbsp;репозитории</li>
+                    <li class="fragment">Агент может обойти его флагом <code>--no-verify</code>. Запрети этот флаг в&nbsp;правах агента</li>
+                    <li class="fragment">Повтори те&nbsp;же проверки в&nbsp;CI: локальный хук можно отключить</li>
+                </ul>
+                <div class="source">github.com/pre-commit/pre-commit; github.com/evilmartians/lefthook</div>
             </section>
 
             <section>

@@ -11,7 +11,7 @@
 - Звёзды: 43.
 - Последний commit: `e6f4482`, 26 сентября 2026, «Требуем от тестов максимального покрытия».
 - Состав (`README.md`): `code-style.md`, `solid.md` (703 строки, в работе), `rest.md`, `tests.md`, `our-stack.md`, `frontend.md`, `frontend-generation.md`, эталонный `pyproject.toml`.
-  Гайд по архитектуре — ссылка на статью на Хабре: https://habr.com/ru/companies/raiffeisenbank/articles/885792/
+  Гайд по архитектуре — ссылка на статью на Хабре.
 
 ### Установка скилла
 Команда из `README.md`, раздел «Agent skill»:
